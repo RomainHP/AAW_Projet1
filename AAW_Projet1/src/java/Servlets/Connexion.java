@@ -37,10 +37,15 @@ public class Connexion extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Connexion</title>");            
+            out.println("<title>Connexion</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Connexion at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Connexion</h1>");
+            out.println("<FORM method=\"POST\">");
+            out.println("Identifiant : <INPUT Type=text Name=identifiant> <br/>");
+            out.println("Mot de passe : <INPUT Type=text Name=mot de passe>");
+            out.println("<INPUT Type=submit VALUE=\"OK\">");
+            out.println("</FORM>");
             out.println("</body>");
             out.println("</html>");
         }

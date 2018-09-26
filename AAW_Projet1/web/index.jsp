@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE HTML PUBLIC  "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
 <!--
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -20,14 +22,6 @@ and open the template in the editor.
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     </head>
     <body>
-        <h1>Banque en ligne</h1>
-        <ul style="list-style-type:disc">
-            <li url="/Connexion">Connexion</li>
-            <li url="">Consultation</li>
-            <li url="">Virement</li>
-            <li url="">Ordre de bourse</li>
-            <li url="">Notifications</li>
-            <li url="">Messagerie</li>
-        </ul> 
+        <%@ include file="bandeau/bandeau_deconnecte.jsp" %>
     </body>
 </html>
