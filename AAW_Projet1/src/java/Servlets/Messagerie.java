@@ -15,13 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author etienne
+ * @author Romain
  */
-@WebServlet(name = "Consultation", urlPatterns = {"/Consultation"})
-public class Consultation extends HttpServlet {
-    private double livret1 = 999.99;
-    private double livret2 = -0.05;
-    
+@WebServlet(name = "Messagerie", urlPatterns = {"/Messagerie"})
+public class Messagerie extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -32,8 +30,8 @@ public class Consultation extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
-        this.getServletContext().getRequestDispatcher( "/WEB-INF/consultation.jsp" ).forward( request, response );
+            throws ServletException, IOException {
+        this.getServletContext().getRequestDispatcher( "/WEB-INF/messagerie.jsp" ).forward( request, response );
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -47,8 +45,8 @@ public class Consultation extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
-	processRequest(request, response);
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**
@@ -61,8 +59,8 @@ public class Consultation extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-	    throws ServletException, IOException {
-	processRequest(request, response);
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
     /**
@@ -72,7 +70,7 @@ public class Consultation extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-	return "Short description";
+        return "Short description";
     }// </editor-fold>
 
 }

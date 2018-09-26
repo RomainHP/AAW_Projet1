@@ -31,21 +31,7 @@ public class Virement extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 	    throws ServletException, IOException {
-	response.setContentType("text/html;charset=UTF-8");
-	try (PrintWriter out = response.getWriter()) {
-	    /* TODO output your page here. You may use following sample code. */
-	    out.println("<!DOCTYPE html>");
-	    out.println("<html>");
-	    out.println("<head>");
-	    out.println("<title>Virements</title>");	    
-	    out.println("</head>");
-	    out.println("<body>");
-	    out.println("<h1>Effectuer un virement vers le compte : </h1>");
-	    out.println("<p>Compte Bidon1</p>");
-	    out.println("<p>Compte Bidon2</p>");
-	    out.println("</body>");
-	    out.println("</html>");
-	}
+        this.getServletContext().getRequestDispatcher( "/WEB-INF/virement.jsp" ).forward( request, response );
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
