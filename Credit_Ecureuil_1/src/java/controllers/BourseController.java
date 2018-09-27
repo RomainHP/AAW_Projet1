@@ -17,13 +17,28 @@ public class BourseController {
     public BourseController() {
     }
     
-    @RequestMapping(value="index", method = RequestMethod.GET)
-    protected String init(HttpServletRequest request,HttpServletResponse response) throws Exception {
-       return "index";
+    //------------------
+    @RequestMapping(value="achat_bourse", method = RequestMethod.GET)
+    protected String initAchat(HttpServletRequest request,HttpServletResponse response) throws Exception {
+       return "achat_bourse";
     }
     
     @RequestMapping(value="achat_bourse", method = RequestMethod.POST)
-    protected ModelAndView handleRequestInternal(
+    public ModelAndView achatAction(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+    
+    //-------------------
+    
+    @RequestMapping(value="vente_bourse", method = RequestMethod.GET)
+    protected String initVente(HttpServletRequest request,HttpServletResponse response) throws Exception {
+       return "vente_bourse";
+    }
+    
+    @RequestMapping(value="vente_bourse", method = RequestMethod.POST)
+    public ModelAndView venteAction(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         throw new UnsupportedOperationException("Not yet implemented");

@@ -17,16 +17,36 @@ public class CommunicationController {
     public CommunicationController() {
     }
     
+    
     @RequestMapping(value="index", method = RequestMethod.GET)
-    protected String init(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    protected String initIndex(HttpServletRequest request,HttpServletResponse response) throws Exception {
        return "index";
     }
     
-    @RequestMapping(value="achat_bourse", method = RequestMethod.POST)
-    public ModelAndView handleRequestInternal(
+    //----------------------------
+    
+    @RequestMapping(value="messagerie", method = RequestMethod.GET)
+    protected String initMessagerie(HttpServletRequest request,HttpServletResponse response) throws Exception {
+       return "messagerie";
+    }    
+    
+    @RequestMapping(value="messagerie", method = RequestMethod.POST)
+    public ModelAndView serviceMessagerie(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         throw new UnsupportedOperationException("Not yet implemented");
     }
     
+    //-----------------------------
+    @RequestMapping(value="notifications", method = RequestMethod.GET)
+    protected String initNotif(HttpServletRequest request,HttpServletResponse response) throws Exception {
+       return "notificiations";
+    }    
+    
+    @RequestMapping(value="notifications", method = RequestMethod.POST)
+    public ModelAndView notifications(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }    
 }
