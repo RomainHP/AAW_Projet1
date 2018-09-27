@@ -24,5 +24,65 @@
     </head>
     <body>
         <%@ include file="../bandeau/bandeau_deconnecte.jsp" %>
+        <div class="container">
+            <h1>Modifier le profil</h1>
+            <hr>
+            <div class="row">
+              <!-- left column -->
+              <div class="col-md-3">
+                <div class="text-center">
+                  <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
+                  <input class="form-control" type="file">
+                </div>
+              </div>
+
+              <!-- edit form column -->
+              <div class="col-md-9 personal-info">
+                <h3>Informations personnelles</h3>
+
+                <form class="form-horizontal" role="form">
+                  <div class="form-group">
+                    <label class="col-lg-3 control-label">Prénom:</label>
+                    <div class="col-lg-8">
+                      <input class="form-control" value="Jane" type="text">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-lg-3 control-label">Nom:</label>
+                    <div class="col-lg-8">
+                      <input class="form-control" value="Bishop" type="text">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-lg-3 control-label">Email:</label>
+                    <div class="col-lg-8">
+                      <input class="form-control" value="janesemail@gmail.com" type="text">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-3 control-label">Mot de passe:</label>
+                    <div class="col-md-8">
+                      <input class="form-control" value="11111122333" type="password">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-3 control-label">Confirmation:</label>
+                    <div class="col-md-8">
+                      <input class="form-control" value="11111122333" type="password">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-8">
+                      <input class="btn btn-primary" value="Sauvegarder" type="button">
+                      <span></span>
+                      <input class="btn btn-default" value="Annuler" type="reset">
+                    </div>
+                  </div>
+                </form>
+              </div>
+          </div>
+        </div>
+        <hr>
     </body>
 </html>

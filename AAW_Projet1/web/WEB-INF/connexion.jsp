@@ -36,11 +36,11 @@
                                 <h3 class="text-center text-info">Formulaire de connexion</h3>
                                 <div class="form-group">
                                     <label for="username" class="text-info">Identifiant:</label><br>
-                                    <input type="text" name="username" id="username" class="form-control">
+                                    <input type="text" name="identifiant" id="username" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label for="password" class="text-info">Mot de passe:</label><br>
-                                    <input type="text" name="password" id="password" class="form-control">
+                                    <input type="text" name="mot de passe" id="password" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <input type="submit" name="Se connecter" class="btn btn-info btn-md" value="Se connecter">

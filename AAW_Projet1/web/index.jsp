@@ -19,46 +19,42 @@
     </head>
     <body>
         <%@ include file="bandeau/bandeau_deconnecte.jsp" %>
-        <h1 align="center">Bienvenue !</h1>
-        <div class="container-fluid text-center">
-            <h2>SERVICES</h2>
-            <h4>What we offer</h4>
-            <br>
-            <div class="row">
-              <div class="col-sm-4">
-                <span class="glyphicon glyphicon-off"></span>
-                <h4>POWER</h4>
-                <p>Lorem ipsum dolor sit amet..</p>
-              </div>
-              <div class="col-sm-4">
-                <span class="glyphicon glyphicon-heart"></span>
-                <h4>LOVE</h4>
-                <p>Lorem ipsum dolor sit amet..</p>
-              </div>
-              <div class="col-sm-4">
-                <span class="glyphicon glyphicon-lock"></span>
-                <h4>JOB DONE</h4>
-                <p>Lorem ipsum dolor sit amet..</p>
-              </div>
-              </div>
-              <br><br>
-            <div class="row">
-              <div class="col-sm-4">
-                <span class="glyphicon glyphicon-leaf"></span>
-                <h4>GREEN</h4>
-                <p>Lorem ipsum dolor sit amet..</p>
-              </div>
-              <div class="col-sm-4">
-                <span class="glyphicon glyphicon-certificate"></span>
-                <h4>CERTIFIED</h4>
-                <p>Lorem ipsum dolor sit amet..</p>
-              </div>
-              <div class="col-sm-4">
-                <span class="glyphicon glyphicon-wrench"></span>
-                <h4>HARD WORK</h4>
-                <p>Lorem ipsum dolor sit amet..</p>
-              </div>
+        <div class="jumbotron">
+            <div class="container">
+                <h1 class="display-3">Le crédit de l'écureuil</h1>
+                <p>Description</p>
+                <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
             </div>
         </div>
+
+      <div class="container">
+        <!-- Example row of columns -->
+        <div class="row">
+          <div class="col-md-4">
+            <h2>Pourquoi nous ?</h2>
+            <p>Description</p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+          </div>
+          <div class="col-md-4">
+            <h2>Nos avantages</h2>
+            <p>Description</p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+          </div>
+          <div class="col-md-4">
+            <h2>Vous inscrire</h2>
+            <p>Description</p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+          </div>
+        </div>
+
+        <hr>
+
+      </div> <!-- /container -->
+
+    </main>
+
+    <footer class="container">
+      <p>&copy; Crédit de l'écureuil 2017-2018</p>
+    </footer>
     </body>
 </html>
