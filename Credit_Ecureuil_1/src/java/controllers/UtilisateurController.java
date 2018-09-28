@@ -1,6 +1,6 @@
 package controllers;
 
-import bean.Utilisateur;
+import dao.utilisateur.UtilisateurEntity;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +46,7 @@ public class UtilisateurController {
             session = request.getSession(true); // on la crée
         }
         
-        session.setAttribute("utilisateur", new Utilisateur(identifiant,mdp));
-        session.setAttribute("connexion", new Boolean(true));
+        session.setAttribute("login", identifiant);
         
         return mv;
     }
@@ -58,14 +57,11 @@ public class UtilisateurController {
         HttpSession session = request.getSession(false);
 
         // Si l'utilisateur n'est pas déjà connecté
-        System.err.println(ControllerUtils.utilisateurConnecte(request));
-        System.err.println(session.getAttribute("connexion"));
         if (!ControllerUtils.utilisateurConnecte(request)){
             return "erreur"; // on renvoie la page d'erreur
         }
         
-        session.setAttribute("utilisateur", null);
-        session.setAttribute("connexion", new Boolean(false));
+        session.setAttribute("login", null);
         return "index";
     }
 

@@ -21,6 +21,6 @@ public class ControllerUtils {
      */
     public static boolean utilisateurConnecte(HttpServletRequest request){
         HttpSession session = request.getSession(false);
-        return (session!=null && session.getAttribute("connexion")==new Boolean(true));
+        return (session!=null && session.getAttribute("login")!=null);
     }
 }

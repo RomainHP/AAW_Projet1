@@ -4,7 +4,7 @@
     Author     : rcharpen
 --%>
 
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e0e0e0;">
+<nav class="navbar navbar-expand-lg  navbar-dark bg-dark">
     <a class="navbar-brand" href="index.htm">
         <img src="images/logo.png" width="40" height="40" alt="logo">
     </a>
