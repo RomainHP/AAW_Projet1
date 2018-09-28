@@ -40,7 +40,7 @@ public class CommunicationController {
     //-----------------------------
     @RequestMapping(value="notifications", method = RequestMethod.GET)
     protected String initNotif(HttpServletRequest request,HttpServletResponse response) throws Exception {
-       return "notificiations";
+       return "notifications";
     }    
     
     @RequestMapping(value="notifications", method = RequestMethod.POST)

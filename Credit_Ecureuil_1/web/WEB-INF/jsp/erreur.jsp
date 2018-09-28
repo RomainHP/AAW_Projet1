@@ -1,6 +1,6 @@
 <%-- 
-    Document   : notifications
-    Created on : 26 sept. 2018, 20:59:43
+    Document   : virement
+    Created on : 26 sept. 2018, 20:59:53
     Author     : Romain
 --%>
 
@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>CE - Notifications</title>
+        <title>CE - Virement</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -32,5 +32,20 @@
                 <%@ include file="bandeau/bandeau_deconnecte.jsp" %>
             </c:otherwise>
         </c:choose>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="error-template">
+                        <h1>
+                            Oops!</h1>
+                        <h2>
+                            404 Not Found</h2>
+                        <div class="error-details">
+                            Une erreur est survenue, la page est inaccessible ou inexistante.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
