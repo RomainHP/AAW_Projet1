@@ -35,15 +35,21 @@
           Ordre en bourse
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="achat_bourse.htm">Achat</a>
-          <a class="dropdown-item" href="vente_bourse.htm">Vente</a>
+          <a class="dropdown-item" href="achat_bourse.htm">Acheter une action</a>
+          <a class="dropdown-item" href="vente_bourse.htm">Vendre des actions</a>
         </div>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="notifications.htm">Notifications<span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="messagerie.htm">Messagerie<span class="sr-only">(current)</span></a>
+      <li class="nav-item active dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Messagerie
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="envoyer_message.htm">Envoyer un message</a>
+          <a class="dropdown-item" href="consulter_messagerie.htm">Consulter la messagerie</a>
+        </div>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="deconnexion.htm">Deconnexion<span class="sr-only">(current)</span></a>

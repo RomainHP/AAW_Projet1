@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import utils.ControllerUtils;
 
 /**
  *
@@ -24,12 +25,14 @@ public class CompteController {
     //----------------------
     @RequestMapping(value="consultation", method = RequestMethod.GET)
     protected String initConsult(HttpServletRequest request,HttpServletResponse response) throws Exception {
-       return "consultation";
+        if (!ControllerUtils.utilisateurConnecte(request)) return "erreur";
+        return "consultation";
     }
     
     //--------------------
     @RequestMapping(value="virement", method = RequestMethod.GET)
     protected ModelAndView initVirement(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        if (!ControllerUtils.utilisateurConnecte(request)) return new ModelAndView("erreur");
         ModelAndView mv = new ModelAndView("virement"); 
         
         response.setContentType("text/html;charset=UTF-8");
@@ -58,6 +61,13 @@ public class CompteController {
     protected ModelAndView virementCompte(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        throw new UnsupportedOperationException("Not yet implemented");
+        ModelAndView mv = new ModelAndView("index"); 
+        
+        response.setContentType("text/html;charset=UTF-8");
+        
+        String id = request.getParameter("id");
+        String montant = request.getParameter("value");
+        String idDest = request.getParameter("id_dest");
+        return null;
     }    
 }

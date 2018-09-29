@@ -68,6 +68,7 @@ public class UtilisateurController {
     //---------------------------
     @RequestMapping(value="inscription", method = RequestMethod.GET)
     protected String initInscription(HttpServletRequest request,HttpServletResponse response) throws Exception {
+       if (ControllerUtils.utilisateurConnecte(request)) return "erreur";
        return "inscription";
     }
 
@@ -81,7 +82,8 @@ public class UtilisateurController {
     //---------------------------
     @RequestMapping(value="profil", method = RequestMethod.GET)
     protected String initProfil(HttpServletRequest request,HttpServletResponse response) throws Exception {
-       return "profil";
+        if (!ControllerUtils.utilisateurConnecte(request)) return "erreur";
+        return "profil";
     }
 
     @RequestMapping(value="profil", method = RequestMethod.POST)
