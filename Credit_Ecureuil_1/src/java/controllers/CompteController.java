@@ -25,13 +25,6 @@ public class CompteController {
     @RequestMapping(value="consultation", method = RequestMethod.GET)
     protected String initConsult(HttpServletRequest request,HttpServletResponse response) throws Exception {
        return "consultation";
-    }    
-    
-    @RequestMapping(value="consultation", method = RequestMethod.POST)
-    protected ModelAndView consultCompte(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        throw new UnsupportedOperationException("Not yet implemented");
     }
     
     //--------------------

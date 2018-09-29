@@ -1,0 +1,21 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 29 sept. 2018, 13:59:31
+    Author     : Romain
+*/
+
+@import url("button-next.css");
+@import url("button-previous.css");
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: orangered;
+    border-color: orangered;
+}
