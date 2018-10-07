@@ -1,9 +1,6 @@
 package controllers;
 
 import dao.utilisateur.UtilisateurEntity;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -11,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import services.utilisateur.UtilisateurServiceImpl;
 import utils.ControllerUtils;
 
 /**
@@ -19,6 +17,7 @@ import utils.ControllerUtils;
  */
 @Controller
 public class UtilisateurController {
+    private UtilisateurServiceImpl USI;
     
     public UtilisateurController() {
     }
@@ -76,7 +75,17 @@ public class UtilisateurController {
     protected ModelAndView inscription(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        throw new UnsupportedOperationException("Not yet implemented");
+	UtilisateurEntity UEtoAdd = new UtilisateurEntity(request.getParameter("username"), request.getParameter("password"));
+	this.USI = new UtilisateurServiceImpl();
+	if(USI.inscription(UEtoAdd) == true){
+	    ModelAndView mv = new ModelAndView("success");
+	    mv.addObject("message", "Utilisateur ajouté");
+	    return mv;
+	}else{
+	    ModelAndView mv = new ModelAndView("error");
+	    mv.addObject("message", "Utilisateur déjà inscrit");
+	    return mv;
+	}
     }
 
     //---------------------------

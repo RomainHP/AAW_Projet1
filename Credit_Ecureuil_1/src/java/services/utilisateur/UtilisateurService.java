@@ -1,12 +1,14 @@
 package services.utilisateur;
 
+import dao.utilisateur.UtilisateurEntity;
+
 /**
  *
  * @author rcharpen
  */
 public interface UtilisateurService {
-    void inscription();
-    void connexion();
+    boolean inscription(UtilisateurEntity ue);
+    void connexion(UtilisateurEntity ue);
     void deconnexion();
-    void profil();
+    void profil(UtilisateurEntity ue);
 }
