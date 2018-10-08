@@ -1,9 +1,11 @@
 package controllers;
 
+import dao.utilisateur.UtilisateurDao;
 import dao.utilisateur.UtilisateurEntity;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,9 +19,11 @@ import utils.ControllerUtils;
  */
 @Controller
 public class UtilisateurController {
-    private UtilisateurServiceImpl USI;
+        
+    private UtilisateurServiceImpl service;
     
     public UtilisateurController() {
+        this.service = new UtilisateurServiceImpl();
     }
     
     //---------------------------
@@ -75,9 +79,7 @@ public class UtilisateurController {
     protected ModelAndView inscription(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-	UtilisateurEntity UEtoAdd = new UtilisateurEntity(request.getParameter("username"), request.getParameter("password"));
-	this.USI = new UtilisateurServiceImpl();
-	if(USI.inscription(UEtoAdd) == true){
+	if(service.inscription(request.getParameter("username"),request.getParameter("password")) == true){
 	    ModelAndView mv = new ModelAndView("success");
 	    mv.addObject("message", "Utilisateur ajouté");
 	    return mv;

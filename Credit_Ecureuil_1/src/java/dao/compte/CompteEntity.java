@@ -12,8 +12,8 @@ import javax.persistence.Table;
  *
  * @author rcharpen
  */
-@Entity
-@Table(name="Accounts")
+//@Entity
+//@Table(name="Accounts")
 public class CompteEntity implements Serializable {
 
     @Id
@@ -21,8 +21,8 @@ public class CompteEntity implements Serializable {
     
     private String nom;
     
-    @ManyToOne
-    @JoinColumn(name="account_FK")
+//    @ManyToOne
+//    @JoinColumn(name="account_FK")
     private UtilisateurEntity compte;
         
     public CompteEntity(Long id, String nom){

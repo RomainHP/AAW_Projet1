@@ -8,17 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author rcharpen
  */
-public class UtilisateurServiceImpl implements UtilisateurService{
+public class UtilisateurServiceImpl implements UtilisateurService {
+    
     @Autowired
-    UtilisateurDaoImpl UserDAO;
+    UtilisateurDaoImpl dao;
 
     public UtilisateurServiceImpl(){
-	this.UserDAO = new UtilisateurDaoImpl();
+	this.dao = new UtilisateurDaoImpl();
     }
     
     @Override
     public void connexion(UtilisateurEntity ue) {
-	if(UserDAO.find(ue) != null){
+	if(dao.find(ue.getIdentifiant()) != null){
 	    
 	}
     }
@@ -34,9 +35,11 @@ public class UtilisateurServiceImpl implements UtilisateurService{
     }
 
     @Override
-    public boolean inscription(UtilisateurEntity ue) {
-	if(UserDAO.find(ue) == null){
-	    UserDAO.save(ue);
+    public boolean inscription(String identifiant, String motDePasse) {
+        System.err.println("test");
+	if(dao.find(identifiant) == null){
+            UtilisateurEntity utilisateur = new UtilisateurEntity(identifiant, motDePasse);
+	    dao.save(utilisateur);
 	    return true;
 	}
 	return false;
