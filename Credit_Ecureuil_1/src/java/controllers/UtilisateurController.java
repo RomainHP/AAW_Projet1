@@ -80,12 +80,10 @@ public class UtilisateurController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 	if(service.inscription(request.getParameter("email"),request.getParameter("password")) == true){
-	    ModelAndView mv = new ModelAndView("success");
-	    mv.addObject("message", "Utilisateur ajouté");
+	    ModelAndView mv = new ModelAndView("index");
 	    return mv;
 	}else{
-	    ModelAndView mv = new ModelAndView("error");
-	    mv.addObject("message", "Utilisateur déjà inscrit");
+	    ModelAndView mv = new ModelAndView("erreur");
 	    return mv;
 	}
     }
