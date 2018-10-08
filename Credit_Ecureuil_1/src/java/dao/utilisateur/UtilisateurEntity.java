@@ -24,6 +24,11 @@ public class UtilisateurEntity implements Serializable {
 //    @OneToMany(mappedBy="compte")
 //    private List<CompteEntity> comptes = new ArrayList<CompteEntity>();
 
+    public UtilisateurEntity(){
+        this.identifiant="";
+        this.motDePasse="";
+    }
+    
     public UtilisateurEntity(String id, String mdp){
         this.identifiant=id;
         this.motDePasse=mdp;

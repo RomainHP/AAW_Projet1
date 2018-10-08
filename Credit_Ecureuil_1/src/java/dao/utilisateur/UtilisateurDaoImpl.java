@@ -17,6 +17,11 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     
     @PersistenceContext
     private EntityManager em;
+    
+    public UtilisateurDaoImpl(){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("TestJPAPU");
+        this.em = emf.createEntityManager();
+    }
 
     public void setEm(EntityManager em) {
         this.em = em;
