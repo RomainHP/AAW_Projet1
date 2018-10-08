@@ -13,6 +13,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Autowired
     UtilisateurDaoImpl dao;
 
+    public UtilisateurDaoImpl getDao() {
+        return dao;
+    }
+
+    public void setDao(UtilisateurDaoImpl dao) {
+        this.dao = dao;
+    }
+
     public UtilisateurServiceImpl(){
 	this.dao = new UtilisateurDaoImpl();
     }
@@ -36,7 +44,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public boolean inscription(String identifiant, String motDePasse) {
-        System.err.println("test");
 	if(dao.find(identifiant) == null){
             UtilisateurEntity utilisateur = new UtilisateurEntity(identifiant, motDePasse);
 	    dao.save(utilisateur);

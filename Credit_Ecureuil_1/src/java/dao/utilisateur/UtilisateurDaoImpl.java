@@ -27,14 +27,16 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     }
     
     @Override
+    @Transactional
     public void save(UtilisateurEntity ue) {
         ue = em.merge(ue);
 	em.persist(ue);
     }
 
     @Override
+    @Transactional
     public UtilisateurEntity find(String identifiant) {
-	return em.find(UtilisateurEntity.class, identifiant);
+        return em.find(UtilisateurEntity.class, identifiant);
     }
 
     @Override

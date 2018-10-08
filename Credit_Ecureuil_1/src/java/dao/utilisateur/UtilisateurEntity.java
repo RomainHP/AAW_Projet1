@@ -52,4 +52,5 @@ public class UtilisateurEntity implements Serializable {
 //    public void setComptes(List<CompteEntity> comptes){
 //	this.comptes = comptes;
 //    }
+    
 }

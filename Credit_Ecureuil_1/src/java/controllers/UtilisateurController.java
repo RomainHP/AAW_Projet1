@@ -79,7 +79,7 @@ public class UtilisateurController {
     protected ModelAndView inscription(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-	if(service.inscription(request.getParameter("username"),request.getParameter("password")) == true){
+	if(service.inscription(request.getParameter("email"),request.getParameter("password")) == true){
 	    ModelAndView mv = new ModelAndView("success");
 	    mv.addObject("message", "Utilisateur ajouté");
 	    return mv;
