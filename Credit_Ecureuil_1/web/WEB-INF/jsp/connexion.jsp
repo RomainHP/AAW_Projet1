@@ -47,12 +47,12 @@
                         <form id="login-form" class="form" action="connexion.htm" method="post">
                             <h3 class="text-center text-info">Formulaire de connexion</h3>
                             <div class="form-group">
-                                <label for="username" class="text-info">Identifiant:</label><br>
-                                <input type="text" name="username" id="username" class="form-control">
+                                <label for="email" class="text-info">Email:</label>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Email">
                             </div>
                             <div class="form-group">
-                                <label for="password" class="text-info">Mot de passe:</label><br>
-                                <input type="text" name="password" id="password" class="form-control">
+                                <label for="password" class="text-info">Mot de passe:</label>
+                                <input type="password" class="form-control" name="password" id="password" placeholder="Mot de passe">
                             </div>
                             <div class="form-group">
                                 <input type="submit" name="Se connecter" class="btn btn-primary" value="Se connecter">
