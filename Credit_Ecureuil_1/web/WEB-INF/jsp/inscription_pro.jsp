@@ -1,6 +1,6 @@
 <%-- 
-    Document   : Connexion
-    Created on : 26 sept. 2018, 20:48:42
+    Document   : inscription
+    Created on : 26 sept. 2018, 20:59:24
     Author     : Romain
 --%>
 
@@ -8,10 +8,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>CE - Connexion</title>
+        <title>CE - Inscription pro</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
+
         <!-- Theme Bootstrap -->
         <link rel="stylesheet" 
               href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
@@ -44,18 +44,28 @@
             <div id="login-row" class="row justify-content-center align-items-center">
                 <div id="login-column" class="col-md-6">
                     <div class="login-box col-md-12">
-                        <form id="login-form" class="form" action="connexion.htm" method="post">
-                            <h3 class="text-center text-info">Formulaire de connexion</h3>
+                        <form id="login-form" class="form" action="" method="post">
+                            <h3 class="text-center text-info">Formulaire d'inscription pour les professionnels</h3>
                             <div class="form-group mb-3">
                                 <label for="email" class="text-info">Email:</label>
                                 <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+                            </div>
+                            <div class="form-row mb-3">
+                                <div class="col-md-6">
+                                    <label for="text" class="text-info">Entreprise:</label>
+                                    <input type="text" class="form-control" name="entreprise" id="email" placeholder="Entreprise">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="text" class="text-info">SIRET:</label>
+                                    <input type="text" class="form-control" name="siret" id="email" placeholder="SIRET">
+                                </div>
                             </div>
                             <div class="form-group mb-3">
                                 <label for="password" class="text-info">Mot de passe:</label>
                                 <input type="password" class="form-control" name="password" id="password" placeholder="Mot de passe">
                             </div>
                             <div class="form-group">
-                                <input type="submit" name="Se connecter" class="btn btn-primary" value="Se connecter">
+                                <input type="submit" name="S'inscrire" class="btn btn-primary" value="S'inscrire">
                             </div>
                         </form>
                     </div>

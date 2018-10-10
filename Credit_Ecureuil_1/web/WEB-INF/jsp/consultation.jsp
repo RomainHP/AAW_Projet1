@@ -29,7 +29,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     </head>
-    <body>
+    <body style="padding-top:60px">
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         <c:choose>
             <c:when test="${login != null}">
@@ -39,24 +39,7 @@
                 <%@ include file="bandeau/bandeau_deconnecte.jsp" %>
             </c:otherwise>
         </c:choose>
-        <table class="table">
-            <thead style="background-color:#ffb860;">
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Intitulé</th>
-                <th scope="col">Type de compte</th>
-                <th scope="col">Montant</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Compte Courant</td>
-                <td>Compte Courant</td>
-                <td>1005,00</td>
-              </tr>
-            </tbody>
-        </table>
+        ${table_comptes}
     </body>
     
     <%@ include file="bandeau/footer.jsp" %>

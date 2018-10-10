@@ -22,6 +22,9 @@
             <a class="nav-link" href="inscription.htm">Inscription<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item active">
+            <a class="nav-link" href="inscription_pro.htm" style="color:yellow;">Inscription Pro<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
             <a class="nav-link" href="connexion.htm">Connexion<span class="sr-only">(current)</span></a>
           </li>
       </ul>

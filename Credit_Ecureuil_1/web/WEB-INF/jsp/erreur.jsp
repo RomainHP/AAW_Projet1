@@ -43,10 +43,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="error-template">
-                        <h1>
-                            Oops!</h1>
-                        <h2>
-                            404 Not Found</h2>
+                        <h1>Oops!</h1>
+                        <h2>404 Not Found</h2>
                         <div class="error-details">
                             Une erreur est survenue, la page est inaccessible ou inexistante.
                         </div>

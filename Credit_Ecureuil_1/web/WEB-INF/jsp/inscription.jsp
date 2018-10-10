@@ -46,11 +46,11 @@
                     <div class="login-box col-md-12">
                         <form id="login-form" class="form" action="" method="post">
                             <h3 class="text-center text-info">Formulaire d'inscription</h3>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="email" class="text-info">Email:</label>
                                 <input type="email" class="form-control" name="email" id="email" placeholder="Email">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="password" class="text-info">Mot de passe:</label>
                                 <input type="password" class="form-control" name="password" id="password" placeholder="Mot de passe">
                             </div>

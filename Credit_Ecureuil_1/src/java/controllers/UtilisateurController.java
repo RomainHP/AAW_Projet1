@@ -41,7 +41,7 @@ public class UtilisateurController {
         HttpSession session = request.getSession(false);
         response.setContentType("text/html;charset=UTF-8");
         
-        String identifiant = request.getParameter("username");
+        String identifiant = request.getParameter("email");
         String mdp = request.getParameter("password");
         
         // Si la session n'est pas déjà crée
@@ -77,6 +77,26 @@ public class UtilisateurController {
 
     @RequestMapping(value="inscription", method = RequestMethod.POST)
     protected ModelAndView inscription(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+	if(service.inscription(request.getParameter("email"),request.getParameter("password")) == true){
+	    ModelAndView mv = new ModelAndView("index");
+	    return mv;
+	}else{
+	    ModelAndView mv = new ModelAndView("erreur");
+	    return mv;
+	}
+    }
+    
+    //---------------------------
+    @RequestMapping(value="inscription_pro", method = RequestMethod.GET)
+    protected String initInscriptionPro(HttpServletRequest request,HttpServletResponse response) throws Exception {
+       if (ControllerUtils.utilisateurConnecte(request)) return "erreur";
+       return "inscription_pro";
+    }
+
+    @RequestMapping(value="inscription_pro", method = RequestMethod.POST)
+    protected ModelAndView inscriptionPro(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 	if(service.inscription(request.getParameter("email"),request.getParameter("password")) == true){
