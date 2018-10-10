@@ -8,7 +8,7 @@ import dao.utilisateur.UtilisateurEntity;
  */
 public interface UtilisateurService {
     boolean inscription(String identifiant, String motDePasse);
-    void connexion(UtilisateurEntity ue);
+    boolean connexion(String identifiant, String motDePasse);
     void deconnexion();
     void profil(UtilisateurEntity ue);
 }

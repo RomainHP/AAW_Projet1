@@ -12,4 +12,6 @@ public interface UtilisateurDao {
     public void update(UtilisateurEntity oldUE, UtilisateurEntity newUE);
     
     public void remove(UtilisateurEntity ue);
+    
+    public String getUserMdp(String identifiant);
 }

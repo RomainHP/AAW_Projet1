@@ -36,7 +36,7 @@ public class UtilisateurController {
     protected ModelAndView connexion(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        ModelAndView mv = new ModelAndView("index"); 
+        ModelAndView mv; 
         
         HttpSession session = request.getSession(false);
         response.setContentType("text/html;charset=UTF-8");
@@ -45,11 +45,15 @@ public class UtilisateurController {
         String mdp = request.getParameter("password");
         
         // Si la session n'est pas déjà crée
-        if (session==null){
-            session = request.getSession(true); // on la crée
-        }
-        
-        session.setAttribute("login", identifiant);
+	if(this.service.connexion(identifiant, mdp)){
+	    if (session==null){
+		session = request.getSession(true); // on la crée
+	    }
+	    session.setAttribute("login", identifiant);
+	    mv = new ModelAndView("index");
+	}else{
+	    mv = new ModelAndView("erreur");
+	}
         
         return mv;
     }

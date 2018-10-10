@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import services.compte.CompteServiceImpl;
 import utils.ControllerUtils;
 
 /**
@@ -18,15 +19,41 @@ import utils.ControllerUtils;
  */
 @Controller
 public class CompteController {
+    private CompteServiceImpl service;
     
     public CompteController() {
+	this.service = new CompteServiceImpl();
     }
     
     //----------------------
     @RequestMapping(value="consultation", method = RequestMethod.GET)
-    protected String initConsult(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        if (!ControllerUtils.utilisateurConnecte(request)) return "erreur";
-        return "consultation";
+    protected ModelAndView initConsult(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        if (!ControllerUtils.utilisateurConnecte(request))
+	    return new ModelAndView("erreur");
+	
+	HttpSession session = request.getSession(false);
+	String login = String.valueOf(session.getAttribute("login"));
+	List<CompteEntity> accounts = this.service.consultation(login);
+
+	ModelAndView mv = new ModelAndView("consultation");
+	StringBuffer table_comptes = new StringBuffer();
+	
+	table_comptes.append("<table class=\"table\">");
+	table_comptes.append("<thead style=\"background-color:#ffb860;\">");
+	table_comptes.append("<tr>\n" + "<th scope=\"col\">#</th>\n" + "<th scope=\"col\">Intitulé</th>");
+	table_comptes.append("</thead>\n" + "<tbody>");
+
+	int cpt = 1;
+	for (CompteEntity account : accounts) {
+	    table_comptes.append("<tr>");
+	    table_comptes.append("<th scope=\"row\">"+cpt+"</th>");
+	    table_comptes.append(account.getNom());
+	    table_comptes.append("</tr>");
+	    cpt++;
+	}
+	
+	mv.addObject("table_comptes",table_comptes);
+	return mv;
     }
     
     //--------------------

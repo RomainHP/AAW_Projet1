@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class UtilisateurServiceImpl implements UtilisateurService {
     
     @Autowired
-    UtilisateurDaoImpl dao;
+    private UtilisateurDaoImpl dao;
 
     public UtilisateurDaoImpl getDao() {
         return dao;
@@ -26,10 +26,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
     
     @Override
-    public void connexion(UtilisateurEntity ue) {
-	if(dao.find(ue.getIdentifiant()) != null){
-	    
+    public boolean connexion(String ident, String mdp) {
+	if(dao.find(ident) != null){
+	    if(dao.getUserMdp(ident).equals(mdp))
+		return true;
 	}
+	return false;
     }
 
     @Override

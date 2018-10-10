@@ -19,7 +19,7 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     private EntityManager em;
     
     public UtilisateurDaoImpl(){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("TestJPAPU");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("CreditEcureuilPU");
         this.em = emf.createEntityManager();
     }
 
@@ -42,6 +42,12 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     @Transactional
     public UtilisateurEntity find(String identifiant) {
         return em.find(UtilisateurEntity.class, identifiant);
+    }
+    
+    @Override
+    public String getUserMdp(String identifiant) {
+	UtilisateurEntity ue = this.find(identifiant);
+	return ue.getMotDePasse();
     }
 
     @Override
