@@ -1,5 +1,5 @@
 <%-- 
-    Document   : vente_bourse
+    Document   : ordre_bourse
     Created on : 26 sept. 2018, 21:00:27
     Author     : Romain
 --%>
@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>CE - Vente en bourse</title>
+        <title>CE - Ordre en bourse</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 

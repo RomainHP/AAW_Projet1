@@ -26,27 +26,32 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
     
     @Override
-    public boolean connexion(String ident, String mdp) {
-	if(dao.find(ident) != null){
-	    if(dao.getUserMdp(ident).equals(mdp))
+    public boolean connexion(String identifiant, String motDePasse) {
+	if(dao.find(identifiant) != null){
+	    if(dao.getUserMdp(identifiant).equals(motDePasse))
 		return true;
 	}
 	return false;
     }
 
     @Override
-    public void deconnexion() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void profil(UtilisateurEntity ue) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public UtilisateurEntity getUtilisateur(String identifiant) {
+        return dao.find(identifiant);
     }
 
     @Override
     public boolean inscription(String identifiant, String motDePasse) {
 	if(dao.find(identifiant) == null){
+            UtilisateurEntity utilisateur = new UtilisateurEntity(identifiant, motDePasse);
+	    dao.save(utilisateur);
+	    return true;
+	}
+	return false;
+    }
+
+    @Override
+    public boolean inscriptionPro(String identifiant, String motDePasse, String entreprise, long siret) {
+        if(dao.find(identifiant) == null){
             UtilisateurEntity utilisateur = new UtilisateurEntity(identifiant, motDePasse);
 	    dao.save(utilisateur);
 	    return true;

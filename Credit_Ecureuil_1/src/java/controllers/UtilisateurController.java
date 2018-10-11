@@ -1,7 +1,9 @@
 package controllers;
 
+import dao.compte.CompteEntity;
 import dao.utilisateur.UtilisateurDao;
 import dao.utilisateur.UtilisateurEntity;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -103,7 +105,16 @@ public class UtilisateurController {
     protected ModelAndView inscriptionPro(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-	if(service.inscription(request.getParameter("email"),request.getParameter("password")) == true){
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String company = request.getParameter("company");
+        long siret = 0l;
+        try {
+            siret = Long.parseLong(request.getParameter("siret"));
+        } catch (Exception e){
+            
+        }
+	if(service.inscriptionPro(email,password,company,siret) == true){
 	    ModelAndView mv = new ModelAndView("index");
 	    return mv;
 	}else{
@@ -114,9 +125,18 @@ public class UtilisateurController {
 
     //---------------------------
     @RequestMapping(value="profil", method = RequestMethod.GET)
-    protected String initProfil(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        if (!ControllerUtils.utilisateurConnecte(request)) return "erreur";
-        return "profil";
+    protected ModelAndView initProfil(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        if (!ControllerUtils.utilisateurConnecte(request)) return new ModelAndView("erreur");
+        
+        HttpSession session = request.getSession(false);
+	String login = String.valueOf(session.getAttribute("login"));
+	UtilisateurEntity user = this.service.getUtilisateur(login);
+
+	ModelAndView mv = new ModelAndView("profil");
+	
+	mv.addObject("email",user.getEmail());
+	mv.addObject("password",user.getMotDePasse());
+	return mv;
     }
 
     @RequestMapping(value="profil", method = RequestMethod.POST)

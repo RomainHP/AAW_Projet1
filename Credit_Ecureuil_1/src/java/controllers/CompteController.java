@@ -40,8 +40,11 @@ public class CompteController {
 	
 	table_comptes.append("<table class=\"table\">");
 	table_comptes.append("<thead style=\"background-color:#ffb860;\">");
-	table_comptes.append("<tr>\n" + "<th scope=\"col\">#</th>\n" + "<th scope=\"col\">Intitulé</th>");
-	table_comptes.append("</thead>\n" + "<tbody>");
+	table_comptes.append("<tr>");
+        table_comptes.append("<th scope=\"col\">#</th>");
+        table_comptes.append("<th scope=\"col\">Intitulé</th>");
+	table_comptes.append("</thead>");
+        table_comptes.append("<tbody>");
 
 	int cpt = 1;
 	for (CompteEntity account : accounts) {

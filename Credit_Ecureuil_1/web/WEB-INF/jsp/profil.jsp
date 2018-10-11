@@ -71,19 +71,19 @@
                   <div class="form-group">
                     <label class="col-lg-3 control-label">Email:</label>
                     <div class="col-lg-8">
-                      <input class="form-control" value="janesemail@gmail.com" type="text">
+                      <input class="form-control" value="${email}" type="text">
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="col-md-3 control-label">Mot de passe:</label>
                     <div class="col-md-8">
-                      <input class="form-control" value="11111122333" type="password">
+                      <input class="form-control" value="${password}" type="password">
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="col-md-3 control-label">Confirmation:</label>
                     <div class="col-md-8">
-                      <input class="form-control" value="11111122333" type="password">
+                      <input class="form-control" value="${password}" type="password">
                     </div>
                   </div>
                   <div class="form-group">

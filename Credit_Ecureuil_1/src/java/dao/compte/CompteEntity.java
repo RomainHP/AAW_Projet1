@@ -50,11 +50,11 @@ public class CompteEntity implements Serializable {
         this.nom = nom;
     }
     
-    public UtilisateurEntity getUtilisateur(){
+    public UtilisateurEntity getProprietaire(){
 	return this.proprietaire;
     }
     
-    public void setUtilisateur(UtilisateurEntity ue){
+    public void setProprietaire(UtilisateurEntity ue){
 	this.proprietaire = ue;
     }
 }

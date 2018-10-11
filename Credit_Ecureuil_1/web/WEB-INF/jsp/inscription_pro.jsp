@@ -53,11 +53,11 @@
                             <div class="form-row mb-3">
                                 <div class="col-md-6">
                                     <label for="text" class="text-info">Entreprise:</label>
-                                    <input type="text" class="form-control" name="entreprise" id="email" placeholder="Entreprise">
+                                    <input type="text" class="form-control" name="company" id="company" placeholder="Entreprise">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="text" class="text-info">SIRET:</label>
-                                    <input type="text" class="form-control" name="siret" id="email" placeholder="SIRET">
+                                    <input type="text" class="form-control" name="siret" id="siret" placeholder="SIRET">
                                 </div>
                             </div>
                             <div class="form-group mb-3">

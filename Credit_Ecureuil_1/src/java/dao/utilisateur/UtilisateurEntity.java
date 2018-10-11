@@ -18,24 +18,46 @@ import javax.persistence.Table;
 public class UtilisateurEntity implements Serializable {
     
     @Id
-    private String identifiant;
+    private String email;
     private String motDePasse;
+    private String nom;
+    private String prenom;
 
     @OneToMany
     private List<CompteEntity> comptes = new ArrayList<CompteEntity>();
 
     public UtilisateurEntity(){
-        this.identifiant="";
+        this.email="";
         this.motDePasse="";
+        this.nom="";
+        this.prenom="";
     }
     
     public UtilisateurEntity(String id, String mdp){
-        this.identifiant=id;
+        this.email=id;
         this.motDePasse=mdp;
+        this.nom="";
+        this.prenom="";
     }
 
-    public String getIdentifiant() {
-        return identifiant;
+    public String getNom() {
+        return nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getMotDePasse() {
@@ -46,8 +68,8 @@ public class UtilisateurEntity implements Serializable {
 	return this.comptes;
     }
     
-    public void setIdentifiant(String id){
-	this.identifiant = id;
+    public void setEmail(String id){
+	this.email = id;
     }
     
     public void setMotDePasse(String mdp){

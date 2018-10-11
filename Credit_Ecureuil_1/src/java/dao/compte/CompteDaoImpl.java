@@ -24,8 +24,8 @@ public class CompteDaoImpl implements CompteDao {
 
     @Override
     public List<CompteEntity> getAccounts(String login) {
-	Query query = em.createQuery("SELECT COMPTE.* FROM COMPTE, UTILISATEUR WHERE COMPTE.PROPRIETAIRE.IDENTIFIANT = UTILISATEUR.IDENTIFIANT FIND UTILISATEUR.IDENTIFIANT = :login");
-	 return query.setParameter("login", login).getResultList();
+	Query query = em.createQuery("SELECT COMPTE.NOM FROM COMPTE, UTILISATEUR_COMPTE WHERE COMPTE.PROPRIETAIRE_EMAIL = UTILISATEUR_COMPTE.UTILISATEUR_EMAIL AND UTILISATEUR_COMPTE.UTILISATEUR_EMAIL = :login");
+	return query.setParameter("login", login).getResultList();
     }
 
     @Override
