@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import utils.CreditEcureuilPU;
 
 @Repository
 @Transactional
@@ -18,14 +19,26 @@ public class CompteDaoImpl implements CompteDao {
     private EntityManager em;
     
     public CompteDaoImpl(){
-	EntityManagerFactory emf = Persistence.createEntityManagerFactory("CreditEcureuilPU");
-	this.em = emf.createEntityManager();
+        em = CreditEcureuilPU.getEntityManager();
     }
 
+    public EntityManager getEm() {
+        return em;
+    }
+
+    public void setEm(EntityManager em) {
+        this.em = em;
+    }
+    
     @Override
     public List<CompteEntity> getAccounts(String login) {
-	Query query = em.createQuery("SELECT COMPTE.NOM FROM COMPTE, UTILISATEUR_COMPTE WHERE COMPTE.PROPRIETAIRE_EMAIL = UTILISATEUR_COMPTE.UTILISATEUR_EMAIL AND UTILISATEUR_COMPTE.UTILISATEUR_EMAIL = :login");
-	return query.setParameter("login", login).getResultList();
+	Query query = em.createQuery("SELECT COMPTE.NOM FROM COMPTE INNER JOIN UTILISATEUR_COMPTE ON COMPTE.PROPRIETAIRE_EMAIL = UTILISATEUR_COMPTE.UTILISATEUR_EMAIL WHERE UTILISATEUR_COMPTE.UTILISATEUR_EMAIL = :login");
+        return query.setParameter("login", login).getResultList();
+    }
+    
+    @Override
+    public CompteEntity find(Long id){
+        return em.find(CompteEntity.class, id);
     }
 
     @Override

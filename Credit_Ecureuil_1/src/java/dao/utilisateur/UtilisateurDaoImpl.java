@@ -6,6 +6,7 @@ import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import utils.CreditEcureuilPU;
 
 /**
  *
@@ -19,8 +20,7 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     private EntityManager em;
     
     public UtilisateurDaoImpl(){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("CreditEcureuilPU");
-        this.em = emf.createEntityManager();
+        em = CreditEcureuilPU.getEntityManager();
     }
 
     public void setEm(EntityManager em) {
