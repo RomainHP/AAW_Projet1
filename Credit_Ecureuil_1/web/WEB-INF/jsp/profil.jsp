@@ -40,65 +40,54 @@
             </c:otherwise>
         </c:choose>
         <div class="container">
-            <h1>Modifier le profil</h1>
-            <hr>
-            <div class="row">
-              <!-- left column -->
-              <div class="col-md-3">
-                <div class="text-center">
-                  <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
-                  <input class="form-control" type="file">
+            <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-6">
+                    <div class="login-box col-md-12">
+                        <form id="login-form" class="form" action="" method="post">
+                            <h3 class="text-center text-info">Modifier le profil</h3>
+                            <div class="form-group mb-3">
+                                <label for="email" class="text-info">Email:</label>
+                                <input type="email" class="form-control" name="email" id="email" value="${email}">
+                            </div>
+                            <div class="form-row mb-3">
+                                <div class="col-md-6">
+                                    <label for="text" class="text-info">Nom:</label>
+                                    <input type="text" class="form-control" name="company" id="company" value="${nom}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="text" class="text-info">Prenom:</label>
+                                    <input type="text" class="form-control" name="siret" id="siret" value="${prenom}">
+                                </div>
+                            </div>
+                            <c:choose>
+                                <c:when test="${pro != null && pro == true}">
+                                    <div class="form-group mb-3">
+                                        <label for="text" class="text-info">Entreprise:</label>
+                                        <input type="text" class="form-control" name="company" id="company" value="${entreprise}">
+                                    </div>
+                                </c:when>
+                            </c:choose>
+                            <div class="form-group mb-3">
+                                <label for="password" class="text-info">Mot de passe:</label>
+                                <input type="password" class="form-control" name="password" id="password" value="${password}">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="password" class="text-info">Confirmation:</label>
+                                <input type="password" class="form-control" name="password" id="password" value="${password}">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-8">
+                                  <input class="btn btn-primary" value="Sauvegarder" type="button">
+                                  <span></span>
+                                  <input class="btn btn-default" value="Annuler" type="reset">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-              </div>
-
-              <!-- edit form column -->
-              <div class="col-md-9 personal-info">
-                <h3>Informations personnelles</h3>
-
-                <form class="form-horizontal" role="form">
-                  <div class="form-group">
-                    <label class="col-lg-3 control-label">Prénom:</label>
-                    <div class="col-lg-8">
-                      <input class="form-control" value="Jane" type="text">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-lg-3 control-label">Nom:</label>
-                    <div class="col-lg-8">
-                      <input class="form-control" value="Bishop" type="text">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-lg-3 control-label">Email:</label>
-                    <div class="col-lg-8">
-                      <input class="form-control" value="${email}" type="text">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-md-3 control-label">Mot de passe:</label>
-                    <div class="col-md-8">
-                      <input class="form-control" value="${password}" type="password">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-md-3 control-label">Confirmation:</label>
-                    <div class="col-md-8">
-                      <input class="form-control" value="${password}" type="password">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-md-3 control-label"></label>
-                    <div class="col-md-8">
-                      <input class="btn btn-primary" value="Sauvegarder" type="button">
-                      <span></span>
-                      <input class="btn btn-default" value="Annuler" type="reset">
-                    </div>
-                  </div>
-                </form>
-              </div>
-          </div>
+            </div>
         </div>
-        <hr>
     </body>
     
     <%@ include file="bandeau/footer.jsp" %>

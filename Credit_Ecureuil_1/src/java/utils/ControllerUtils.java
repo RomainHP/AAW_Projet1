@@ -19,8 +19,18 @@ public class ControllerUtils {
      * @param request
      * @return vrai si l'utilisateur est connecté
      */
-    public static boolean utilisateurConnecte(HttpServletRequest request){
+    public static boolean isUtilisateurConnecte(HttpServletRequest request){
         HttpSession session = request.getSession(false);
         return (session!=null && session.getAttribute("login")!=null);
+    }
+
+    /**
+     * Renvoie vrai si l'utilisateur est de la catégorie pro
+     * @param request
+     * @return vrai si l'utilisateur est de la catégorie pro
+     */
+    public static boolean isUtilisateurPro(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        return (session!=null && session.getAttribute("pro")!=null &&(boolean)session.getAttribute("pro"));
     }
 }

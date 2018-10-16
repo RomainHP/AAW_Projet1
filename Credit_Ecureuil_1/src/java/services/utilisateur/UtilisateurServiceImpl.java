@@ -1,7 +1,11 @@
 package services.utilisateur;
 
+import dao.entreprise.EntrepriseDao;
+import dao.entreprise.EntrepriseDaoImpl;
+import dao.entreprise.EntrepriseEntity;
 import dao.utilisateur.UtilisateurDaoImpl;
 import dao.utilisateur.UtilisateurEntity;
+import dao.utilisateur.UtilisateurProEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -50,10 +54,17 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public boolean inscriptionPro(String identifiant, String motDePasse, String entreprise, long siret) {
+    public boolean inscriptionPro(String identifiant, String motDePasse, String nomEntreprise, long siret) {
         if(dao.find(identifiant) == null){
-            UtilisateurEntity utilisateur = new UtilisateurEntity(identifiant, motDePasse);
-	    dao.save(utilisateur);
+            EntrepriseDao entrepriseDao = new EntrepriseDaoImpl();
+            if (entrepriseDao.find(siret) == null){
+                UtilisateurProEntity utilisateur = new UtilisateurProEntity(identifiant, motDePasse);
+                EntrepriseEntity entreprise = new EntrepriseEntity(siret,nomEntreprise,utilisateur);
+                dao.save(utilisateur);
+                entrepriseDao.save(entreprise);
+                utilisateur.setEntreprise(entreprise);
+                dao.save(utilisateur);
+            }
 	    return true;
 	}
 	return false;

@@ -1,0 +1,37 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package dao.utilisateur;
+
+import dao.entreprise.EntrepriseEntity;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
+
+/**
+ *
+ * @author romain
+ */
+@Entity
+public class UtilisateurProEntity extends UtilisateurEntity {
+    
+    @OneToOne
+    private EntrepriseEntity entreprise = null;
+    
+    public UtilisateurProEntity(){
+        super();
+    }
+    
+    public UtilisateurProEntity(String id, String mdp){
+        super(id,mdp);
+    }
+    
+    public EntrepriseEntity getEntreprise() {
+        return entreprise;
+    }
+
+    public void setEntreprise(EntrepriseEntity entreprise) {
+        this.entreprise = entreprise;
+    }
+}

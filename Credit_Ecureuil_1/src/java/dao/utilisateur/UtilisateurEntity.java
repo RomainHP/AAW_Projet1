@@ -1,12 +1,16 @@
 package dao.utilisateur;
 
 import dao.compte.CompteEntity;
+import dao.entreprise.EntrepriseEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -15,6 +19,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="Utilisateur")
+@Inheritance(
+    strategy = InheritanceType.JOINED
+)
 public class UtilisateurEntity implements Serializable {
     
     @Id
@@ -27,10 +34,7 @@ public class UtilisateurEntity implements Serializable {
     private List<CompteEntity> comptes = new ArrayList<CompteEntity>();
 
     public UtilisateurEntity(){
-        this.email="";
-        this.motDePasse="";
-        this.nom="";
-        this.prenom="";
+        this("","");
     }
     
     public UtilisateurEntity(String id, String mdp){
