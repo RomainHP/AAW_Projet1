@@ -10,7 +10,7 @@ import dao.compte.CompteDaoImpl;
 import dao.compte.CompteEntity;
 import dao.utilisateur.UtilisateurDaoImpl;
 import dao.utilisateur.UtilisateurEntity;
-import dao.utilisateur.UtilisateurProEntity;
+import dao.utilisateur.pro.UtilisateurProEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -96,7 +96,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     
     public void updateProUser(String id, String password, String nom, String prenom, String entreprise) {
         UtilisateurEntity user = dao.find(id);
-        if (user instanceof UtilisateurProEntity){
+        System.err.println(user instanceof UtilisateurProEntity);
+        if (true){
             UtilisateurProEntity proUser = (UtilisateurProEntity)user;
             proUser.setMotDePasse(password);
             proUser.setNom(nom);

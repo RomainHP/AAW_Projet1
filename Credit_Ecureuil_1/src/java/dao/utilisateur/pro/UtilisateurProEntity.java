@@ -1,6 +1,7 @@
-package dao.utilisateur;
+package dao.utilisateur.pro;
 
 import dao.entreprise.EntrepriseEntity;
+import dao.utilisateur.UtilisateurEntity;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 

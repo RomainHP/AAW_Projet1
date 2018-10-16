@@ -3,7 +3,7 @@ package controllers;
 import dao.compte.CompteEntity;
 import dao.utilisateur.UtilisateurDao;
 import dao.utilisateur.UtilisateurEntity;
-import dao.utilisateur.UtilisateurProEntity;
+import dao.utilisateur.pro.UtilisateurProEntity;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -157,13 +157,17 @@ public class UtilisateurController {
         if (!password.equals(password_confirmation)){
             return new ModelAndView("erreur");
         }
+        
         String nom = request.getParameter("nom");
         String prenom = request.getParameter("prenom");
-        String email = request.getParameter("email");
-        //String company = request.getParameter("company");
         
-        service.updateUser(login,password,nom,prenom);
+        if (ControllerUtils.isUtilisateurPro(request)){
+            String company = request.getParameter("company");
+            service.updateProUser(nom, password, nom, prenom, company);
+        } else {
+            service.updateUser(login,password,nom,prenom);
+        }
         
-        return new ModelAndView("profil");
+        return initProfil(request,response);
     }
 }
