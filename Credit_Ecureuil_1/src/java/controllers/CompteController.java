@@ -103,7 +103,7 @@ public class CompteController {
 	System.out.println("compte source : " + nomCompteSrc + " " + idCompteSrc);
 	
         String montant = request.getParameter("value");
-	Long mnt = Long.parseLong(montant);
+	Double mnt = Double.parseDouble(montant);
         
 	String nomDest = request.getParameter("id_dest");
 	Long idCompteDest = Long.parseLong(nomDest);

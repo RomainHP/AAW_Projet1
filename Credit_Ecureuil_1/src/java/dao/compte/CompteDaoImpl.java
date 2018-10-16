@@ -1,12 +1,10 @@
 package dao.compte;
 
-import dao.utilisateur.UtilisateurEntity;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.transaction.UserTransaction;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import utils.CreditEcureuilPU;
@@ -14,6 +12,9 @@ import utils.CreditEcureuilPU;
 @Repository
 @Transactional
 public class CompteDaoImpl implements CompteDao {
+    
+    @Resource
+    UserTransaction utx;
     
     @PersistenceContext
     private EntityManager em;

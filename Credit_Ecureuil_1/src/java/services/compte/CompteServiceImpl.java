@@ -21,7 +21,7 @@ public class CompteServiceImpl implements CompteService{
     }
     
     @Override
-    public boolean virement(Long src, Long dest, Long montant) {
+    public boolean virement(Long src, Long dest, Double montant) {
 	List<CompteEntity> allAcc = dao.retrieveAllAccounts();
 	
 	for (CompteEntity acc : allAcc) {

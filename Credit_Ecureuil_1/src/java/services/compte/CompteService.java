@@ -9,7 +9,7 @@ import java.util.List;
  * @author rcharpen
  */
 public interface CompteService {
-    boolean virement(Long src, Long dest, Long montant);
+    boolean virement(Long src, Long dest, Double montant);
     List<CompteEntity> consultation(String login);
     List<CompteEntity> retrieveAccounts();
 }

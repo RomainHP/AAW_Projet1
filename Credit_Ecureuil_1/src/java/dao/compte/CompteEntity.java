@@ -25,7 +25,7 @@ public class CompteEntity implements Serializable {
     @ManyToOne
     private UtilisateurEntity proprietaire;
     
-    private long solde;
+    private Double solde;
         
     public CompteEntity(){
 	
@@ -35,13 +35,13 @@ public class CompteEntity implements Serializable {
         this.id=cptIdCompte++;
         this.nom="default";
 	this.proprietaire = prop;
-	this.solde = 100l;
+	this.solde = 100d;
     }
     
     public CompteEntity(String nom, UtilisateurEntity prop){
         this.id = cptIdCompte++;
         this.nom=nom;
-	this.solde = 100l;
+	this.solde = 100d;
 	this.proprietaire = prop;
     }
     
@@ -69,11 +69,11 @@ public class CompteEntity implements Serializable {
 	this.proprietaire = ue;
     }
     
-    public long getSolde(){
+    public Double getSolde(){
 	return this.solde;
     }
     
-    public void setSolde(Long val){
+    public void setSolde(Double val){
 	this.solde = val;
     }
 }
