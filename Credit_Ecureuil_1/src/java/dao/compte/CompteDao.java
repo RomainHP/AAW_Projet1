@@ -12,4 +12,6 @@ public interface CompteDao {
     public boolean deleteAccount(CompteEntity acc);
     
     public CompteEntity find(Long id);
+    
+    public List<CompteEntity> retrieveAllAccounts();
 }

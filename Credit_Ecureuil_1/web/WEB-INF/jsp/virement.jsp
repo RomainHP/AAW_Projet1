@@ -47,7 +47,7 @@
                 <%@ include file="bandeau/bandeau_deconnecte.jsp" %>
             </c:otherwise>
         </c:choose>
-        <form>
+        <form action="virement.htm" method="post">
             <h3 class="text-center text-info m-4">Effectuer un virement</h3>
             <div class="d-flex">
                 <div class="col">

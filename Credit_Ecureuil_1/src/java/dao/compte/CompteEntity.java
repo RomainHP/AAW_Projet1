@@ -15,7 +15,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="Compte")
 public class CompteEntity implements Serializable {
-
+    private static Long cptIdCompte = 1l;
+    
     @Id
     private Long id;
     
@@ -23,15 +24,25 @@ public class CompteEntity implements Serializable {
     
     @ManyToOne
     private UtilisateurEntity proprietaire;
+    
+    private long solde;
         
     public CompteEntity(){
-        this.id=0l;
-        this.nom="";
+	
     }
     
-    public CompteEntity(Long id, String nom){
-        this.id = id;
+    public CompteEntity(UtilisateurEntity prop){
+        this.id=cptIdCompte++;
+        this.nom="default";
+	this.proprietaire = prop;
+	this.solde = 100l;
+    }
+    
+    public CompteEntity(String nom, UtilisateurEntity prop){
+        this.id = cptIdCompte++;
         this.nom=nom;
+	this.solde = 100l;
+	this.proprietaire = prop;
     }
     
     public Long getId() {
@@ -56,5 +67,13 @@ public class CompteEntity implements Serializable {
     
     public void setProprietaire(UtilisateurEntity ue){
 	this.proprietaire = ue;
+    }
+    
+    public long getSolde(){
+	return this.solde;
+    }
+    
+    public void setSolde(Long val){
+	this.solde = val;
     }
 }

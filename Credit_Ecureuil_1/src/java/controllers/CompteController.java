@@ -1,6 +1,8 @@
 package controllers;
 
 import dao.compte.CompteEntity;
+import dao.utilisateur.UtilisateurDaoImpl;
+import dao.utilisateur.UtilisateurEntity;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +45,7 @@ public class CompteController {
 	table_comptes.append("<tr>");
         table_comptes.append("<th scope=\"col\">#</th>");
         table_comptes.append("<th scope=\"col\">Intitulé</th>");
+	table_comptes.append("<th scope=\"col\">Solde</th>");
 	table_comptes.append("</thead>");
         table_comptes.append("<tbody>");
 
@@ -50,7 +53,8 @@ public class CompteController {
 	for (CompteEntity account : accounts) {
 	    table_comptes.append("<tr>");
 	    table_comptes.append("<th scope=\"row\">"+cpt+"</th>");
-	    table_comptes.append(account.getNom());
+	    table_comptes.append("<th scope=\"row\">"+account.getNom()+"</th>");
+	    table_comptes.append("<th scope=\"row\">"+account.getSolde()+"</th>");
 	    table_comptes.append("</tr>");
 	    cpt++;
 	}
@@ -69,12 +73,11 @@ public class CompteController {
         
         StringBuffer options = new StringBuffer();
         
-        //TODO remplacer par la base
-        List<CompteEntity> list = new ArrayList<CompteEntity>();
-        list.add(new CompteEntity(1l,"test"));
-        list.add(new CompteEntity(2l,"bidule"));
+	HttpSession session = request.getSession(false);
+	String login = String.valueOf(session.getAttribute("login"));
+	List<CompteEntity> accounts = this.service.consultation(login);
         
-        for (CompteEntity compte : list){
+        for (CompteEntity compte : accounts){
             options.append("<option value=\"");
             options.append(compte.getId());
             options.append("\">");
@@ -91,13 +94,29 @@ public class CompteController {
     protected ModelAndView virementCompte(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        ModelAndView mv = new ModelAndView("index"); 
+        ModelAndView mv; 
         
         response.setContentType("text/html;charset=UTF-8");
         
-        String id = request.getParameter("id");
+        String nomCompteSrc = request.getParameter("id");
+	Long idCompteSrc = Long.parseLong(nomCompteSrc);
+	System.out.println("compte source : " + nomCompteSrc + " " + idCompteSrc);
+	
         String montant = request.getParameter("value");
-        String idDest = request.getParameter("id_dest");
-        return null;
+	Long mnt = Long.parseLong(montant);
+        
+	String nomDest = request.getParameter("id_dest");
+	Long idCompteDest = Long.parseLong(nomDest);
+	
+	System.out.println("CompteController");
+	if(this.service.virement(idCompteSrc, idCompteDest, mnt)){
+	    mv = new ModelAndView("consultation");
+	    System.out.println("Reussite");
+	    return mv;
+	}else{
+	    mv = new ModelAndView("erreur");
+	    System.out.println("Echec");
+	    return mv;
+	}
     }    
 }

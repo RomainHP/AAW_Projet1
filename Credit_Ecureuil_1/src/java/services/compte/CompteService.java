@@ -9,6 +9,7 @@ import java.util.List;
  * @author rcharpen
  */
 public interface CompteService {
-    void virement();
+    boolean virement(Long src, Long dest, Long montant);
     List<CompteEntity> consultation(String login);
+    List<CompteEntity> retrieveAccounts();
 }

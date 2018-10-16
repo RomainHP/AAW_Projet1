@@ -21,8 +21,24 @@ public class CompteServiceImpl implements CompteService{
     }
     
     @Override
-    public void virement() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean virement(Long src, Long dest, Long montant) {
+	List<CompteEntity> allAcc = dao.retrieveAllAccounts();
+	
+	for (CompteEntity acc : allAcc) {
+	    if(acc.getId() == dest){
+		CompteEntity srcAccount = dao.find(src);
+		if(srcAccount.getSolde()>=montant){
+		    System.out.println("Compte trouve debut transaction");
+		    dao.getEm().getTransaction().begin();
+		    srcAccount.setSolde(srcAccount.getSolde() - montant);
+		    dao.getEm().getTransaction().commit();
+		    System.out.println("Compte trouve fin transaction");
+		    return true;
+		}
+	    }
+	}
+	
+	return false;
     }
 
     @Override
@@ -35,6 +51,9 @@ public class CompteServiceImpl implements CompteService{
         return new ArrayList<>();
     }
 
-    
+    @Override
+    public List<CompteEntity> retrieveAccounts() {
+	return dao.retrieveAllAccounts();
+    }
     
 }

@@ -80,4 +80,8 @@ public class UtilisateurEntity implements Serializable {
 	this.comptes = comptes;
     }
     
+    public void addSingleAccount(CompteEntity compte){
+	this.comptes.add(compte);
+    }
+    
 }
