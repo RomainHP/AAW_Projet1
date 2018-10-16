@@ -2,7 +2,6 @@ package services.compte;
 
 import dao.compte.CompteDaoImpl;
 import dao.compte.CompteEntity;
-import dao.utilisateur.UtilisateurDaoImpl;
 import dao.utilisateur.UtilisateurEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,19 +21,15 @@ public class CompteServiceImpl implements CompteService{
     
     @Override
     public boolean virement(Long src, Long dest, Double montant) {
-	List<CompteEntity> allAcc = dao.retrieveAllAccounts();
-	
-	for (CompteEntity acc : allAcc) {
-	    if(acc.getId() == dest){
-		CompteEntity srcAccount = dao.find(src);
-		if(srcAccount.getSolde()>=montant){
-		    System.out.println("Compte trouve debut transaction");
-		    dao.getEm().getTransaction().begin();
-		    srcAccount.setSolde(srcAccount.getSolde() - montant);
-		    dao.getEm().getTransaction().commit();
-		    System.out.println("Compte trouve fin transaction");
-		    return true;
-		}
+	CompteEntity cesrc = dao.find(src);
+	CompteEntity cedst = dao.find(dest);
+	if(cesrc!=null && cedst!=null){
+	    if(cesrc.getSolde()>=montant){
+		cedst.setSolde(cedst.getSolde() + montant);
+		cesrc.setSolde(cesrc.getSolde() - montant);
+		dao.createNewAccount(cedst);
+		dao.createNewAccount(cesrc);
+		return true;
 	    }
 	}
 	
@@ -49,11 +44,6 @@ public class CompteServiceImpl implements CompteService{
             return ant.getComptes();
         }
         return new ArrayList<>();
-    }
-
-    @Override
-    public List<CompteEntity> retrieveAccounts() {
-	return dao.retrieveAllAccounts();
     }
     
 }

@@ -13,9 +13,6 @@ import utils.CreditEcureuilPU;
 @Transactional
 public class CompteDaoImpl implements CompteDao {
     
-    @Resource
-    UserTransaction utx;
-    
     @PersistenceContext
     private EntityManager em;
     
@@ -47,13 +44,4 @@ public class CompteDaoImpl implements CompteDao {
 	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public List<CompteEntity> retrieveAllAccounts() {
-	    em.getTransaction().begin();
-	    List<CompteEntity> listAccounts = em.createQuery("SELECT c FROM CompteEntity c").getResultList();
-	    System.out.println("Nb de compte detecte : " + listAccounts.size());
-	    em.getTransaction().commit();
-	    em.close();
-	    return listAccounts;
-    }
 }

@@ -100,7 +100,6 @@ public class CompteController {
         
         String nomCompteSrc = request.getParameter("id");
 	Long idCompteSrc = Long.parseLong(nomCompteSrc);
-	System.out.println("compte source : " + nomCompteSrc + " " + idCompteSrc);
 	
         String montant = request.getParameter("value");
 	Double mnt = Double.parseDouble(montant);
@@ -108,15 +107,12 @@ public class CompteController {
 	String nomDest = request.getParameter("id_dest");
 	Long idCompteDest = Long.parseLong(nomDest);
 	
-	System.out.println("CompteController");
-	if(this.service.virement(idCompteSrc, idCompteDest, mnt)){
-	    mv = new ModelAndView("consultation");
-	    System.out.println("Reussite");
-	    return mv;
+	boolean toot = this.service.virement(idCompteSrc, idCompteDest, mnt);
+	System.out.println(toot);
+	if(toot){
+	    return this.initConsult(request, response);
 	}else{
-	    mv = new ModelAndView("erreur");
-	    System.out.println("Echec");
-	    return mv;
+	    return new ModelAndView("erreur");
 	}
     }    
 }
