@@ -31,12 +31,6 @@ public class CompteDaoImpl implements CompteDao {
     }
     
     @Override
-    public List<CompteEntity> getAccounts(String login) {
-	Query query = em.createQuery("SELECT COMPTE.NOM FROM COMPTE INNER JOIN UTILISATEUR_COMPTE ON COMPTE.PROPRIETAIRE_EMAIL = UTILISATEUR_COMPTE.UTILISATEUR_EMAIL WHERE UTILISATEUR_COMPTE.UTILISATEUR_EMAIL = :login");
-        return query.setParameter("login", login).getResultList();
-    }
-    
-    @Override
     public CompteEntity find(Long id){
         return em.find(CompteEntity.class, id);
     }

@@ -30,10 +30,8 @@ public class CompteServiceImpl implements CompteService{
 	UtilisateurService service = new UtilisateurServiceImpl();
         UtilisateurEntity ant = service.getUtilisateur(username);
         if (ant!=null){
-            System.err.println("ok");
             return ant.getComptes();
         }
-        System.err.println("pas ok");
         return new ArrayList<>();
     }
 
