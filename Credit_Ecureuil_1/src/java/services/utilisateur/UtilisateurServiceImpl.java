@@ -1,5 +1,8 @@
 package services.utilisateur;
 
+import dao.compte.CompteDao;
+import dao.compte.CompteDaoImpl;
+import dao.compte.CompteEntity;
 import dao.entreprise.EntrepriseDao;
 import dao.entreprise.EntrepriseDaoImpl;
 import dao.entreprise.EntrepriseEntity;
@@ -68,6 +71,27 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	    return true;
 	}
 	return false;
+    }
+
+    public void updateUser(String id, String password, String nom, String prenom) {
+        UtilisateurEntity user = dao.find(id);
+        user.setMotDePasse(password);
+        user.setNom(nom);
+        user.setPrenom(prenom);
+        dao.save(user);
+    }
+    
+    public void updateProUser(String id, String password, String nom, String prenom, String entreprise) {
+        UtilisateurEntity user = dao.find(id);
+        if (user instanceof UtilisateurProEntity){
+            UtilisateurProEntity proUser = (UtilisateurProEntity)user;
+            proUser.setMotDePasse(password);
+            proUser.setNom(nom);
+            proUser.setPrenom(prenom);
+            proUser.getEntreprise().setNom(entreprise);
+            dao.save(user);
+            new EntrepriseDaoImpl().save(proUser.getEntreprise());
+        }
     }
     
 }

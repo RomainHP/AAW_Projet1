@@ -31,17 +31,26 @@ public class CompteDaoImpl implements CompteDao {
     }
     
     @Override
+    @Transactional
+    public void save(CompteEntity ce){
+        ce = em.merge(ce);
+        em.persist(ce);
+    }
+    
+    @Override
     public CompteEntity find(Long id){
         return em.find(CompteEntity.class, id);
     }
 
     @Override
-    public void createNewAccount(CompteEntity ce) {
+    @Transactional
+    public void update(CompteEntity ce) {
 	em.merge(ce);
     }
 
     @Override
-    public boolean deleteAccount(CompteEntity acc) {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Transactional
+    public void remove(CompteEntity ce) {
+        em.remove(ce);
     }
 }

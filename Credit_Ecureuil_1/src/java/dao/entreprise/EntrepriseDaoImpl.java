@@ -42,12 +42,14 @@ public class EntrepriseDaoImpl implements EntrepriseDao {
     }
 
     @Override
-    public void update(EntrepriseEntity oldEE, EntrepriseEntity newEE) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Transactional
+    public void update(EntrepriseEntity ee) {
+        em.merge(ee);
     }
 
     @Override
-    public void remove(EntrepriseEntity ue) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Transactional
+    public void remove(EntrepriseEntity ee) {
+        em.remove(ee);
     }
 }

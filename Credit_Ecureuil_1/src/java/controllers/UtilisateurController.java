@@ -115,15 +115,12 @@ public class UtilisateurController {
         try {
             siret = Long.parseLong(request.getParameter("siret"));
         } catch (Exception e){
-            ModelAndView mv = new ModelAndView("erreur");
-	    return mv;
+            return new ModelAndView("erreur");
         }
 	if(service.inscriptionPro(email,password,company,siret) == true){
-	    ModelAndView mv = new ModelAndView("index");
-	    return mv;
+	    return new ModelAndView("index");
 	}else{
-	    ModelAndView mv = new ModelAndView("erreur");
-	    return mv;
+	    return new ModelAndView("erreur");
 	}
     }
 
@@ -152,6 +149,21 @@ public class UtilisateurController {
     protected ModelAndView profilUtilisateur(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        throw new UnsupportedOperationException("Not yet implemented");
+        HttpSession session = request.getSession(false);
+	String login = String.valueOf(session.getAttribute("login"));
+        
+        String password = request.getParameter("password");
+        String password_confirmation = request.getParameter("password_confirmation");
+        if (!password.equals(password_confirmation)){
+            return new ModelAndView("erreur");
+        }
+        String nom = request.getParameter("nom");
+        String prenom = request.getParameter("prenom");
+        String email = request.getParameter("email");
+        //String company = request.getParameter("company");
+        
+        service.updateUser(login,password,nom,prenom);
+        
+        return new ModelAndView("profil");
     }
 }

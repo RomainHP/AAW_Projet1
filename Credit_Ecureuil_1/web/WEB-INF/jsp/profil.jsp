@@ -43,20 +43,20 @@
             <div id="login-row" class="row justify-content-center align-items-center">
                 <div id="login-column" class="col-md-6">
                     <div class="login-box col-md-12">
-                        <form id="login-form" class="form" action="" method="post">
+                        <form id="login-form" class="form" action="profil.htm" method="post">
                             <h3 class="text-center text-info">Modifier le profil</h3>
                             <div class="form-group mb-3">
                                 <label for="email" class="text-info">Email:</label>
-                                <input type="email" class="form-control" name="email" id="email" value="${email}">
+                                <p class="form-control-static">${email}</p>
                             </div>
                             <div class="form-row mb-3">
                                 <div class="col-md-6">
                                     <label for="text" class="text-info">Nom:</label>
-                                    <input type="text" class="form-control" name="company" id="company" value="${nom}">
+                                    <input type="text" class="form-control" name="nom" id="nom" value="${nom}">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="text" class="text-info">Prenom:</label>
-                                    <input type="text" class="form-control" name="siret" id="siret" value="${prenom}">
+                                    <input type="text" class="form-control" name="prenom" id="prenom" value="${prenom}">
                                 </div>
                             </div>
                             <c:choose>
@@ -73,12 +73,12 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="password" class="text-info">Confirmation:</label>
-                                <input type="password" class="form-control" name="password" id="password" value="${password}">
+                                <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" value="${password}">
                             </div>
                             <div class="form-group">
                                 <label class="col-md-3 control-label"></label>
                                 <div class="col-md-8">
-                                  <input class="btn btn-primary" value="Sauvegarder" type="button">
+                                  <input class="btn btn-primary" value="Sauvegarder" type="submit">
                                   <span></span>
                                   <input class="btn btn-default" value="Annuler" type="reset">
                                 </div>

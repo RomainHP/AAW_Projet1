@@ -1,7 +1,6 @@
 package dao.utilisateur;
 
 import dao.compte.CompteEntity;
-import dao.entreprise.EntrepriseEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -34,14 +32,18 @@ public class UtilisateurEntity implements Serializable {
     private List<CompteEntity> comptes = new ArrayList<CompteEntity>();
 
     public UtilisateurEntity(){
-        this("","");
+        this("","","","");
     }
     
     public UtilisateurEntity(String id, String mdp){
-        this.email=id;
-        this.motDePasse=mdp;
-        this.nom="";
-        this.prenom="";
+        this(id,mdp,"","");
+    }
+
+    public UtilisateurEntity(String email, String password, String nom, String prenom) {
+        this.email=email;
+        this.motDePasse=password;
+        this.nom=nom;
+        this.prenom=prenom;
     }
 
     public String getNom() {
