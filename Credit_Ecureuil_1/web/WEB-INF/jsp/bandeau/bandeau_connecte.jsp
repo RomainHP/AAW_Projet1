@@ -30,9 +30,14 @@
           <a class="dropdown-item" href="virement.htm">Virement</a>
         </div>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="ordre_bourse.htm">Ordre en bourse<span class="sr-only">(current)</span></a>
-      </li>
+      <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+        <c:choose>
+            <c:when test="${pro != null && pro == true}">
+                <li class="nav-item active">
+                    <a class="nav-link" href="ordre_bourse.htm">Ordre en bourse<span class="sr-only">(current)</span></a>
+                </li>
+            </c:when>
+        </c:choose>
       <li class="nav-item active">
         <a class="nav-link" href="notifications.htm">Notifications<span class="sr-only">(current)</span></a>
       </li>

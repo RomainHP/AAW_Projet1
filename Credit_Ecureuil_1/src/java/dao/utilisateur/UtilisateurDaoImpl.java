@@ -49,21 +49,15 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     }
 
     @Override
-    public void update(UtilisateurEntity oldUE, UtilisateurEntity newUE) {
-//	UtilisateurEntity ue = find(oldUE);
-//	em.getTransaction().begin();
-//	ue.setIdentifiant(newUE.getIdentifiant());
-//	ue.setMotDePasse(newUE.getMotDePasse());
-//	//ue.setComptes(newUE.getComptes());
-//	em.getTransaction().commit();
+    @Transactional
+    public void update(UtilisateurEntity ue) {
+	em.merge(ue);
     }
 
     @Override
+    @Transactional
     public void remove(UtilisateurEntity ue) {
-//	UtilisateurEntity UEdelete = find(ue);
-//	em.getTransaction().begin();
-//	em.remove(UEdelete);
-//	em.getTransaction().commit();
+	em.remove(ue);
     }
     
 }

@@ -31,7 +31,7 @@ public class CommunicationController {
     
     @RequestMapping(value="consulter_messagerie", method = RequestMethod.GET)
     protected ModelAndView initConsulterMessagerie(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        if (!ControllerUtils.utilisateurConnecte(request)) return new ModelAndView("erreur");
+        if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
         
         ModelAndView mv = new ModelAndView("consulter_messagerie"); 
 
@@ -71,7 +71,7 @@ public class CommunicationController {
     
     @RequestMapping(value="envoyer_message", method = RequestMethod.GET)
     protected String initEnvoyerMessage(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        if (!ControllerUtils.utilisateurConnecte(request)) return "erreur";
+        if (!ControllerUtils.isUtilisateurConnecte(request)) return "erreur";
         return "envoyer_message";
     }    
     
@@ -85,7 +85,7 @@ public class CommunicationController {
     //-----------------------------
     @RequestMapping(value="notifications", method = RequestMethod.GET)
     protected String initNotif(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        if (!ControllerUtils.utilisateurConnecte(request)) return "erreur";
+        if (!ControllerUtils.isUtilisateurConnecte(request)) return "erreur";
         return "notifications";
     }    
     

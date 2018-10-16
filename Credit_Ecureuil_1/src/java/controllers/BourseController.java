@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import services.utilisateur.UtilisateurService;
+import services.utilisateur.UtilisateurServiceImpl;
 import utils.ControllerUtils;
 
 /**
@@ -21,7 +23,8 @@ public class BourseController {
     //------------------
     @RequestMapping(value="ordre_bourse", method = RequestMethod.GET)
     protected String initBourse(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        if (!ControllerUtils.utilisateurConnecte(request)) return "erreur";
+        if (!ControllerUtils.isUtilisateurConnecte(request)) return "erreur";
+        if (!ControllerUtils.isUtilisateurPro(request)) return "erreur";
         return "ordre_bourse";
     }
     

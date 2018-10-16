@@ -30,7 +30,7 @@ public class CompteController {
     //----------------------
     @RequestMapping(value="consultation", method = RequestMethod.GET)
     protected ModelAndView initConsult(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        if (!ControllerUtils.utilisateurConnecte(request))
+        if (!ControllerUtils.isUtilisateurConnecte(request))
 	    return new ModelAndView("erreur");
 	
 	HttpSession session = request.getSession(false);
@@ -66,7 +66,7 @@ public class CompteController {
     //--------------------
     @RequestMapping(value="virement", method = RequestMethod.GET)
     protected ModelAndView initVirement(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        if (!ControllerUtils.utilisateurConnecte(request)) return new ModelAndView("erreur");
+        if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
         ModelAndView mv = new ModelAndView("virement"); 
         
         response.setContentType("text/html;charset=UTF-8");

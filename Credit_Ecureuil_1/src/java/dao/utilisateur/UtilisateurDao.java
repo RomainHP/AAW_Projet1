@@ -9,7 +9,7 @@ public interface UtilisateurDao {
     
     public UtilisateurEntity find(String identifiant);
     
-    public void update(UtilisateurEntity oldUE, UtilisateurEntity newUE);
+    public void update(UtilisateurEntity ue);
     
     public void remove(UtilisateurEntity ue);
     

@@ -3,6 +3,7 @@ package controllers;
 import dao.compte.CompteEntity;
 import dao.utilisateur.UtilisateurDao;
 import dao.utilisateur.UtilisateurEntity;
+import dao.utilisateur.UtilisateurProEntity;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +32,7 @@ public class UtilisateurController {
     //---------------------------
     @RequestMapping(value="connexion", method = RequestMethod.GET)
     protected String initConnexion(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        return ControllerUtils.utilisateurConnecte(request) ? "erreur" : "connexion";
+        return ControllerUtils.isUtilisateurConnecte(request) ? "erreur" : "connexion";
     }
     
     @RequestMapping(value="connexion", method = RequestMethod.POST)
@@ -52,6 +53,7 @@ public class UtilisateurController {
 		session = request.getSession(true); // on la crée
 	    }
 	    session.setAttribute("login", identifiant);
+            session.setAttribute("pro", service.getUtilisateur(identifiant) instanceof UtilisateurProEntity);
 	    mv = new ModelAndView("index");
 	}else{
 	    mv = new ModelAndView("erreur");
@@ -66,18 +68,19 @@ public class UtilisateurController {
         HttpSession session = request.getSession(false);
 
         // Si l'utilisateur n'est pas déjà connecté
-        if (!ControllerUtils.utilisateurConnecte(request)){
+        if (!ControllerUtils.isUtilisateurConnecte(request)){
             return "erreur"; // on renvoie la page d'erreur
         }
         
         session.setAttribute("login", null);
+        session.setAttribute("pro", null);
         return "index";
     }
 
     //---------------------------
     @RequestMapping(value="inscription", method = RequestMethod.GET)
     protected String initInscription(HttpServletRequest request,HttpServletResponse response) throws Exception {
-       if (ControllerUtils.utilisateurConnecte(request)) return "erreur";
+       if (ControllerUtils.isUtilisateurConnecte(request)) return "erreur";
        return "inscription";
     }
 
@@ -97,7 +100,7 @@ public class UtilisateurController {
     //---------------------------
     @RequestMapping(value="inscription_pro", method = RequestMethod.GET)
     protected String initInscriptionPro(HttpServletRequest request,HttpServletResponse response) throws Exception {
-       if (ControllerUtils.utilisateurConnecte(request)) return "erreur";
+       if (ControllerUtils.isUtilisateurConnecte(request)) return "erreur";
        return "inscription_pro";
     }
 
@@ -112,21 +115,19 @@ public class UtilisateurController {
         try {
             siret = Long.parseLong(request.getParameter("siret"));
         } catch (Exception e){
-            
+            return new ModelAndView("erreur");
         }
 	if(service.inscriptionPro(email,password,company,siret) == true){
-	    ModelAndView mv = new ModelAndView("index");
-	    return mv;
+	    return new ModelAndView("index");
 	}else{
-	    ModelAndView mv = new ModelAndView("erreur");
-	    return mv;
+	    return new ModelAndView("erreur");
 	}
     }
 
     //---------------------------
     @RequestMapping(value="profil", method = RequestMethod.GET)
     protected ModelAndView initProfil(HttpServletRequest request,HttpServletResponse response) throws Exception {
-        if (!ControllerUtils.utilisateurConnecte(request)) return new ModelAndView("erreur");
+        if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
         
         HttpSession session = request.getSession(false);
 	String login = String.valueOf(session.getAttribute("login"));
@@ -136,6 +137,11 @@ public class UtilisateurController {
 	
 	mv.addObject("email",user.getEmail());
 	mv.addObject("password",user.getMotDePasse());
+        mv.addObject("prenom", user.getPrenom());
+        mv.addObject("nom", user.getNom());
+        if (user instanceof UtilisateurProEntity){
+           mv.addObject("entreprise", ((UtilisateurProEntity)user).getEntreprise().getNom());
+        }
 	return mv;
     }
 
@@ -143,6 +149,21 @@ public class UtilisateurController {
     protected ModelAndView profilUtilisateur(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        throw new UnsupportedOperationException("Not yet implemented");
+        HttpSession session = request.getSession(false);
+	String login = String.valueOf(session.getAttribute("login"));
+        
+        String password = request.getParameter("password");
+        String password_confirmation = request.getParameter("password_confirmation");
+        if (!password.equals(password_confirmation)){
+            return new ModelAndView("erreur");
+        }
+        String nom = request.getParameter("nom");
+        String prenom = request.getParameter("prenom");
+        String email = request.getParameter("email");
+        //String company = request.getParameter("company");
+        
+        service.updateUser(login,password,nom,prenom);
+        
+        return new ModelAndView("profil");
     }
 }
