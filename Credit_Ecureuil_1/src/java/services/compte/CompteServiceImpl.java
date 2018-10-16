@@ -27,8 +27,8 @@ public class CompteServiceImpl implements CompteService{
 	    if(cesrc.getSolde()>=montant){
 		cedst.setSolde(cedst.getSolde() + montant);
 		cesrc.setSolde(cesrc.getSolde() - montant);
-		dao.createNewAccount(cedst);
-		dao.createNewAccount(cesrc);
+		dao.save(cedst);
+		dao.save(cesrc);
 		return true;
 	    }
 	}

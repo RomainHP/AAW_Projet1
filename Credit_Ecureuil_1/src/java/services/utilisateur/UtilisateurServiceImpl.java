@@ -58,7 +58,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             UtilisateurEntity utilisateur = new UtilisateurEntity(identifiant, motDePasse);
 	    CompteEntity compte = new CompteEntity("Compte courant", utilisateur);
 	    dao.save(utilisateur);
-	    daoCompte.createNewAccount(compte);
+	    daoCompte.save(compte);
 	    utilisateur.addSingleAccount(compte);
 	    dao.save(utilisateur);
 	    return true;
@@ -73,8 +73,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             if (entrepriseDao.find(siret) == null){
                 UtilisateurProEntity utilisateur = new UtilisateurProEntity(identifiant, motDePasse);
                 EntrepriseEntity entreprise = new EntrepriseEntity(siret,nomEntreprise,utilisateur);
-                dao.save(utilisateur);
+		CompteEntity compte = new CompteEntity("Compte pro", utilisateur);
+		dao.save(utilisateur);
+		daoCompte.save(compte);
                 entrepriseDao.save(entreprise);
+		utilisateur.addSingleAccount(compte);
                 utilisateur.setEntreprise(entreprise);
                 dao.save(utilisateur);
             }
