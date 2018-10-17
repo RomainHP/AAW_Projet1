@@ -88,13 +88,14 @@ public class UtilisateurController {
     protected ModelAndView inscription(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-	if(service.inscription(request.getParameter("email"),request.getParameter("password")) == true){
-	    ModelAndView mv = new ModelAndView("index");
-	    return mv;
-	}else{
-	    ModelAndView mv = new ModelAndView("erreur");
-	    return mv;
-	}
+        String email = request.getParameter("email");
+        if (ControllerUtils.testEmail(email)){
+            String password = request.getParameter("password");
+            if (service.inscription(email, password)){
+                return new ModelAndView("index");
+            }
+        }
+        return new ModelAndView("erreur");
     }
     
     //---------------------------
@@ -109,19 +110,20 @@ public class UtilisateurController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String company = request.getParameter("company");
-        long siret = 0l;
-        try {
-            siret = Long.parseLong(request.getParameter("siret"));
-        } catch (Exception e){
-            return new ModelAndView("erreur");
+        if (ControllerUtils.testEmail(email)){
+            String password = request.getParameter("password");
+            String company = request.getParameter("company");
+            long siret = 0l;
+            try {
+                siret = Long.parseLong(request.getParameter("siret"));
+            } catch (Exception e){
+                return new ModelAndView("erreur");
+            }
+            if(service.inscriptionPro(email,password,company,siret) == true){
+                return new ModelAndView("index");
+            }
         }
-	if(service.inscriptionPro(email,password,company,siret) == true){
-	    return new ModelAndView("index");
-	}else{
-	    return new ModelAndView("erreur");
-	}
+        return new ModelAndView("erreur");
     }
 
     //---------------------------
@@ -141,6 +143,7 @@ public class UtilisateurController {
         mv.addObject("nom", user.getNom());
         if (user instanceof UtilisateurProEntity){
            mv.addObject("entreprise", ((UtilisateurProEntity)user).getEntreprise().getNom());
+           mv.addObject("siret", ((UtilisateurProEntity)user).getEntreprise().getSiret());
         }
 	return mv;
     }
@@ -163,7 +166,7 @@ public class UtilisateurController {
         
         if (ControllerUtils.isUtilisateurPro(request)){
             String company = request.getParameter("company");
-            service.updateProUser(nom, password, nom, prenom, company);
+            service.updateProUser(login, password, nom, prenom, company);
         } else {
             service.updateUser(login,password,nom,prenom);
         }

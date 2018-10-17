@@ -10,6 +10,7 @@ import dao.compte.CompteDaoImpl;
 import dao.compte.CompteEntity;
 import dao.utilisateur.UtilisateurDaoImpl;
 import dao.utilisateur.UtilisateurEntity;
+import dao.utilisateur.pro.UtilisateurProDaoImpl;
 import dao.utilisateur.pro.UtilisateurProEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -88,23 +89,23 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     public void updateUser(String id, String password, String nom, String prenom) {
         UtilisateurEntity user = dao.find(id);
-        user.setMotDePasse(password);
-        user.setNom(nom);
-        user.setPrenom(prenom);
-        dao.save(user);
+        if (user != null) {
+            user.setMotDePasse(password);
+            user.setNom(nom);
+            user.setPrenom(prenom);
+            dao.save(user);
+        }
     }
     
     public void updateProUser(String id, String password, String nom, String prenom, String entreprise) {
-        UtilisateurEntity user = dao.find(id);
-        System.err.println(user instanceof UtilisateurProEntity);
-        if (true){
-            UtilisateurProEntity proUser = (UtilisateurProEntity)user;
-            proUser.setMotDePasse(password);
-            proUser.setNom(nom);
-            proUser.setPrenom(prenom);
-            proUser.getEntreprise().setNom(entreprise);
+        UtilisateurProEntity user = new UtilisateurProDaoImpl().find(id);
+        if (user != null){
+            user.setMotDePasse(password);
+            user.setNom(nom);
+            user.setPrenom(prenom);
+            user.getEntreprise().setNom(entreprise);
             dao.save(user);
-            new EntrepriseDaoImpl().save(proUser.getEntreprise());
+            new EntrepriseDaoImpl().save(user.getEntreprise());
         }
     }
     

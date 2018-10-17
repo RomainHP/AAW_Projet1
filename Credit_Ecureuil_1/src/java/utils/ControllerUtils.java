@@ -5,6 +5,8 @@
  */
 package utils;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -32,5 +34,21 @@ public class ControllerUtils {
     public static boolean isUtilisateurPro(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         return (session!=null && session.getAttribute("pro")!=null &&(boolean)session.getAttribute("pro"));
+    }
+    
+    /**
+     * Retourne vrai si l'email est valide
+     * @param email
+     * @return vrai si l'email est valide
+     */
+    public static boolean testEmail(String email){
+        boolean result = true;
+        try {
+           InternetAddress emailAddr = new InternetAddress(email);
+           emailAddr.validate();
+        } catch (AddressException ex) {
+           result = false;
+        }
+        return result;
     }
 }

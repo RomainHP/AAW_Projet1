@@ -61,9 +61,15 @@
                             </div>
                             <c:choose>
                                 <c:when test="${pro != null && pro == true}">
-                                    <div class="form-group mb-3">
-                                        <label for="text" class="text-info">Entreprise:</label>
-                                        <input type="text" class="form-control" name="company" id="company" value="${entreprise}">
+                                    <div class="form-row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="siret" class="text-info">SIRET:</label>
+                                            <p class="form-control-static">${siret}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="text" class="text-info">Entreprise:</label>
+                                            <input type="text" class="form-control" name="company" id="company" value="${entreprise}">
+                                        </div>
                                     </div>
                                 </c:when>
                             </c:choose>
