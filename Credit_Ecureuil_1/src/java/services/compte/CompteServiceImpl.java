@@ -2,6 +2,7 @@ package services.compte;
 
 import dao.compte.CompteDaoImpl;
 import dao.compte.CompteEntity;
+import dao.utilisateur.UtilisateurDaoImpl;
 import dao.utilisateur.UtilisateurEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +15,13 @@ public class CompteServiceImpl implements CompteService{
    
     @Autowired
     private CompteDaoImpl dao;
+    
+    @Autowired
+    private UtilisateurDaoImpl udi;
 
     public CompteServiceImpl(){
 	this.dao = new CompteDaoImpl();
+	this.udi = new UtilisateurDaoImpl();
     }
     
     @Override
@@ -46,4 +51,16 @@ public class CompteServiceImpl implements CompteService{
         return new ArrayList<>();
     }
     
+    @Override
+    public boolean creeCompte(String nomCompte, String nomUtilisateur){
+	UtilisateurEntity ue = this.udi.find(nomUtilisateur);
+	if(ue != null){
+	    CompteEntity ce = new CompteEntity(nomCompte, ue);
+	    dao.save(ce);
+	    ue.addSingleAccount(ce);
+	    this.udi.save(ue);
+	    return true;
+	}
+	return false;
+    }
 }

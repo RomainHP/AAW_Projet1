@@ -91,7 +91,6 @@ public class CompteController {
     protected ModelAndView virementCompte(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        ModelAndView mv; 
         
         response.setContentType("text/html;charset=UTF-8");
         
@@ -104,12 +103,39 @@ public class CompteController {
 	String nomDest = request.getParameter("id_dest");
 	Long idCompteDest = Long.parseLong(nomDest);
 	
-	boolean toot = this.service.virement(idCompteSrc, idCompteDest, mnt);
-	System.out.println(toot);
-	if(toot){
+	if(this.service.virement(idCompteSrc, idCompteDest, mnt)){
 	    return this.initConsult(request, response);
 	}else{
 	    return new ModelAndView("erreur");
 	}
     }    
+    //--------------------
+    @RequestMapping(value="ajout_compte", method = RequestMethod.GET)
+    protected ModelAndView initAjout(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+	if (!ControllerUtils.isUtilisateurConnecte(request))
+	    return new ModelAndView("erreur");
+	
+	return new ModelAndView("ajout_compte");
+    }
+    
+    @RequestMapping(value="ajout_compte", method = RequestMethod.POST)
+    protected ModelAndView ajoutCompte(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        response.setContentType("text/html;charset=UTF-8");
+	
+	HttpSession session = request.getSession(false);
+	String login = String.valueOf(session.getAttribute("login"));
+
+	String newAccount = request.getParameter("nom_compte");
+	System.out.println("Nom du compte : " + newAccount);
+	
+	if(this.service.creeCompte(newAccount, login)){
+	    return this.initConsult(request, response);
+	}else{
+	    return new ModelAndView("erreur");
+	}
+    }
 }

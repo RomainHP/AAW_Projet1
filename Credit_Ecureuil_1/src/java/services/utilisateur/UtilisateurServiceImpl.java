@@ -1,8 +1,5 @@
 package services.utilisateur;
 
-import dao.compte.CompteDao;
-import dao.compte.CompteDaoImpl;
-import dao.compte.CompteEntity;
 import dao.entreprise.EntrepriseDao;
 import dao.entreprise.EntrepriseDaoImpl;
 import dao.entreprise.EntrepriseEntity;
