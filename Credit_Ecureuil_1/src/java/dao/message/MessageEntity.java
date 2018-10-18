@@ -5,24 +5,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author Romain
  */
 @Entity
+@Table(name="Message")
 public class MessageEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    //@OneToMany
-    private UtilisateurEntity userFrom;
+    @ManyToOne()
+    @JoinColumn(name="messages_envoyes")
+    private UtilisateurEntity userFrom = null;
     
-    //@OneToMany
-    private UtilisateurEntity userTo;
+    @ManyToOne()
+    @JoinColumn(name="messages_recus")
+    private UtilisateurEntity userTo = null;
    
     private String message;
     

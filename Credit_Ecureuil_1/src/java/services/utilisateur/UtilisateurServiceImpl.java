@@ -60,7 +60,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	    CompteEntity compte = new CompteEntity("Compte courant", utilisateur);
 	    dao.save(utilisateur);
 	    daoCompte.save(compte);
-	    utilisateur.addSingleAccount(compte);
+	    utilisateur.addAccount(compte);
 	    dao.save(utilisateur);
 	    return true;
 	}
@@ -78,7 +78,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		dao.save(utilisateur);
 		daoCompte.save(compte);
                 entrepriseDao.save(entreprise);
-		utilisateur.addSingleAccount(compte);
+		utilisateur.addAccount(compte);
                 utilisateur.setEntreprise(entreprise);
                 dao.save(utilisateur);
             }

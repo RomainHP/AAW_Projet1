@@ -4,12 +4,14 @@ import dao.entreprise.EntrepriseEntity;
 import dao.utilisateur.UtilisateurEntity;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author romain
  */
 @Entity
+@Table(name="UtilisateurPro")
 public class UtilisateurProEntity extends UtilisateurEntity {
     
     @OneToOne
