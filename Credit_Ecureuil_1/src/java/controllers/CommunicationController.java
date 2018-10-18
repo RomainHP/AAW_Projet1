@@ -5,10 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import services.communication.CommunicationService;
+import services.communication.CommunicationServiceImpl;
 import utils.ControllerUtils;
 
 /**
@@ -18,7 +21,10 @@ import utils.ControllerUtils;
 @Controller
 public class CommunicationController {
     
+    private CommunicationService service;
+    
     public CommunicationController() {
+        this.service = new CommunicationServiceImpl();
     }
     
     
@@ -79,7 +85,15 @@ public class CommunicationController {
     public ModelAndView serviceEnvoyerMessage(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        throw new UnsupportedOperationException("Not yet implemented");
+        String sujet = request.getParameter("sujet");
+        String destinataire = request.getParameter("destinataire");
+        String message = request.getParameter("message");
+        
+        HttpSession session = request.getSession(false);
+	String login = String.valueOf(session.getAttribute("login"));
+        
+        service.envoyerMessage(login, destinataire, sujet, message);
+        return new ModelAndView("envoyer_message");
     }
     
     //-----------------------------
