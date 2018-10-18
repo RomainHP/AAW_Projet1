@@ -2,8 +2,8 @@ package dao.message;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-import utils.CreditEcureuilPU;
+import org.springframework.transaction.annotation.Transactional;
+import utils.oldCreditEcureuilPU;
 
 /**
  *
@@ -11,12 +11,9 @@ import utils.CreditEcureuilPU;
  */
 public class MessageDaoImpl implements MessageDao {
     
-    @PersistenceContext
+    @PersistenceContext(unitName="CreditEcureuilPU")
     private EntityManager em;
     
-    public MessageDaoImpl(){
-        em = CreditEcureuilPU.getEntityManager();
-    }
 
     public void setEm(EntityManager em) {
         this.em = em;
