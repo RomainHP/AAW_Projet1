@@ -29,7 +29,7 @@ public class CompteServiceImpl implements CompteService{
 	CompteEntity cesrc = dao.find(src);
 	CompteEntity cedst = dao.find(dest);
 	if(cesrc!=null && cedst!=null){
-	    if(cesrc.getSolde()>=montant){
+	    if(cesrc.getSolde()>=montant && montant>0f){
 		cedst.setSolde(cedst.getSolde() + montant);
 		cesrc.setSolde(cesrc.getSolde() - montant);
 		dao.save(cedst);
@@ -60,6 +60,25 @@ public class CompteServiceImpl implements CompteService{
 	    ue.addSingleAccount(ce);
 	    this.udi.save(ue);
 	    return true;
+	}
+	return false;
+    }
+
+    @Override
+    public boolean supprCompte(Long id) {
+	CompteEntity ce = this.dao.find(id);
+	CompteEntity ceToDel = null;
+	if(ce != null){
+	    if(ce.getSolde()==0d){
+		this.dao.remove(ce);
+		for(CompteEntity ceTmp : ce.getProprietaire().getComptes()){
+		    if(ceTmp == ce){
+			ceToDel = ceTmp;
+		    }
+		}
+		ce.getProprietaire().getComptes().remove(ceToDel);
+		return true;
+	    }
 	}
 	return false;
     }

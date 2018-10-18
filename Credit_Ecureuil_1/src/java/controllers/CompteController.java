@@ -41,8 +41,10 @@ public class CompteController {
 	table_comptes.append("<thead style=\"background-color:#ffb860;\">");
 	table_comptes.append("<tr>");
         table_comptes.append("<th scope=\"col\">#</th>");
+	table_comptes.append("<th scope=\"col\">Id du compte</th>");
         table_comptes.append("<th scope=\"col\">Intitulé</th>");
 	table_comptes.append("<th scope=\"col\">Solde</th>");
+	table_comptes.append("<th scope=\"col\">Options</th>");
 	table_comptes.append("</thead>");
         table_comptes.append("<tbody>");
 
@@ -50,8 +52,13 @@ public class CompteController {
 	for (CompteEntity account : accounts) {
 	    table_comptes.append("<tr>");
 	    table_comptes.append("<th scope=\"row\">"+cpt+"</th>");
+	    table_comptes.append("<th scope=\"row\">"+account.getId()+"</th>");
 	    table_comptes.append("<th scope=\"row\">"+account.getNom()+"</th>");
 	    table_comptes.append("<th scope=\"row\">"+account.getSolde()+"</th>");
+	    if(!account.getNom().equalsIgnoreCase("Compte courant") && !account.getNom().equalsIgnoreCase("Compte pro")){
+		table_comptes.append("<th scope=\"row\"><form id=\"login-form\" class=\"form\" action=\"suppr_compte.htm\" method=\"post\"><div class=\"form-group mb-3\">");
+		table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\""+account.getId()+"\"><button type=\"submit\">Supprimer</button></div></form></th>");
+	    }
 	    table_comptes.append("</tr>");
 	    cpt++;
 	}
@@ -130,12 +137,31 @@ public class CompteController {
 	String login = String.valueOf(session.getAttribute("login"));
 
 	String newAccount = request.getParameter("nom_compte");
-	System.out.println("Nom du compte : " + newAccount);
-	
-	if(this.service.creeCompte(newAccount, login)){
-	    return this.initConsult(request, response);
-	}else{
-	    return new ModelAndView("erreur");
+
+	if(!newAccount.equalsIgnoreCase("Compte courant") && !newAccount.equalsIgnoreCase("Compte pro")){
+	    if(this.service.creeCompte(newAccount, login)){
+		return this.initConsult(request, response);
+	    }else{
+		return new ModelAndView("erreur");
+	    }
 	}
+	return new ModelAndView("erreur");
+    }
+    
+    @RequestMapping(value="suppr_compte", method = RequestMethod.POST)
+    protected ModelAndView supprCompte(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+	if (!ControllerUtils.isUtilisateurConnecte(request))
+	    return new ModelAndView("erreur");
+	
+	String idCompteStr = request.getParameter("id");
+	Long idCompte = Long.parseLong(idCompteStr);
+	
+	if(this.service.supprCompte(idCompte)){
+	    return this.initConsult(request, response);
+	}
+	
+	return new ModelAndView("erreur");
     }
 }
