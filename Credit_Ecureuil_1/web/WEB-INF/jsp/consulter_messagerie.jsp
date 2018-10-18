@@ -39,6 +39,7 @@
                 <%@ include file="bandeau/bandeau_deconnecte.jsp" %>
             </c:otherwise>
         </c:choose>
+        ${messages}
         <div class="d-flex justify-content-center">
             <form action="precedent" method="post">
                 <button type="submit" class="button-previous" style="vertical-align:middle"><span>Précédent</span></button>

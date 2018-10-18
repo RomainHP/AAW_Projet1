@@ -5,6 +5,8 @@
  */
 package utils;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
@@ -42,13 +44,26 @@ public class ControllerUtils {
      * @return vrai si l'email est valide
      */
     public static boolean testEmail(String email){
-        boolean result = true;
-        try {
-           InternetAddress emailAddr = new InternetAddress(email);
-           emailAddr.validate();
-        } catch (AddressException ex) {
-           result = false;
-        }
-        return result;
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+ 
+                            "[a-zA-Z0-9_+&*-]+)*@" + 
+                            "(?:[a-zA-Z0-9-]+\\.)+[a-z" + 
+                            "A-Z]{2,7}$"; 
+                              
+        Pattern pat = Pattern.compile(emailRegex); 
+        if (email == null) 
+            return false; 
+        return pat.matcher(email).matches(); 
+    }
+    
+    /**
+     * Retourne le login de l'utilisateur qui est stocké en variable de session
+     * @param request
+     * @return le login de l'utilisateur qui est stocké en variable de session
+     */
+    public static String getUserLogin(HttpServletRequest request){
+        String login = null;
+        HttpSession session = request.getSession();
+        if (session!=null) login = String.valueOf(session.getAttribute("login"));
+        return login;
     }
 }

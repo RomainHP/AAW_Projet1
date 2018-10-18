@@ -22,11 +22,9 @@ public class MessageEntity {
     private Long id;
     
     @ManyToOne()
-    @JoinColumn(name="messages_envoyes")
     private UtilisateurEntity userFrom = null;
     
     @ManyToOne()
-    @JoinColumn(name="messages_recus")
     private UtilisateurEntity userTo = null;
     
     private String sujet;

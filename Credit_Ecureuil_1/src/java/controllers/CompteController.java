@@ -30,9 +30,7 @@ public class CompteController {
         if (!ControllerUtils.isUtilisateurConnecte(request))
 	    return new ModelAndView("erreur");
 	
-	HttpSession session = request.getSession(false);
-	String login = String.valueOf(session.getAttribute("login"));
-	List<CompteEntity> accounts = this.service.consultation(login);
+	List<CompteEntity> accounts = this.service.consultation(ControllerUtils.getUserLogin(request));
 
 	ModelAndView mv = new ModelAndView("consultation");
 	StringBuffer table_comptes = new StringBuffer();
@@ -70,9 +68,7 @@ public class CompteController {
         
         StringBuffer options = new StringBuffer();
         
-	HttpSession session = request.getSession(false);
-	String login = String.valueOf(session.getAttribute("login"));
-	List<CompteEntity> accounts = this.service.consultation(login);
+	List<CompteEntity> accounts = this.service.consultation(ControllerUtils.getUserLogin(request));
         
         for (CompteEntity compte : accounts){
             options.append("<option value=\"");

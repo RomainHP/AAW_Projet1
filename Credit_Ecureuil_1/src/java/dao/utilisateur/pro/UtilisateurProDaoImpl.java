@@ -40,7 +40,6 @@ public class UtilisateurProDaoImpl implements UtilisateurProDao {
     @Override
     @Transactional
     public UtilisateurProEntity find(String identifiant) {
-        System.err.println(identifiant);
         return em.find(UtilisateurProEntity.class, identifiant);
     }
     

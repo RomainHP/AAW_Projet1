@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.compte.CompteEntity;
+import dao.message.MessageEntity;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -45,18 +46,15 @@ public class CommunicationController {
 
         StringBuffer options = new StringBuffer();
 
-        //TODO remplacer par la base
-//        List<MessageEntity> list = new ArrayList<MessageEntity>();
-//        list.add(new MessageEntity(1l,"test"));
-//        list.add(new MessageEntity(2l,"bidule"));
-//
-//        for (CompteEntity compte : list){
-//            options.append("<option value=\"");
-//            options.append(compte.getId());
-//            options.append("\">");
-//            options.append(compte.getNom());
-//            options.append("</option>");
-//        }
+        List<MessageEntity> list = service.lireMessages(ControllerUtils.getUserLogin(request));
+
+        for (MessageEntity msg : list){
+            options.append("<option value=\"");
+            options.append(msg.getSujet());
+            options.append("\">");
+            options.append(msg.getMessage());
+            options.append("</option>");
+        }
         
         String precedent = "";
         String suivant = "";
@@ -89,10 +87,7 @@ public class CommunicationController {
         String destinataire = request.getParameter("destinataire");
         String message = request.getParameter("message");
         
-        HttpSession session = request.getSession(false);
-	String login = String.valueOf(session.getAttribute("login"));
-        
-        service.envoyerMessage(login, destinataire, sujet, message);
+        service.envoyerMessage(ControllerUtils.getUserLogin(request), destinataire, sujet, message);
         return new ModelAndView("envoyer_message");
     }
     
