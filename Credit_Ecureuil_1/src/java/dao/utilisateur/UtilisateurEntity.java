@@ -33,12 +33,10 @@ public class UtilisateurEntity implements Serializable {
     @OneToMany
     private List<CompteEntity> comptes = new ArrayList<>();
     
-    @OneToMany
-    @JoinColumn(name="userFrom")
+    @OneToMany(mappedBy="userFrom")
     private List<MessageEntity> messagesEnvoyes = new ArrayList<>();
     
-    @OneToMany
-    @JoinColumn(name="userTo")
+    @OneToMany(mappedBy="userTo")
     private List<MessageEntity> messagesRecus = new ArrayList<>();
     
     public UtilisateurEntity(){

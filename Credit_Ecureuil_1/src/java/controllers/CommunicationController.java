@@ -1,14 +1,18 @@
 package controllers;
 
 import dao.compte.CompteEntity;
+import dao.message.MessageEntity;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import services.communication.CommunicationService;
+import services.communication.CommunicationServiceImpl;
 import utils.ControllerUtils;
 
 /**
@@ -35,18 +39,15 @@ public class CommunicationController {
 
         StringBuffer options = new StringBuffer();
 
-        //TODO remplacer par la base
-//        List<MessageEntity> list = new ArrayList<MessageEntity>();
-//        list.add(new MessageEntity(1l,"test"));
-//        list.add(new MessageEntity(2l,"bidule"));
-//
-//        for (CompteEntity compte : list){
-//            options.append("<option value=\"");
-//            options.append(compte.getId());
-//            options.append("\">");
-//            options.append(compte.getNom());
-//            options.append("</option>");
-//        }
+        List<MessageEntity> list = service.lireMessages(ControllerUtils.getUserLogin(request));
+
+        for (MessageEntity msg : list){
+            options.append("<option value=\"");
+            options.append(msg.getSujet());
+            options.append("\">");
+            options.append(msg.getMessage());
+            options.append("</option>");
+        }
         
         String precedent = "";
         String suivant = "";
@@ -75,7 +76,12 @@ public class CommunicationController {
     public ModelAndView serviceEnvoyerMessage(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        throw new UnsupportedOperationException("Not yet implemented");
+        String sujet = request.getParameter("sujet");
+        String destinataire = request.getParameter("destinataire");
+        String message = request.getParameter("message");
+        
+        service.envoyerMessage(ControllerUtils.getUserLogin(request), destinataire, sujet, message);
+        return new ModelAndView("envoyer_message");
     }
     
     //-----------------------------

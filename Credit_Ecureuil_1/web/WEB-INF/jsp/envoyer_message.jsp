@@ -39,16 +39,16 @@
                 <%@ include file="bandeau/bandeau_deconnecte.jsp" %>
             </c:otherwise>
         </c:choose>
-        <form action="envoyer" method="post">
+        <form action="envoyer_message.htm" method="post">
             <div class="d-flex col-lg-5 m-3">
                 <label for="destinataire">Sujet:</label>
-                <input type="text" class="form-control mx-sm-3" id="sujet">
+                <input type="text" class="form-control mx-sm-3" name="sujet" id="sujet">
                 <label for="destinataire">Destinataire:</label>
-                <input type="text" class="form-control mx-sm-3" id="destinataire">
+                <input type="text" class="form-control mx-sm-3" name="destinataire" id="destinataire">
             </div>
             <div class="m-3">
                 <label for="message">Message:</label>
-                <textarea class="form-control" rows="5" id="message"></textarea>
+                <textarea class="form-control" rows="5" name="message" id="message"></textarea>
             </div>
             <div class="d-flex m-3 justify-content-center">
                 <button type="submit" class="btn btn-primary">Envoyer</button>

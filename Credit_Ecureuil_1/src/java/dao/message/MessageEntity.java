@@ -22,23 +22,32 @@ public class MessageEntity {
     private Long id;
     
     @ManyToOne()
-    @JoinColumn(name="messages_envoyes")
     private UtilisateurEntity userFrom = null;
     
     @ManyToOne()
-    @JoinColumn(name="messages_recus")
     private UtilisateurEntity userTo = null;
+    
+    private String sujet;
    
     private String message;
     
     public MessageEntity(){
-        this(null,null,"");
+        this(null,null,"","");
     }
     
-    public MessageEntity(UtilisateurEntity from, UtilisateurEntity to, String msg){
+    public MessageEntity(UtilisateurEntity from, UtilisateurEntity to, String sjt, String msg){
         userFrom = from;
         userTo = to;
+        sujet = sjt;
         message = msg;
+    }
+
+    public void setSujet(String sujet) {
+        this.sujet = sujet;
+    }
+
+    public String getSujet() {
+        return sujet;
     }
 
     public Long getId() {
