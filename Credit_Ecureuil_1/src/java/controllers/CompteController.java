@@ -26,7 +26,7 @@ public class CompteController {
     
     //----------------------
     @RequestMapping(value="consultation", method = RequestMethod.GET)
-    protected ModelAndView initConsult(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    protected ModelAndView initConsult(HttpServletRequest request,HttpServletResponse response) {
         if (!ControllerUtils.isUtilisateurConnecte(request))
 	    return new ModelAndView("erreur");
 	
@@ -60,11 +60,9 @@ public class CompteController {
     
     //--------------------
     @RequestMapping(value="virement", method = RequestMethod.GET)
-    protected ModelAndView initVirement(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    protected ModelAndView initVirement(HttpServletRequest request,HttpServletResponse response) {
         if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
         ModelAndView mv = new ModelAndView("virement"); 
-        
-        response.setContentType("text/html;charset=UTF-8");
         
         StringBuffer options = new StringBuffer();
         
@@ -86,10 +84,8 @@ public class CompteController {
     @RequestMapping(value="virement", method = RequestMethod.POST)
     protected ModelAndView virementCompte(
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletResponse response) {
         ModelAndView mv; 
-        
-        response.setContentType("text/html;charset=UTF-8");
         
         String nomCompteSrc = request.getParameter("id");
 	Long idCompteSrc = Long.parseLong(nomCompteSrc);

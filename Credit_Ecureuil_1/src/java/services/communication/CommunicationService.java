@@ -1,6 +1,7 @@
 package services.communication;
 
 import dao.message.MessageEntity;
+import exceptions.ServiceException;
 import java.util.List;
 
 /**
@@ -9,6 +10,6 @@ import java.util.List;
  */
 public interface CommunicationService {
     List<MessageEntity> lireMessages(String login);
-    void envoyerMessage(String from, String to, String sujet, String message);
+    void envoyerMessage(String from, String to, String sujet, String message) throws ServiceException;
     void lireNotifications();
 }

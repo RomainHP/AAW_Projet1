@@ -45,6 +45,7 @@
                     <div class="login-box col-md-12">
                         <form id="login-form" class="form" action="" method="post">
                             <h3 class="text-center text-info">Formulaire d'inscription</h3>
+                            ${returnMessage}
                             <div class="form-group mb-3">
                                 <label for="email" class="text-info">Email:</label>
                                 <input type="email" class="form-control" name="email" id="email" placeholder="Email">

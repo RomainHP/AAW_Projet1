@@ -49,6 +49,7 @@
         </c:choose>
         <form action="virement.htm" method="post">
             <h3 class="text-center text-info m-4">Effectuer un virement</h3>
+            ${returnMessage}
             <div class="d-flex">
                 <div class="col">
                   <select name="id" class="custom-select mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelect">

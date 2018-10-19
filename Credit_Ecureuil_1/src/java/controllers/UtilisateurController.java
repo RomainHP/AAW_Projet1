@@ -2,6 +2,7 @@ package controllers;
 
 import dao.utilisateur.UtilisateurEntity;
 import dao.utilisateur.pro.UtilisateurProEntity;
+import exceptions.ServiceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -25,7 +26,7 @@ public class UtilisateurController {
     
     //---------------------------
     @RequestMapping(value="connexion", method = RequestMethod.GET)
-    protected String initConnexion(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    protected String initConnexion(HttpServletRequest request,HttpServletResponse response) {
         return ControllerUtils.isUtilisateurConnecte(request) ? "erreur" : "connexion";
     }
     
@@ -33,32 +34,30 @@ public class UtilisateurController {
     protected ModelAndView connexion(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        ModelAndView mv; 
-        
         HttpSession session = request.getSession(false);
-        response.setContentType("text/html;charset=UTF-8");
         
         String identifiant = request.getParameter("email");
         String mdp = request.getParameter("password");
         
         // Si la session n'est pas déjà crée
-	if(this.service.connexion(identifiant, mdp)){
-	    if (session==null){
-		session = request.getSession(true); // on la crée
-	    }
-	    session.setAttribute("login", identifiant);
+        try{
+            service.connexion(identifiant, mdp);
+            if (session==null){
+                session = request.getSession(true); // on la crée
+            }
+            session.setAttribute("login", identifiant);
             session.setAttribute("pro", service.getUtilisateur(identifiant) instanceof UtilisateurProEntity);
-	    mv = new ModelAndView("index");
-	}else{
-	    mv = new ModelAndView("erreur");
-	}
-        
-        return mv;
+            return new ModelAndView("index");
+        } catch (ServiceException e){
+            ModelAndView mv = new ModelAndView("connexion");
+            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            return mv;
+        }
     }
 
     //---------------------------
     @RequestMapping(value="deconnexion", method = RequestMethod.GET)
-    protected String initDeconnexion(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    protected String initDeconnexion(HttpServletRequest request,HttpServletResponse response) {
         HttpSession session = request.getSession(false);
 
         // Si l'utilisateur n'est pas déjà connecté
@@ -66,14 +65,13 @@ public class UtilisateurController {
             return "erreur"; // on renvoie la page d'erreur
         }
         
-        session.setAttribute("login", null);
-        session.setAttribute("pro", null);
+        session.invalidate();
         return "index";
     }
 
     //---------------------------
     @RequestMapping(value="inscription", method = RequestMethod.GET)
-    protected String initInscription(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    protected String initInscription(HttpServletRequest request,HttpServletResponse response) {
        if (ControllerUtils.isUtilisateurConnecte(request)) return "erreur";
        return "inscription";
     }
@@ -82,19 +80,25 @@ public class UtilisateurController {
     protected ModelAndView inscription(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
+        ModelAndView mv = new ModelAndView("inscription");
         String email = request.getParameter("email");
         if (ControllerUtils.testEmail(email)){
             String password = request.getParameter("password");
-            if (service.inscription(email, password)){
-                return new ModelAndView("index");
+            try {
+                service.inscription(email, password);
+                mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Inscription réussie."));
+            } catch (ServiceException e){
+                mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
             }
+        } else {
+            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage("Email incorrecte."));
         }
-        return new ModelAndView("erreur");
+        return mv;
     }
     
     //---------------------------
     @RequestMapping(value="inscription_pro", method = RequestMethod.GET)
-    protected String initInscriptionPro(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    protected String initInscriptionPro(HttpServletRequest request,HttpServletResponse response) {
        if (ControllerUtils.isUtilisateurConnecte(request)) return "erreur";
        return "inscription_pro";
     }
@@ -104,25 +108,28 @@ public class UtilisateurController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         String email = request.getParameter("email");
+        ModelAndView mv = new ModelAndView("inscription_pro");
         if (ControllerUtils.testEmail(email)){
             String password = request.getParameter("password");
             String company = request.getParameter("company");
-            long siret = 0l;
             try {
-                siret = Long.parseLong(request.getParameter("siret"));
-            } catch (Exception e){
-                return new ModelAndView("erreur");
+                long siret = Long.parseLong(request.getParameter("siret"));
+                service.inscriptionPro(company, password, company, siret);
+                mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Inscription réussie."));
+            } catch (NumberFormatException e){
+                mv.addObject("returnMessage", ControllerUtils.generateErrorMessage("Le SIRET n'est pas un nombre."));
+            } catch (ServiceException e){
+                mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
             }
-            if(service.inscriptionPro(email,password,company,siret) == true){
-                return new ModelAndView("index");
-            }
+        } else {
+            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage("Email incorrecte."));
         }
-        return new ModelAndView("erreur");
+        return mv;
     }
 
     //---------------------------
     @RequestMapping(value="profil", method = RequestMethod.GET)
-    protected ModelAndView initProfil(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    protected ModelAndView initProfil(HttpServletRequest request,HttpServletResponse response) {
         if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
         
         HttpSession session = request.getSession(false);

@@ -1,41 +1,47 @@
 package services.communication;
 
 import dao.message.MessageDao;
-import dao.message.MessageDaoImpl;
 import dao.message.MessageEntity;
-import dao.utilisateur.UtilisateurDaoImpl;
+import dao.utilisateur.UtilisateurDao;
 import dao.utilisateur.UtilisateurEntity;
+import exceptions.ServiceException;
 import java.util.ArrayList;
 import java.util.List;
-import services.utilisateur.UtilisateurServiceImpl;
+import javax.annotation.Resource;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author rcharpen
  */
+@Service
 public class CommunicationServiceImpl implements CommunicationService {
     
-    private MessageDao msgDao = new MessageDaoImpl();
+    @Resource
+    MessageDao msgDao;
+    
+    @Resource
+    UtilisateurDao userDao;
 
     @Override
     public List<MessageEntity> lireMessages(String login) {
         List<MessageEntity> res = new ArrayList<>();
-        UtilisateurEntity user = new UtilisateurServiceImpl().getUtilisateur(login);
+        UtilisateurEntity user = userDao.find(login);
         if (user!=null) res.addAll(user.getMessagesRecus());
         return res;
     }
 
     @Override
-    public void envoyerMessage(String from, String to, String sujet, String message) {
-        UtilisateurEntity userFrom = new UtilisateurServiceImpl().getUtilisateur(from);
-        UtilisateurEntity userTo = new UtilisateurServiceImpl().getUtilisateur(to);
+    public void envoyerMessage(String from, String to, String sujet, String message) throws ServiceException {
+        UtilisateurEntity userFrom = userDao.find(from);
+        UtilisateurEntity userTo = userDao.find(to);
+        if (userTo == null) throw new ServiceException("Destinataire inexistant.");
         MessageEntity msg = new MessageEntity(userFrom, userTo, sujet, message);
         msgDao.save(msg);
         userFrom.addMessageEnvoye(msg);
         userTo.addMessageRecu(msg);
-        new UtilisateurDaoImpl().save(userFrom);
-        new UtilisateurDaoImpl().save(userTo);
-        
+        userDao.save(userFrom);
+        userDao.save(userTo);
     }
 
     @Override

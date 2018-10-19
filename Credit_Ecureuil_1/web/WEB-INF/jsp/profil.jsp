@@ -45,6 +45,7 @@
                     <div class="login-box col-md-12">
                         <form id="login-form" class="form" action="profil.htm" method="post">
                             <h3 class="text-center text-info">Modifier le profil</h3>
+                            ${returnMessage}
                             <div class="form-group mb-3">
                                 <label for="email" class="text-info">Email:</label>
                                 <p class="form-control-static">${email}</p>

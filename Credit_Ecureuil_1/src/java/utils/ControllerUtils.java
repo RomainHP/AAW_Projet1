@@ -1,9 +1,6 @@
 package utils;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -60,5 +57,33 @@ public class ControllerUtils {
         HttpSession session = request.getSession();
         if (session!=null) login = String.valueOf(session.getAttribute("login"));
         return login;
+    }
+    
+    /**
+     * Genere le message d'erreur sous format HTML
+     * @param error
+     * @return message d'erreur sous format HTML
+     */
+    public static String generateErrorMessage(String error){
+        StringBuffer error_message = new StringBuffer();
+        error_message.append("<div class=\"alert alert-danger\">");
+        error_message.append("<strong>Erreur ! </strong>");
+        error_message.append(error);
+        error_message.append("</div>");
+        return error_message.toString();
+    }
+    
+    /**
+     * Genere le message de succes sous format HTML
+     * @param error
+     * @return message de succes sous format HTML
+     */
+    public static String generateSuccessMessage(String success){
+        StringBuffer error_message = new StringBuffer();
+        error_message.append("<div class=\"alert alert-success\">");
+        error_message.append("<strong>Succès ! </strong>");
+        error_message.append(success);
+        error_message.append("</div>");
+        return error_message.toString();
     }
 }

@@ -40,6 +40,7 @@
             </c:otherwise>
         </c:choose>
         <form action="envoyer_message.htm" method="post">
+            ${returnMessage}
             <div class="d-flex col-lg-5 m-3">
                 <label for="destinataire">Sujet:</label>
                 <input type="text" class="form-control mx-sm-3" name="sujet" id="sujet">
