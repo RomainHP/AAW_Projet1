@@ -11,7 +11,6 @@ import utils.oldCreditEcureuilPU;
  * @author romain
  */
 @Repository
-@Transactional
 public class EntrepriseDaoImpl implements EntrepriseDao {
     @PersistenceContext(unitName="CreditEcureuilPU")
     private EntityManager em;

@@ -1,10 +1,7 @@
 package controllers;
 
-import dao.compte.CompteEntity;
-import dao.utilisateur.UtilisateurDao;
 import dao.utilisateur.UtilisateurEntity;
 import dao.utilisateur.pro.UtilisateurProEntity;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,11 +20,8 @@ import utils.ControllerUtils;
 @Controller
 public class UtilisateurController {
         
+    @Autowired
     private UtilisateurServiceImpl service;
-    
-    public UtilisateurController() {
-        this.service = new UtilisateurServiceImpl();
-    }
     
     //---------------------------
     @RequestMapping(value="connexion", method = RequestMethod.GET)

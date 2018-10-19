@@ -5,18 +5,23 @@ import dao.compte.CompteEntity;
 import dao.utilisateur.UtilisateurEntity;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+import org.springframework.stereotype.Service;
 import services.utilisateur.UtilisateurService;
 import services.utilisateur.UtilisateurServiceImpl;
 
-
+@Service
 public class CompteServiceImpl implements CompteService{
    
-    @Autowired
+    @Resource
     private CompteDaoImpl dao;
 
-    public CompteServiceImpl(){
-	this.dao = new CompteDaoImpl();
+    public void setDao(CompteDaoImpl dao) {
+        this.dao = dao;
+    }
+
+    public CompteDaoImpl getDao() {
+        return dao;
     }
     
     @Override

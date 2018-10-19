@@ -12,18 +12,21 @@ import dao.utilisateur.UtilisateurDaoImpl;
 import dao.utilisateur.UtilisateurEntity;
 import dao.utilisateur.pro.UtilisateurProDaoImpl;
 import dao.utilisateur.pro.UtilisateurProEntity;
+import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author rcharpen
  */
+@Service
 public class UtilisateurServiceImpl implements UtilisateurService {
     
-    @Autowired
+    @Resource
     private UtilisateurDaoImpl dao;
     
-    @Autowired
+    @Resource
     private CompteDaoImpl daoCompte;
 
     public UtilisateurDaoImpl getDao() {
@@ -32,6 +35,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     public void setDao(UtilisateurDaoImpl dao) {
         this.dao = dao;
+    }
+
+    public CompteDaoImpl getDaoCompte() {
+        return daoCompte;
+    }
+
+    public void setDaoCompte(CompteDaoImpl daoCompte) {
+        this.daoCompte = daoCompte;
     }
 
     public UtilisateurServiceImpl(){

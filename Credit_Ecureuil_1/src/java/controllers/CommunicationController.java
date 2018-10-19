@@ -18,10 +18,6 @@ import utils.ControllerUtils;
 @Controller
 public class CommunicationController {
     
-    public CommunicationController() {
-    }
-    
-    
     @RequestMapping(value="index", method = RequestMethod.GET)
     protected String initIndex(HttpServletRequest request,HttpServletResponse response) throws Exception {
        return "index";

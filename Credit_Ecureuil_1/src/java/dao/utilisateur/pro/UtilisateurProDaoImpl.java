@@ -12,7 +12,6 @@ import utils.oldCreditEcureuilPU;
  * @author rcharpen
  */
 @Repository
-@Transactional
 public class UtilisateurProDaoImpl implements UtilisateurProDao {
     
     @PersistenceContext(unitName="CreditEcureuilPU")

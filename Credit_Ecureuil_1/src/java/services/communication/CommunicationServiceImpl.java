@@ -5,10 +5,28 @@
  */
 package services.communication;
 
+import org.springframework.stereotype.Service;
+
 /**
  *
  * @author rcharpen
  */
-public class CommunicationServiceImpl {
+@Service
+public class CommunicationServiceImpl implements CommunicationService {
+
+    @Override
+    public void lireMessages() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void envoyerMessage() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void lireNotifications() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

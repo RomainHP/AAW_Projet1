@@ -4,14 +4,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import utils.oldCreditEcureuilPU;
 
 /**
  *
  * @author rcharpen
  */
 @Repository
-@Transactional
 public class UtilisateurDaoImpl implements UtilisateurDao {
     
     @PersistenceContext(unitName="CreditEcureuilPU")
