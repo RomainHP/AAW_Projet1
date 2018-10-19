@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import services.compte.CompteService;
 import services.compte.CompteServiceImpl;
 import utils.ControllerUtils;
 
@@ -21,7 +22,7 @@ import utils.ControllerUtils;
 public class CompteController {
     
     @Autowired
-    private CompteServiceImpl service;
+    CompteService service;
     
     //----------------------
     @RequestMapping(value="consultation", method = RequestMethod.GET)

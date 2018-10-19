@@ -1,26 +1,29 @@
 package services.compte;
 
+import dao.compte.CompteDao;
 import dao.compte.CompteDaoImpl;
 import dao.compte.CompteEntity;
+import dao.utilisateur.UtilisateurDao;
 import dao.utilisateur.UtilisateurEntity;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
-import services.utilisateur.UtilisateurService;
-import services.utilisateur.UtilisateurServiceImpl;
 
 @Service
 public class CompteServiceImpl implements CompteService{
    
     @Resource
-    private CompteDaoImpl dao;
+    CompteDao dao;
+    
+    @Resource
+    UtilisateurDao userDao;
 
-    public void setDao(CompteDaoImpl dao) {
+    public void setDao(CompteDao dao) {
         this.dao = dao;
     }
 
-    public CompteDaoImpl getDao() {
+    public CompteDao getDao() {
         return dao;
     }
     
@@ -43,8 +46,7 @@ public class CompteServiceImpl implements CompteService{
 
     @Override
     public List<CompteEntity> consultation(String username) {
-	UtilisateurService service = new UtilisateurServiceImpl();
-        UtilisateurEntity ant = service.getUtilisateur(username);
+        UtilisateurEntity ant = userDao.find(username);
         if (ant!=null){
             return ant.getComptes();
         }

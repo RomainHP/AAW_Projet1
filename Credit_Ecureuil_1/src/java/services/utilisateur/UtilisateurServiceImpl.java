@@ -1,19 +1,17 @@
 package services.utilisateur;
 
 import dao.compte.CompteDao;
-import dao.compte.CompteDaoImpl;
-import dao.compte.CompteEntity;
 import dao.entreprise.EntrepriseDao;
 import dao.entreprise.EntrepriseDaoImpl;
 import dao.entreprise.EntrepriseEntity;
 import dao.compte.CompteDaoImpl;
 import dao.compte.CompteEntity;
+import dao.utilisateur.UtilisateurDao;
 import dao.utilisateur.UtilisateurDaoImpl;
 import dao.utilisateur.UtilisateurEntity;
 import dao.utilisateur.pro.UtilisateurProDaoImpl;
 import dao.utilisateur.pro.UtilisateurProEntity;
 import javax.annotation.Resource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,24 +22,27 @@ import org.springframework.stereotype.Service;
 public class UtilisateurServiceImpl implements UtilisateurService {
     
     @Resource
-    private UtilisateurDaoImpl dao;
+    UtilisateurDao dao;
     
     @Resource
-    private CompteDaoImpl daoCompte;
+    CompteDao daoCompte;
+    
+    @Resource
+    EntrepriseDao entrepriseDao;
 
-    public UtilisateurDaoImpl getDao() {
+    public UtilisateurDao getDao() {
         return dao;
     }
 
-    public void setDao(UtilisateurDaoImpl dao) {
+    public void setDao(UtilisateurDao dao) {
         this.dao = dao;
     }
 
-    public CompteDaoImpl getDaoCompte() {
+    public CompteDao getDaoCompte() {
         return daoCompte;
     }
 
-    public void setDaoCompte(CompteDaoImpl daoCompte) {
+    public void setDaoCompte(CompteDao daoCompte) {
         this.daoCompte = daoCompte;
     }
 
@@ -81,7 +82,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public boolean inscriptionPro(String identifiant, String motDePasse, String nomEntreprise, long siret) {
         if(dao.find(identifiant) == null){
-            EntrepriseDao entrepriseDao = new EntrepriseDaoImpl();
             if (entrepriseDao.find(siret) == null){
                 UtilisateurProEntity utilisateur = new UtilisateurProEntity(identifiant, motDePasse);
                 EntrepriseEntity entreprise = new EntrepriseEntity(siret,nomEntreprise,utilisateur);
