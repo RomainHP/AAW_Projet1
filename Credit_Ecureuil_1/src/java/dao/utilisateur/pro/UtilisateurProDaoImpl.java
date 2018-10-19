@@ -5,22 +5,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import utils.CreditEcureuilPU;
 
 /**
  *
  * @author rcharpen
  */
 @Repository
-@Transactional
 public class UtilisateurProDaoImpl implements UtilisateurProDao {
     
-    @PersistenceContext
+    @PersistenceContext(unitName="CreditEcureuilPU")
     private EntityManager em;
-    
-    public UtilisateurProDaoImpl(){
-        em = CreditEcureuilPU.getEntityManager();
-    }
 
     public void setEm(EntityManager em) {
         this.em = em;
@@ -40,6 +34,7 @@ public class UtilisateurProDaoImpl implements UtilisateurProDao {
     @Override
     @Transactional
     public UtilisateurProEntity find(String identifiant) {
+        System.err.println(identifiant);
         return em.find(UtilisateurProEntity.class, identifiant);
     }
     

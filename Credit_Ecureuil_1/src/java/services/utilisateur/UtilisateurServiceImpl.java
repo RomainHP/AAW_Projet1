@@ -1,36 +1,49 @@
 package services.utilisateur;
 
 import dao.compte.CompteDao;
-import dao.compte.CompteDaoImpl;
-import dao.compte.CompteEntity;
 import dao.entreprise.EntrepriseDao;
 import dao.entreprise.EntrepriseDaoImpl;
 import dao.entreprise.EntrepriseEntity;
 import dao.compte.CompteDaoImpl;
 import dao.compte.CompteEntity;
+import dao.utilisateur.UtilisateurDao;
 import dao.utilisateur.UtilisateurDaoImpl;
 import dao.utilisateur.UtilisateurEntity;
+import dao.utilisateur.pro.UtilisateurProDaoImpl;
 import dao.utilisateur.pro.UtilisateurProEntity;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author rcharpen
  */
+@Service
 public class UtilisateurServiceImpl implements UtilisateurService {
     
-    @Autowired
-    private UtilisateurDaoImpl dao;
+    @Resource
+    UtilisateurDao dao;
     
-    @Autowired
-    private CompteDaoImpl daoCompte;
+    @Resource
+    CompteDao daoCompte;
+    
+    @Resource
+    EntrepriseDao entrepriseDao;
 
-    public UtilisateurDaoImpl getDao() {
+    public UtilisateurDao getDao() {
         return dao;
     }
 
-    public void setDao(UtilisateurDaoImpl dao) {
+    public void setDao(UtilisateurDao dao) {
         this.dao = dao;
+    }
+
+    public CompteDao getDaoCompte() {
+        return daoCompte;
+    }
+
+    public void setDaoCompte(CompteDao daoCompte) {
+        this.daoCompte = daoCompte;
     }
 
     public UtilisateurServiceImpl(){
@@ -59,7 +72,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 	    CompteEntity compte = new CompteEntity("Compte courant", utilisateur);
 	    dao.save(utilisateur);
 	    daoCompte.save(compte);
-	    utilisateur.addSingleAccount(compte);
+	    utilisateur.addAccount(compte);
 	    dao.save(utilisateur);
 	    return true;
 	}
@@ -69,7 +82,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public boolean inscriptionPro(String identifiant, String motDePasse, String nomEntreprise, long siret) {
         if(dao.find(identifiant) == null){
-            EntrepriseDao entrepriseDao = new EntrepriseDaoImpl();
             if (entrepriseDao.find(siret) == null){
                 UtilisateurProEntity utilisateur = new UtilisateurProEntity(identifiant, motDePasse);
                 EntrepriseEntity entreprise = new EntrepriseEntity(siret,nomEntreprise,utilisateur);
@@ -77,7 +89,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		dao.save(utilisateur);
 		daoCompte.save(compte);
                 entrepriseDao.save(entreprise);
-		utilisateur.addSingleAccount(compte);
+		utilisateur.addAccount(compte);
                 utilisateur.setEntreprise(entreprise);
                 dao.save(utilisateur);
             }
@@ -88,23 +100,23 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     public void updateUser(String id, String password, String nom, String prenom) {
         UtilisateurEntity user = dao.find(id);
-        user.setMotDePasse(password);
-        user.setNom(nom);
-        user.setPrenom(prenom);
-        dao.save(user);
+        if (user != null) {
+            user.setMotDePasse(password);
+            user.setNom(nom);
+            user.setPrenom(prenom);
+            dao.save(user);
+        }
     }
     
     public void updateProUser(String id, String password, String nom, String prenom, String entreprise) {
-        UtilisateurEntity user = dao.find(id);
-        System.err.println(user instanceof UtilisateurProEntity);
-        if (true){
-            UtilisateurProEntity proUser = (UtilisateurProEntity)user;
-            proUser.setMotDePasse(password);
-            proUser.setNom(nom);
-            proUser.setPrenom(prenom);
-            proUser.getEntreprise().setNom(entreprise);
+        UtilisateurProEntity user = new UtilisateurProDaoImpl().find(id);
+        if (user != null){
+            user.setMotDePasse(password);
+            user.setNom(nom);
+            user.setPrenom(prenom);
+            user.getEntreprise().setNom(entreprise);
             dao.save(user);
-            new EntrepriseDaoImpl().save(proUser.getEntreprise());
+            new EntrepriseDaoImpl().save(user.getEntreprise());
         }
     }
     

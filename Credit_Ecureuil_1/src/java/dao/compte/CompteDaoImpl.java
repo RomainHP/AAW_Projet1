@@ -1,24 +1,15 @@
 package dao.compte;
 
-import java.util.List;
-import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.UserTransaction;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import utils.CreditEcureuilPU;
 
 @Repository
-@Transactional
 public class CompteDaoImpl implements CompteDao {
     
-    @PersistenceContext
+    @PersistenceContext(unitName="CreditEcureuilPU")
     private EntityManager em;
-    
-    public CompteDaoImpl(){
-        em = CreditEcureuilPU.getEntityManager();
-    }
 
     public EntityManager getEm() {
         return em;

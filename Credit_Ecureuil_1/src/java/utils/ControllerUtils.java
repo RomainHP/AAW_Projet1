@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package utils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,5 +27,21 @@ public class ControllerUtils {
     public static boolean isUtilisateurPro(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         return (session!=null && session.getAttribute("pro")!=null &&(boolean)session.getAttribute("pro"));
+    }
+    
+    /**
+     * Retourne vrai si l'email est valide
+     * @param email
+     * @return vrai si l'email est valide
+     */
+    public static boolean testEmail(String email){
+        boolean result = true;
+//        try {
+//           InternetAddress emailAddr = new InternetAddress(email);
+//           emailAddr.validate();
+//        } catch (AddressException ex) {
+//           result = false;
+//        }
+        return result;
     }
 }

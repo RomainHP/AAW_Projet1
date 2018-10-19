@@ -17,9 +17,6 @@ import utils.ControllerUtils;
 @Controller
 public class BourseController {
     
-    public BourseController() {
-    }
-    
     //------------------
     @RequestMapping(value="ordre_bourse", method = RequestMethod.GET)
     protected String initBourse(HttpServletRequest request,HttpServletResponse response) throws Exception {

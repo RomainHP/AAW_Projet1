@@ -1,6 +1,7 @@
 package dao.utilisateur;
 
 import dao.compte.CompteEntity;
+import dao.message.MessageEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -29,8 +31,16 @@ public class UtilisateurEntity implements Serializable {
     private String prenom;
 
     @OneToMany
-    private List<CompteEntity> comptes = new ArrayList<CompteEntity>();
-
+    private List<CompteEntity> comptes = new ArrayList<>();
+    
+    @OneToMany
+    @JoinColumn(name="userFrom")
+    private List<MessageEntity> messagesEnvoyes = new ArrayList<>();
+    
+    @OneToMany
+    @JoinColumn(name="userTo")
+    private List<MessageEntity> messagesRecus = new ArrayList<>();
+    
     public UtilisateurEntity(){
         this("","","","");
     }
@@ -86,8 +96,32 @@ public class UtilisateurEntity implements Serializable {
 	this.comptes = comptes;
     }
     
-    public void addSingleAccount(CompteEntity compte){
+    public void addAccount(CompteEntity compte){
 	this.comptes.add(compte);
+    }
+
+    public List<MessageEntity> getMessagesEnvoyes() {
+        return messagesEnvoyes;
+    }
+
+    public List<MessageEntity> getMessagesRecus() {
+        return messagesRecus;
+    }
+
+    public void setMessagesEnvoyes(List<MessageEntity> messagesEnvoyes) {
+        this.messagesEnvoyes = messagesEnvoyes;
+    }
+
+    public void setMessagesRecus(List<MessageEntity> messagesRecus) {
+        this.messagesRecus = messagesRecus;
+    }
+    
+    public void addMessageRecu(MessageEntity m){
+        messagesRecus.add(m);
+    }
+    
+    public void addMessageEnvoye(MessageEntity m){
+        messagesEnvoyes.add(m);
     }
     
 }

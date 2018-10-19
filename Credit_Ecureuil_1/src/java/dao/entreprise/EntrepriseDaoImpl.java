@@ -4,21 +4,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import utils.CreditEcureuilPU;
 
 /**
  *
  * @author romain
  */
 @Repository
-@Transactional
 public class EntrepriseDaoImpl implements EntrepriseDao {
-    @PersistenceContext
-    private EntityManager em;
     
-    public EntrepriseDaoImpl(){
-        em = CreditEcureuilPU.getEntityManager();
-    }
+    @PersistenceContext(unitName="CreditEcureuilPU")
+    private EntityManager em;
 
     public void setEm(EntityManager em) {
         this.em = em;
