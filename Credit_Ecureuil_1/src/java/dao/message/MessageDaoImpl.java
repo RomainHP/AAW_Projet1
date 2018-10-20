@@ -15,7 +15,6 @@ public class MessageDaoImpl implements MessageDao {
     @PersistenceContext(unitName="CreditEcureuilPU")
     private EntityManager em;
     
-
     public void setEm(EntityManager em) {
         this.em = em;
     }

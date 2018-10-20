@@ -32,7 +32,7 @@ public class CompteEntity implements Serializable {
     private Double solde;
         
     public CompteEntity(){
-	
+	this("",null);
     }
     
     public CompteEntity(UtilisateurEntity prop){

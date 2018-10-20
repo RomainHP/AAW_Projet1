@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import services.compte.CompteService;
-import services.compte.CompteServiceImpl;
-import services.transaction.TransactionServiceImpl;
+import services.transaction.TransactionService;
 import utils.ControllerUtils;
 
 /**
@@ -22,13 +21,12 @@ import utils.ControllerUtils;
  */
 @Controller
 public class CompteController {
-    private CompteServiceImpl service;
-    private TransactionServiceImpl transService;
     
-    public CompteController() {
-	this.service = new CompteServiceImpl();
-	this.transService = new TransactionServiceImpl();
-    }
+    @Autowired
+    private CompteService service;
+    
+    @Autowired
+    private TransactionService transactionService;
     
     //----------------------
     @RequestMapping(value="consultation", method = RequestMethod.GET)

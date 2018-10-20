@@ -1,11 +1,10 @@
 package services.compte;
 
 import dao.compte.CompteDao;
-import dao.compte.CompteDaoImpl;
 import dao.compte.CompteEntity;
-import dao.transaction.TransactionDaoImpl;
+import dao.transaction.TransactionDao;
 import dao.transaction.TransactionEntity;
-import dao.utilisateur.UtilisateurDaoImpl;
+import dao.utilisateur.UtilisateurDao;
 import dao.utilisateur.UtilisateurEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,22 +14,37 @@ import org.springframework.stereotype.Service;
 @Service
 public class CompteServiceImpl implements CompteService{
    
-    @Autowired
-    private CompteDaoImpl dao;
+    @Resource
+    CompteDao dao;
     
-    @Autowired
-    private UtilisateurDaoImpl udi;
+    @Resource
+    UtilisateurDao userDao;
     
-    @Autowired TransactionDaoImpl tdi;
+    @Resource 
+    TransactionDao transactionDao;
 
-    public CompteServiceImpl(){
-	this.dao = new CompteDaoImpl();
-	this.udi = new UtilisateurDaoImpl();
-	this.tdi = new TransactionDaoImpl();
+    public void setDao(CompteDao dao) {
+        this.dao = dao;
+    }
+
+    public void setUserDao(UtilisateurDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setTransactionDao(TransactionDao transactionDao) {
+        this.transactionDao = transactionDao;
     }
 
     public CompteDao getDao() {
         return dao;
+    }
+
+    public UtilisateurDao getUserDao() {
+        return userDao;
+    }
+
+    public TransactionDao getTransactionDao() {
+        return transactionDao;
     }
     
     @Override
@@ -46,7 +60,7 @@ public class CompteServiceImpl implements CompteService{
 		TransactionEntity te = new TransactionEntity(cesrc, cedst, montant);
 		cesrc.getTransactions().add(te);
 		cedst.getTransactions().add(te);
-		this.tdi.save(te);
+		this.transactionDao.save(te);
 		dao.update(cedst);
 		dao.update(cesrc);
 		return true;
@@ -67,13 +81,13 @@ public class CompteServiceImpl implements CompteService{
     
     @Override
     public boolean creeCompte(String nomCompte, String nomUtilisateur){
-	UtilisateurEntity ue = this.udi.find(nomUtilisateur);
+	UtilisateurEntity ue = userDao.find(nomUtilisateur);
 	if(ue != null){
 	    CompteEntity ce = new CompteEntity(nomCompte, ue);
 	    dao.save(ce);
-	    ue.addSingleAccount(ce);
+	    ue.addAccount(ce);
 	    CompteEntity.cptCompte++;
-	    this.udi.save(ue);
+	    userDao.save(ue);
 	    return true;
 	}
 	return false;
