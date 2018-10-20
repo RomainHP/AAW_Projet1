@@ -41,7 +41,7 @@ public class CompteController {
 	ModelAndView mv = new ModelAndView("consultation");
 	StringBuffer table_comptes = new StringBuffer();
 	
-	table_comptes.append("<table class=\"table\">");
+	table_comptes.append("<table class=\"table table-fit\">");
 	table_comptes.append("<thead style=\"background-color:#ffb860;\">");
 	table_comptes.append("<tr>");
         table_comptes.append("<th scope=\"col\">#</th>");
@@ -50,28 +50,30 @@ public class CompteController {
 	table_comptes.append("<th scope=\"col\">Solde</th>");
 	table_comptes.append("<th scope=\"col\">Options</th>");
 	table_comptes.append("<th scope=\"col\"></th>");
+	table_comptes.append("</tr>");
 	table_comptes.append("</thead>");
         table_comptes.append("<tbody>");
 
 	int cpt = 1;
 	for (CompteEntity account : accounts) {
 	    table_comptes.append("<tr>");
-	    table_comptes.append("<th scope=\"row\">"+cpt+"</th>");
-	    table_comptes.append("<th scope=\"row\">"+account.getId()+"</th>");
-	    table_comptes.append("<th scope=\"row\">"+account.getNom()+"</th>");
-	    table_comptes.append("<th scope=\"row\">"+account.getSolde()+"</th>");
-	    table_comptes.append("<th scope=\"row\"><form class=\"form\" action=\"detail.htm\" method=\"post\"><div class=\"form-group mb-3\">");
-	    table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"idCpt\" value=\""+account.getId()+"\"><button type=\"submit\">Détail</button></div></form></th>");
+	    table_comptes.append("<td scope=\"row\">"+cpt+"</td>");
+	    table_comptes.append("<td scope=\"row\">"+account.getId()+"</td>");
+	    table_comptes.append("<td scope=\"row\">"+account.getNom()+"</td>");
+	    table_comptes.append("<td scope=\"row\">"+account.getSolde()+"</td>");
+	    table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"detail.htm\" method=\"post\"><div class=\"form-group mb-3\">");
+	    table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"idCpt\" value=\""+account.getId()+"\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Détail</button></div></form></td>");
 	    
 	    if(!account.getNom().equalsIgnoreCase("Compte courant") && !account.getNom().equalsIgnoreCase("Compte pro")){
-		table_comptes.append("<th scope=\"row\"><form class=\"form\" action=\"suppr_compte.htm\" method=\"post\"><div class=\"form-group mb-3\">");
-		table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\""+account.getId()+"\"><button type=\"submit\">Supprimer</button></div></form></th>");
+		table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"suppr_compte.htm\" method=\"post\"><div class=\"form-group mb-3\">");
+		table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\""+account.getId()+"\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Supprimer</button></div></form></td>");
 	    }
-	    
-	    table_comptes.append("</tr>");
+            
 	    cpt++;
 	}
-	
+        
+        table_comptes.append("</tbody>");
+	table_comptes.append("</table>");
 	mv.addObject("table_comptes",table_comptes);
 	return mv;
     }

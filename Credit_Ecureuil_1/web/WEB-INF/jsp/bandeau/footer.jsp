@@ -4,6 +4,6 @@
     Author     : Romain
 --%>
 
-<footer class="fixed-bottom">
+<footer class="footer fixed-bottom">
     <div class="d-flex justify-content-center p-3 bg-dark text-white">&copy; Crédit de l'écureuil 2017-2018</div>
 </footer>

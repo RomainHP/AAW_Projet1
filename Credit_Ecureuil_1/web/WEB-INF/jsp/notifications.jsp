@@ -39,7 +39,6 @@
                 <%@ include file="bandeau/bandeau_deconnecte.jsp" %>
             </c:otherwise>
         </c:choose>
+        <%@ include file="bandeau/footer.jsp" %>
     </body>
-    
-    <%@ include file="bandeau/footer.jsp" %>
 </html>

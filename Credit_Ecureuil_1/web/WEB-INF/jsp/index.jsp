@@ -71,7 +71,6 @@
         <hr>
 
       </div> <!-- /container -->
+      <%@ include file="bandeau/footer.jsp" %>
     </body>
-    
-    <%@ include file="bandeau/footer.jsp" %>
 </html>

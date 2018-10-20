@@ -48,6 +48,7 @@ public class CommunicationController {
         table_messages.append("<th scope=\"col\">Emetteur</th>");
 	table_messages.append("<th scope=\"col\">Sujet</th>");
 	table_messages.append("<th scope=\"col\">Message</th>");
+	table_messages.append("</tr>");
 	table_messages.append("</thead>");
         table_messages.append("<tbody>");
 
@@ -56,13 +57,16 @@ public class CommunicationController {
         int cpt = 1;
 	for (MessageEntity message : list) {
 	    table_messages.append("<tr>");
-	    table_messages.append("<th scope=\"row\">"+cpt+"</th>");
-	    table_messages.append("<th scope=\"row\">"+message.getUserFrom().getEmail()+"</th>");
-	    table_messages.append("<th scope=\"row\">"+message.getSujet()+"</th>");
-	    table_messages.append("<th scope=\"row\">"+message.getMessage()+"</th>");
+	    table_messages.append("<td scope=\"row\">"+cpt+"</td>");
+	    table_messages.append("<td scope=\"row\">"+message.getUserFrom().getEmail()+"</td>");
+	    table_messages.append("<td scope=\"row\">"+message.getSujet()+"</td>");
+	    table_messages.append("<td scope=\"row\">"+message.getMessage()+"</td>");
 	    table_messages.append("</tr>");
 	    cpt++;
 	}
+        
+        table_messages.append("</tbody>");
+	table_messages.append("</table>");
         
         String precedent = "";
         String suivant = "";

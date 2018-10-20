@@ -95,7 +95,6 @@
                 </div>
             </div>
         </div>
+        <%@ include file="bandeau/footer.jsp" %>
     </body>
-    
-    <%@ include file="bandeau/footer.jsp" %>
 </html>

@@ -5,6 +5,7 @@ import dao.message.MessageEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -30,14 +31,14 @@ public class UtilisateurEntity implements Serializable {
     private String nom;
     private String prenom;
 
-    @OneToMany
-    private List<CompteEntity> comptes = new ArrayList<>();
+    @OneToMany(mappedBy = "proprietaire")
+    private List<CompteEntity> comptes;
     
     @OneToMany(mappedBy="userFrom")
-    private List<MessageEntity> messagesEnvoyes = new ArrayList<>();
+    private List<MessageEntity> messagesEnvoyes;
     
     @OneToMany(mappedBy="userTo")
-    private List<MessageEntity> messagesRecus = new ArrayList<>();
+    private List<MessageEntity> messagesRecus;
     
     public UtilisateurEntity(){
         this("","","","");
@@ -96,6 +97,12 @@ public class UtilisateurEntity implements Serializable {
     
     public void addAccount(CompteEntity compte){
 	this.comptes.add(compte);
+    }
+    
+    public void removeAccount(CompteEntity compte){
+	if (this.comptes.contains(compte)){
+            this.comptes.remove(compte);
+        }
     }
 
     public List<MessageEntity> getMessagesEnvoyes() {

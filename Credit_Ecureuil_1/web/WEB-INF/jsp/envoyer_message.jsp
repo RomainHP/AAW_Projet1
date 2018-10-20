@@ -55,6 +55,6 @@
                 <button type="submit" class="btn btn-primary">Envoyer</button>
             </div>
         </form>
+        <%@ include file="bandeau/footer.jsp" %>
     </body>
-    <%@ include file="bandeau/footer.jsp" %>
 </html>

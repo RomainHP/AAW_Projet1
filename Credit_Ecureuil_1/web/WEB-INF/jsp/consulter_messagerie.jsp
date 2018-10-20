@@ -48,6 +48,6 @@
                 <button type="submit" class="button-next" style="vertical-align:middle"><span>Suivant</span></button>
             </form>
         </div>
+        <%@ include file="bandeau/footer.jsp" %>
     </body>
-    <%@ include file="bandeau/footer.jsp" %>
 </html>

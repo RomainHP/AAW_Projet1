@@ -40,5 +40,6 @@
             </c:otherwise>
         </c:choose>
         ${table_comptes}
+        <%@ include file="bandeau/footer.jsp" %>
     </body>
 </html>
