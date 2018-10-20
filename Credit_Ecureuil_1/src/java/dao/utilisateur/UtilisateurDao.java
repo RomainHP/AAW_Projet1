@@ -1,9 +1,5 @@
 package dao.utilisateur;
 
-/**
- *
- * @author rcharpen
- */
 public interface UtilisateurDao {
     public void save(UtilisateurEntity ue);
     

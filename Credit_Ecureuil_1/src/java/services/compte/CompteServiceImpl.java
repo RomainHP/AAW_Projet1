@@ -2,6 +2,8 @@ package services.compte;
 
 import dao.compte.CompteDaoImpl;
 import dao.compte.CompteEntity;
+import dao.transaction.TransactionDaoImpl;
+import dao.transaction.TransactionEntity;
 import dao.utilisateur.UtilisateurDaoImpl;
 import dao.utilisateur.UtilisateurEntity;
 import java.util.ArrayList;
@@ -18,10 +20,13 @@ public class CompteServiceImpl implements CompteService{
     
     @Autowired
     private UtilisateurDaoImpl udi;
+    
+    @Autowired TransactionDaoImpl tdi;
 
     public CompteServiceImpl(){
 	this.dao = new CompteDaoImpl();
 	this.udi = new UtilisateurDaoImpl();
+	this.tdi = new TransactionDaoImpl();
     }
     
     @Override
@@ -33,7 +38,13 @@ public class CompteServiceImpl implements CompteService{
 		cedst.setSolde(cedst.getSolde() + montant);
 		cesrc.setSolde(cesrc.getSolde() - montant);
 		dao.save(cedst);
-		dao.save(cesrc);
+		dao.save(cesrc);		
+		TransactionEntity te = new TransactionEntity(cesrc, cedst, montant);
+		cesrc.getTransactions().add(te);
+		cedst.getTransactions().add(te);
+		this.tdi.save(te);
+		dao.update(cedst);
+		dao.update(cesrc);
 		return true;
 	    }
 	}
@@ -58,6 +69,7 @@ public class CompteServiceImpl implements CompteService{
 	    CompteEntity ce = new CompteEntity(nomCompte, ue);
 	    dao.save(ce);
 	    ue.addSingleAccount(ce);
+	    CompteEntity.cptCompte++;
 	    this.udi.save(ue);
 	    return true;
 	}
@@ -77,9 +89,15 @@ public class CompteServiceImpl implements CompteService{
 		    }
 		}
 		ce.getProprietaire().getComptes().remove(ceToDel);
+		CompteEntity.cptCompte--;
 		return true;
 	    }
 	}
 	return false;
+    }
+
+    @Override
+    public CompteEntity getAcc(Long id) {
+	return this.dao.find(id);
     }
 }

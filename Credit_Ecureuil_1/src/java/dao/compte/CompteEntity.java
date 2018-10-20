@@ -15,9 +15,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="Compte")
-public class CompteEntity implements Serializable {    
+public class CompteEntity implements Serializable {  
+    public static Long cptCompte = 1l;
+    
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     
     private String nom;
@@ -35,12 +36,14 @@ public class CompteEntity implements Serializable {
     }
     
     public CompteEntity(UtilisateurEntity prop){
+	this.id = cptCompte++;
         this.nom="default";
 	this.proprietaire = prop;
 	this.solde = 100d;
     }
     
     public CompteEntity(String nom, UtilisateurEntity prop){
+	this.id = cptCompte++;
         this.nom=nom;
 	this.solde = 100d;
 	this.proprietaire = prop;

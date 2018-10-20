@@ -1,8 +1,5 @@
 package dao.transaction;
 
-import javax.persistence.Entity;
-
-@Entity
 public interface TransactionDao{
     public void save(TransactionEntity ue);
     

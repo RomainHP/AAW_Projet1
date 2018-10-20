@@ -12,4 +12,5 @@ public interface CompteService {
     List<CompteEntity> consultation(String login);
     public boolean creeCompte(String nomCompte, String nomUtilisateur);
     public boolean supprCompte(Long id);
+    public CompteEntity getAcc(Long id);
 }
