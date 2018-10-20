@@ -1,8 +1,5 @@
 package dao.compte;
 
-import dao.utilisateur.UtilisateurEntity;
-import java.util.List;
-
 /**
  *
  * @author rcharpen
