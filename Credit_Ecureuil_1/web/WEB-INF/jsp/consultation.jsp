@@ -39,7 +39,20 @@
                 <%@ include file="bandeau/bandeau_deconnecte.jsp" %>
             </c:otherwise>
         </c:choose>
-        ${table_comptes}
+        <table class="table table-fit table-striped">
+            <thead style="background-color:#ffb860;">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Id du compte</th>
+                    <th scope="col">Intitulé</th>
+                    <th scope="col">Solde</th>
+                    <th colspan="2" scope="col">Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${table_comptes}
+            </tbody>
+        </table>
         <%@ include file="bandeau/footer.jsp" %>
     </body>
 </html>

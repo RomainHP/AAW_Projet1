@@ -10,19 +10,22 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="Compte")
+@Inheritance(
+    strategy = InheritanceType.JOINED
+)
 public class CompteEntity implements Serializable {  
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    private String nom;
     
     @ManyToOne
     private UtilisateurEntity proprietaire;
@@ -33,18 +36,16 @@ public class CompteEntity implements Serializable {
     private Double solde;
         
     public CompteEntity(){
-	this("",null);
+	this(null);
     }
     
     public CompteEntity(UtilisateurEntity prop){
-        this.nom="default";
 	this.proprietaire = prop;
-	this.solde = 100d;
+	this.solde = 0d;
     }
     
-    public CompteEntity(String nom, UtilisateurEntity prop){
-        this.nom=nom;
-	this.solde = 100d;
+    public CompteEntity(UtilisateurEntity prop, double solde){
+	this.solde = solde;
 	this.proprietaire = prop;
     }
     
@@ -54,14 +55,6 @@ public class CompteEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
     }
     
     public UtilisateurEntity getProprietaire(){
@@ -86,5 +79,10 @@ public class CompteEntity implements Serializable {
 
     public void setTransactions(List<TransactionEntity> transactions) {
 	this.transactions = transactions;
+    }
+    
+    @Override
+    public String toString(){
+        return "Compte courant";
     }
 }

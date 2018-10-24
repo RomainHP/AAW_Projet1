@@ -114,7 +114,7 @@ public class UtilisateurController {
             String company = request.getParameter("company");
             try {
                 long siret = Long.parseLong(request.getParameter("siret"));
-                service.inscriptionPro(company, password, company, siret);
+                service.inscriptionPro(email, password, company, siret);
                 mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Inscription réussie."));
             } catch (NumberFormatException e){
                 mv.addObject("returnMessage", ControllerUtils.generateErrorMessage("Le SIRET n'est pas un nombre."));
@@ -153,8 +153,7 @@ public class UtilisateurController {
     protected ModelAndView profilUtilisateur(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        HttpSession session = request.getSession(false);
-	String login = String.valueOf(session.getAttribute("login"));
+	String login = ControllerUtils.getUserLogin(request);
         
         String password = request.getParameter("password");
         String password_confirmation = request.getParameter("password_confirmation");

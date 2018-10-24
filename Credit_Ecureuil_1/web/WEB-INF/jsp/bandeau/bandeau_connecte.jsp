@@ -28,7 +28,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="consultation.htm">Consultation</a>
           <a class="dropdown-item" href="virement.htm">Virement</a>
-          <a class="dropdown-item" href="ajout_compte.htm">Créer un compte</a>
+          <a class="dropdown-item" href="ajout_livret.htm">Ouvrir un nouveau livret</a>
         </div>
       </li>
       <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

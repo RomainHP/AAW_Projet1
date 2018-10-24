@@ -31,7 +31,7 @@ public class MessageDaoImpl implements MessageDao {
     }
 
     @Override
-    public MessageEntity find(String id) {
+    public MessageEntity find(Long id) {
        return em.find(MessageEntity.class, id);
     }
 

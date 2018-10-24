@@ -1,6 +1,7 @@
 package services.compte;
 
 import dao.compte.CompteEntity;
+import exceptions.ServiceException;
 import java.util.List;
 
 /**
@@ -8,9 +9,9 @@ import java.util.List;
  * @author rcharpen
  */
 public interface CompteService {
-    boolean virement(Long src, Long dest, Double montant);
+    void virement(Long src, Long dest, Double montant) throws ServiceException;
     List<CompteEntity> consultation(String login);
-    public boolean creeCompte(String nomCompte, String nomUtilisateur);
-    public boolean supprCompte(Long id);
-    public CompteEntity getAcc(Long id);
+    void ajoutLivret(String nomCompte, String nomUtilisateur) throws ServiceException;
+    void supprimerLivret(Long id) throws ServiceException;
+    CompteEntity getAccount(Long id);
 }

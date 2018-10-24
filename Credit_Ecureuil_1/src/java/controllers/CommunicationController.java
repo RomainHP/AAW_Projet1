@@ -40,36 +40,30 @@ public class CommunicationController {
         ModelAndView mv = new ModelAndView("consulter_messagerie"); 
 
         StringBuffer table_messages = new StringBuffer();
-	
-	table_messages.append("<table class=\"table\">");
-	table_messages.append("<thead style=\"background-color:#ffb860;\">");
-	table_messages.append("<tr>");
-        table_messages.append("<th scope=\"col\">#</th>");
-        table_messages.append("<th scope=\"col\">Emetteur</th>");
-	table_messages.append("<th scope=\"col\">Sujet</th>");
-	table_messages.append("<th scope=\"col\">Message</th>");
-	table_messages.append("</tr>");
-	table_messages.append("</thead>");
-        table_messages.append("<tbody>");
 
         List<MessageEntity> list = service.lireMessages(ControllerUtils.getUserLogin(request));
         
         int cpt = 1;
 	for (MessageEntity message : list) {
-	    table_messages.append("<tr>");
+	    table_messages.append("<tr data-toggle=\"collapse\" data-target=\"#msg" + cpt + "\" class=\"accordion-toggle\">");
 	    table_messages.append("<td scope=\"row\">"+cpt+"</td>");
-	    table_messages.append("<td scope=\"row\">"+message.getUserFrom().getEmail()+"</td>");
+            // Affichage ou non du prénom et nom (si renseigné)
+            if (message.getUserFrom().getNom().isEmpty() && message.getUserFrom().getPrenom().isEmpty()){
+                table_messages.append("<td scope=\"row\">"+message.getUserFrom().getEmail()+"</td>");
+            }else{
+                table_messages.append("<td scope=\"row\">"+message.getUserFrom().getEmail()+"<p style=\"font-size:12px\"> ( " + message.getUserFrom().getPrenom() + " " + message.getUserFrom().getNom() + ")</p> </td>");
+            }
 	    table_messages.append("<td scope=\"row\">"+message.getSujet()+"</td>");
-	    table_messages.append("<td scope=\"row\">"+message.getMessage()+"</td>");
+            // Boutton Supprimer
+            table_messages.append("<td scope=\"row\"><form class=\"form\" action=\"supprimer_message.htm\" method=\"post\"><div class=\"form-group mb-3\">");
+            table_messages.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\""+message.getId()+"\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Supprimer</button></div></form></td>");
+	    table_messages.append("</tr>");
+            // Ligne d'affichage du message (caché par défaut)
+	    table_messages.append("<tr>");
+            table_messages.append("<td colspan=\"4\" class=\"hiddenRow\"><div class=\"accordian-body collapse\" id=\"msg" + cpt + "\">" + message.getMessage() + "</div> </td>");
 	    table_messages.append("</tr>");
 	    cpt++;
 	}
-        
-        table_messages.append("</tbody>");
-	table_messages.append("</table>");
-        
-        String precedent = "";
-        String suivant = "";
 
         mv.addObject("messages", table_messages);
 
@@ -108,6 +102,31 @@ public class CommunicationController {
             mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
         }
         return mv;
+    }
+    
+     //----------------------
+    @RequestMapping(value="supprimer_message", method = RequestMethod.POST)
+    protected ModelAndView supprimerMessage(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+	if (!ControllerUtils.isUtilisateurConnecte(request))
+	    return new ModelAndView("erreur");
+	
+        ModelAndView mv = new ModelAndView("consulter_messagerie");
+        
+	String idCompteStr = request.getParameter("id");
+        
+        try {
+            Long idCompte = Long.parseLong(idCompteStr);
+            this.service.supprimerMessage(idCompte);
+            mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Message supprimé."));
+        } catch (NumberFormatException e){
+            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+        } catch (ServiceException e){
+            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+        }
+	
+	return mv;
     }
     
     //-----------------------------

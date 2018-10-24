@@ -1,16 +1,14 @@
 package dao.utilisateur;
 
 import dao.compte.CompteEntity;
+import dao.compte.livret.LivretEntity;
 import dao.message.MessageEntity;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -33,9 +31,6 @@ public class UtilisateurEntity implements Serializable {
 
     @OneToMany(mappedBy = "proprietaire")
     private List<CompteEntity> comptes;
-    
-    @OneToMany(mappedBy="userFrom")
-    private List<MessageEntity> messagesEnvoyes;
     
     @OneToMany(mappedBy="userTo")
     private List<MessageEntity> messagesRecus;
@@ -105,16 +100,8 @@ public class UtilisateurEntity implements Serializable {
         }
     }
 
-    public List<MessageEntity> getMessagesEnvoyes() {
-        return messagesEnvoyes;
-    }
-
     public List<MessageEntity> getMessagesRecus() {
         return messagesRecus;
-    }
-
-    public void setMessagesEnvoyes(List<MessageEntity> messagesEnvoyes) {
-        this.messagesEnvoyes = messagesEnvoyes;
     }
 
     public void setMessagesRecus(List<MessageEntity> messagesRecus) {
@@ -125,8 +112,20 @@ public class UtilisateurEntity implements Serializable {
         messagesRecus.add(m);
     }
     
-    public void addMessageEnvoye(MessageEntity m){
-        messagesEnvoyes.add(m);
+    public void removeMessageRecu(MessageEntity m){
+        messagesRecus.remove(m);
+    }
+    
+    /**
+     * Cherche dans la liste des comptes si un compte possède le nom demandé
+     * @param name nom demandé
+     * @return si la liste des comptes si un compte possède le nom demandé vrai sinon faux
+     */
+    public boolean hasAccountName(String name){
+        for (CompteEntity ce : this.getComptes()){
+            if (ce.toString().equals(name)) return true;
+        }
+        return false;
     }
     
 }

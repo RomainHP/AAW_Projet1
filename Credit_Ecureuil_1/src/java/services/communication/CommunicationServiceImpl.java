@@ -37,8 +37,6 @@ public class CommunicationServiceImpl implements CommunicationService {
         UtilisateurEntity userTo = userDao.find(to);
         if (userTo == null) throw new ServiceException("Destinataire inexistant.");
         MessageEntity msg = new MessageEntity(userFrom, userTo, sujet, message);
-        msgDao.save(msg);
-        userFrom.addMessageEnvoye(msg);
         userTo.addMessageRecu(msg);
         userDao.save(userFrom);
         userDao.save(userTo);
@@ -47,6 +45,16 @@ public class CommunicationServiceImpl implements CommunicationService {
     @Override
     public void lireNotifications() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void supprimerMessage(long id) throws ServiceException {
+        MessageEntity msg = msgDao.find(id);
+        if (msg==null) throw new ServiceException("Message inexistant.");
+        UtilisateurEntity user = msg.getUserTo();
+        user.removeMessageRecu(msg);
+        userDao.save(user);
+        msgDao.remove(msg);
     }
     
 }

@@ -8,7 +8,7 @@ public interface MessageDao {
     
     public void save(MessageEntity me);
     
-    public MessageEntity find(String id);
+    public MessageEntity find(Long id);
     
     public void update(MessageEntity me);
     

@@ -27,3 +27,12 @@ body {
     padding-top: 80px;
     padding-bottom: 80px;
 }
+
+.table-click tr {
+    cursor: pointer;
+}
+.hiddenRow {
+    padding: 0 4px !important;
+    background-color: #eeeeee;
+    text-align: center;
+}

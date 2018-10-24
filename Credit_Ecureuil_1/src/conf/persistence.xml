@@ -3,11 +3,11 @@
   <persistence-unit name="CreditEcureuilPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>dao.utilisateur.UtilisateurEntity</class>
-    <class>dao.compte.CompteEntity</class>
     <class>dao.entreprise.EntrepriseEntity</class>
     <class>dao.message.MessageEntity</class>
     <class>dao.transaction.TransactionEntity</class>
     <class>dao.utilisateur.pro.UtilisateurProEntity</class>
+    <class>dao.compte.CompteEntity</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/CreditEcureuilDB"/>
