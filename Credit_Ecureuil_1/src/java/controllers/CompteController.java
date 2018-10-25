@@ -7,14 +7,12 @@ import exceptions.ServiceException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import services.compte.CompteService;
-import services.transaction.TransactionService;
 import utils.ControllerUtils;
 
 /**
@@ -26,9 +24,6 @@ public class CompteController {
     
     @Autowired
     private CompteService service;
-    
-    @Autowired
-    private TransactionService transactionService;
     
     //----------------------
     @RequestMapping(value="consultation", method = RequestMethod.GET)
@@ -82,7 +77,7 @@ public class CompteController {
             options.append("<option value=\"");
             options.append(compte.getId());
             options.append("\">");
-            options.append(compte);
+            options.append(compte).append(" (").append(compte.getSolde()).append("€)");
             options.append("</option>");
         }
         
@@ -179,17 +174,37 @@ public class CompteController {
 	
 	String idCompteStr = request.getParameter("idCpt");
 	Long idCompte = Long.parseLong(idCompteStr);
-	CompteEntity ce = this.service.getAccount(idCompte);
+	CompteEntity ce = service.getAccount(idCompte);
 	
 	ModelAndView mv = new ModelAndView("details_compte");
 	StringBuffer table_transactions = new StringBuffer();
 
 	for (TransactionEntity te : ce.getTransactions()) {
-	    table_transactions.append("<tr>");
+	    // Couleur de la ligne en fonction du type de la transaction
+            if (te.getCptSource().getId().equals(idCompte)){
+                table_transactions.append("<tr style=\" background-color:#ff5b5b \">");
+            } else {
+                table_transactions.append("<tr style=\" background-color:#5bff63 \">");
+            }
+            
+            // COMPTE SOURCE
 	    table_transactions.append("<td scope=\"row\">"+te.getCptSource()+"</td>");
-	    table_transactions.append("<td scope=\"row\">"+te.getCptSource().getProprietaire().getEmail()+"</td>");
-	    table_transactions.append("<td scope=\"row\">"+te.getCptDest()+"</td>");
-	    table_transactions.append("<td scope=\"row\">"+te.getCptDest().getProprietaire().getEmail()+"</td>");
+            // Affichage ou non du prénom et nom (si renseigné)
+            if (te.getCptSource().getProprietaire().getNom().isEmpty() && te.getCptSource().getProprietaire().getPrenom().isEmpty()){
+                table_transactions.append("<td scope=\"row\">"+te.getCptSource().getProprietaire().getEmail()+"</td>");
+            }else{
+                table_transactions.append("<td scope=\"row\">"+te.getCptSource().getProprietaire().getEmail()+"<p style=\"font-size:12px\"> ( " + te.getCptSource().getProprietaire().getPrenom() + " " + te.getCptSource().getProprietaire().getNom() + ")</p> </td>");
+            }
+            
+            // COMPTE DESTINATAIRE
+            table_transactions.append("<td scope=\"row\">"+te.getCptDest()+"</td>");
+            // Affichage ou non du prénom et nom (si renseigné)
+            if (te.getCptDest().getProprietaire().getNom().isEmpty() && te.getCptDest().getProprietaire().getPrenom().isEmpty()){
+                table_transactions.append("<td scope=\"row\">"+te.getCptDest().getProprietaire().getEmail()+"</td>");
+            }else{
+                table_transactions.append("<td scope=\"row\">"+te.getCptDest().getProprietaire().getEmail()+"<p style=\"font-size:12px\"> ( " + te.getCptDest().getProprietaire().getPrenom() + " " + te.getCptDest().getProprietaire().getNom() + ")</p> </td>");
+            }
+            
 	    table_transactions.append("<td scope=\"row\">"+te.getMontant()+"</td>");
 	    table_transactions.append("<td scope=\"row\">"+te.getDate()+"</td>");
 	    table_transactions.append("</tr>");

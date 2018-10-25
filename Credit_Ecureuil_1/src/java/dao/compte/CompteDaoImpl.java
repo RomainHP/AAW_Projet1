@@ -40,6 +40,7 @@ public class CompteDaoImpl implements CompteDao {
     @Override
     @Transactional
     public void remove(CompteEntity ce) {
+        ce = em.merge(ce);
         em.remove(ce);
     }
 

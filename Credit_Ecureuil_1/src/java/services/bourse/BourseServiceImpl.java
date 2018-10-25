@@ -14,14 +14,4 @@ import org.springframework.stereotype.Service;
 @Service
 public class BourseServiceImpl implements BourseService {
 
-    @Override
-    public void achat() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void vente() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
 }

@@ -40,6 +40,7 @@ public class LivretDaoImpl implements LivretDao {
     @Override
     @Transactional
     public void remove(LivretEntity ce) {
+        ce = em.merge(ce);
         em.remove(ce);
     }
 

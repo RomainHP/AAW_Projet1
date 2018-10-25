@@ -39,6 +39,7 @@
                 <%@ include file="bandeau/bandeau_deconnecte.jsp" %>
             </c:otherwise>
         </c:choose>
+        ${returnMessage}
         <table class="table table-fit table-striped">
             <thead style="background-color:#ffb860;">
                 <tr>

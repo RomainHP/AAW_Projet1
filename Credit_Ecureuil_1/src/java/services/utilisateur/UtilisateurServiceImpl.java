@@ -93,7 +93,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             if (entrepriseDao.find(siret) == null){
                 UtilisateurProEntity utilisateur = new UtilisateurProEntity(identifiant, motDePasse);
                 EntrepriseEntity entreprise = new EntrepriseEntity(siret,nomEntreprise,utilisateur);
-		CompteEntity compte = new CompteEntity(utilisateur);
+		CompteEntity compte = new CompteEntity(utilisateur, UtilisateurServiceImpl.SOLDE_OUVERTURE_COMPTE);
 		daoPro.save(utilisateur);
 		utilisateur.addAccount(compte);
                 utilisateur.setEntreprise(entreprise);
@@ -117,14 +117,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
     
     public void updateProUser(String id, String password, String nom, String prenom, String entreprise) {
-        UtilisateurProEntity user = new UtilisateurProDaoImpl().find(id);
+        UtilisateurProEntity user = daoPro.find(id);
         if (user != null){
             user.setMotDePasse(password);
             user.setNom(nom);
             user.setPrenom(prenom);
             user.getEntreprise().setNom(entreprise);
             daoPro.save(user);
-            new EntrepriseDaoImpl().save(user.getEntreprise());
+            entrepriseDao.save(user.getEntreprise());
         }
     }
     

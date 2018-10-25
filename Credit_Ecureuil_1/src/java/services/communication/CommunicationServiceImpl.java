@@ -52,8 +52,10 @@ public class CommunicationServiceImpl implements CommunicationService {
         MessageEntity msg = msgDao.find(id);
         if (msg==null) throw new ServiceException("Message inexistant.");
         UtilisateurEntity user = msg.getUserTo();
-        user.removeMessageRecu(msg);
-        userDao.save(user);
+        if (user!=null){
+            user.removeMessageRecu(msg);
+            userDao.save(user);
+        }
         msgDao.remove(msg);
     }
     

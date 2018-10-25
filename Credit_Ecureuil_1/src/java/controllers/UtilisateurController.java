@@ -46,6 +46,7 @@ public class UtilisateurController {
                 session = request.getSession(true); // on la crée
             }
             session.setAttribute("login", identifiant);
+            // si l'utilisateur est pro ou non
             session.setAttribute("pro", service.getUtilisateur(identifiant) instanceof UtilisateurProEntity);
             return new ModelAndView("index");
         } catch (ServiceException e){
@@ -82,6 +83,7 @@ public class UtilisateurController {
             HttpServletResponse response) throws Exception {
         ModelAndView mv = new ModelAndView("inscription");
         String email = request.getParameter("email");
+        // Si l'email est valide
         if (ControllerUtils.testEmail(email)){
             String password = request.getParameter("password");
             try {
@@ -109,6 +111,7 @@ public class UtilisateurController {
             HttpServletResponse response) throws Exception {
         String email = request.getParameter("email");
         ModelAndView mv = new ModelAndView("inscription_pro");
+        // Si l'email est valide
         if (ControllerUtils.testEmail(email)){
             String password = request.getParameter("password");
             String company = request.getParameter("company");
@@ -138,10 +141,12 @@ public class UtilisateurController {
 
 	ModelAndView mv = new ModelAndView("profil");
 	
+        // On envoie les champs de l'utilisateur à la vue
 	mv.addObject("email",user.getEmail());
 	mv.addObject("password",user.getMotDePasse());
         mv.addObject("prenom", user.getPrenom());
         mv.addObject("nom", user.getNom());
+        // Si l'utilisateur est pro, il a des champs supplémentaires
         if (user instanceof UtilisateurProEntity){
            mv.addObject("entreprise", ((UtilisateurProEntity)user).getEntreprise().getNom());
            mv.addObject("siret", ((UtilisateurProEntity)user).getEntreprise().getSiret());
@@ -155,6 +160,7 @@ public class UtilisateurController {
             HttpServletResponse response) throws Exception {
 	String login = ControllerUtils.getUserLogin(request);
         
+        // Vérification du mot de passe
         String password = request.getParameter("password");
         String password_confirmation = request.getParameter("password_confirmation");
         if (!password.equals(password_confirmation)){
@@ -164,6 +170,7 @@ public class UtilisateurController {
         String nom = request.getParameter("nom");
         String prenom = request.getParameter("prenom");
         
+        // Actualise les données de l'utilisateur
         if (ControllerUtils.isUtilisateurPro(request)){
             String company = request.getParameter("company");
             service.updateProUser(login, password, nom, prenom, company);

@@ -3,9 +3,7 @@ package dao.compte;
 import dao.transaction.TransactionEntity;
 import dao.utilisateur.UtilisateurEntity;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,7 +29,7 @@ public class CompteEntity implements Serializable {
     private UtilisateurEntity proprietaire;
     
     @OneToMany
-    private List<TransactionEntity> transactions = new ArrayList<TransactionEntity>();
+    private List<TransactionEntity> transactions;
     
     private Double solde;
         

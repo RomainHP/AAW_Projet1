@@ -1,6 +1,5 @@
 package controllers;
 
-import dao.compte.CompteEntity;
 import dao.message.MessageEntity;
 import exceptions.ServiceException;
 import java.util.List;
@@ -43,6 +42,7 @@ public class CommunicationController {
 
         List<MessageEntity> list = service.lireMessages(ControllerUtils.getUserLogin(request));
         
+        // Affiche chaque message de la liste
         int cpt = 1;
 	for (MessageEntity message : list) {
 	    table_messages.append("<tr data-toggle=\"collapse\" data-target=\"#msg" + cpt + "\" class=\"accordion-toggle\">");
@@ -68,13 +68,6 @@ public class CommunicationController {
         mv.addObject("messages", table_messages);
 
         return mv;
-    }    
-    
-    @RequestMapping(value="consulter_messagerie", method = RequestMethod.POST)
-    public ModelAndView serviceConsulterMessagerie(
-            HttpServletRequest request,
-            HttpServletResponse response) {
-        throw new UnsupportedOperationException("Not yet implemented");
     }
     
     //----------------------------
@@ -95,6 +88,7 @@ public class CommunicationController {
         String destinataire = request.getParameter("destinataire");
         String message = request.getParameter("message");
         
+        // Envoi du message
         try {
             service.envoyerMessage(ControllerUtils.getUserLogin(request), destinataire, sujet, message);
             mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Message envoyé."));
@@ -116,9 +110,10 @@ public class CommunicationController {
         
 	String idCompteStr = request.getParameter("id");
         
+        // Suppression du message
         try {
             Long idCompte = Long.parseLong(idCompteStr);
-            this.service.supprimerMessage(idCompte);
+            service.supprimerMessage(idCompte);
             mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Message supprimé."));
         } catch (NumberFormatException e){
             mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));

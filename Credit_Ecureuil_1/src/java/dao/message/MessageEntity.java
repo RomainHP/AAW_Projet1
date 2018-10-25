@@ -1,6 +1,7 @@
 package dao.message;
 
 import dao.utilisateur.UtilisateurEntity;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,11 +22,11 @@ public class MessageEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @ManyToOne()
-    private UtilisateurEntity userFrom = null;
+    @ManyToOne
+    private UtilisateurEntity userFrom;
     
-    @ManyToOne()
-    private UtilisateurEntity userTo = null;
+    @ManyToOne
+    private UtilisateurEntity userTo;
     
     private String sujet;
    

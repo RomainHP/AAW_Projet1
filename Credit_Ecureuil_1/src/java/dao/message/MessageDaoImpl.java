@@ -44,6 +44,7 @@ public class MessageDaoImpl implements MessageDao {
     @Override
     @Transactional
     public void remove(MessageEntity me) {
+        me = em.merge(me);
         em.remove(me);
     }
     

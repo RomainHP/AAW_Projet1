@@ -37,6 +37,7 @@ public class TransactionDaoImpl implements TransactionDao {
 
     @Override
     public void remove(TransactionEntity ue) {
+        ue = em.merge(ue);
         em.remove(ue);
     }       
 }

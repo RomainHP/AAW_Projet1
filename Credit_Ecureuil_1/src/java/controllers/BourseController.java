@@ -1,13 +1,17 @@
 package controllers;
 
+import dao.entreprise.EntrepriseEntity;
+import dao.utilisateur.UtilisateurEntity;
+import dao.utilisateur.pro.UtilisateurProEntity;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import services.bourse.BourseService;
 import services.utilisateur.UtilisateurService;
-import services.utilisateur.UtilisateurServiceImpl;
 import utils.ControllerUtils;
 
 /**
@@ -17,12 +21,33 @@ import utils.ControllerUtils;
 @Controller
 public class BourseController {
     
+    @Autowired
+    BourseService service;
+    
+    @Autowired
+    UtilisateurService userService;
+    
     //------------------
     @RequestMapping(value="ordre_bourse", method = RequestMethod.GET)
-    protected String initBourse(HttpServletRequest request,HttpServletResponse response) {
-        if (!ControllerUtils.isUtilisateurConnecte(request)) return "erreur";
-        if (!ControllerUtils.isUtilisateurPro(request)) return "erreur";
-        return "ordre_bourse";
+    protected ModelAndView initBourse(HttpServletRequest request,HttpServletResponse response) {
+        if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
+        if (!ControllerUtils.isUtilisateurPro(request)) return new ModelAndView("erreur");
+        
+        ModelAndView mv = new ModelAndView("ordre_bourse");
+        String login = ControllerUtils.getUserLogin(request);
+        
+        // Récupération de l'entreprise
+        UtilisateurEntity user = userService.getUtilisateur(login);
+        if (user!=null && user instanceof UtilisateurProEntity){
+            UtilisateurProEntity userPro = (UtilisateurProEntity)user;
+            EntrepriseEntity entreprise = userPro.getEntreprise();
+            String input_entreprise = "<input type=\"text\" readonly class=\"form-control-plaintext\" id=\"entreprise\" value=\""+entreprise.getNom()+"\"/>";
+            mv.addObject("entreprise", input_entreprise);
+        }
+        
+        // Récupération des actions en vente
+        
+        return mv;
     }
     
     @RequestMapping(value="ordre_bourse", method = RequestMethod.POST)

@@ -46,7 +46,8 @@ public class UtilisateurProDaoImpl implements UtilisateurProDao {
     @Override
     @Transactional
     public void remove(UtilisateurProEntity ue) {
-	em.remove(ue);
+	ue = em.merge(ue);
+        em.remove(ue);
     }
     
 }

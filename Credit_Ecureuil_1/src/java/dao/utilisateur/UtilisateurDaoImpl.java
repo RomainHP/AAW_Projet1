@@ -51,7 +51,8 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     @Override
     @Transactional
     public void remove(UtilisateurEntity ue) {
-	em.remove(ue);
+	ue = em.merge(ue);
+        em.remove(ue);
     }
     
 }

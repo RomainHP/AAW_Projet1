@@ -45,6 +45,7 @@ public class EntrepriseDaoImpl implements EntrepriseDao {
     @Override
     @Transactional
     public void remove(EntrepriseEntity ee) {
+        ee = em.merge(ee);
         em.remove(ee);
     }
 }

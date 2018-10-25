@@ -39,6 +39,11 @@
                 <%@ include file="bandeau/bandeau_deconnecte.jsp" %>
             </c:otherwise>
         </c:choose>
+        <form class="form-inline">
+            ${entreprise}
+            <input name="value" type="number" value="0.00" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="value" />
+            <button type="submit" class="btn btn-primary mb-2">Envoyer en bourse</button>
+        </form>
         <%@ include file="bandeau/footer.jsp" %>
     </body>
 </html>
