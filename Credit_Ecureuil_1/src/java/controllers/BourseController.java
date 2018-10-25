@@ -41,8 +41,7 @@ public class BourseController {
         if (user!=null && user instanceof UtilisateurProEntity){
             UtilisateurProEntity userPro = (UtilisateurProEntity)user;
             EntrepriseEntity entreprise = userPro.getEntreprise();
-            String input_entreprise = "<input type=\"text\" readonly class=\"form-control-plaintext\" id=\"entreprise\" value=\""+entreprise.getNom()+"\"/>";
-            mv.addObject("entreprise", input_entreprise);
+            mv.addObject("entreprise", entreprise.toString());
         }
         
         // Récupération des actions en vente

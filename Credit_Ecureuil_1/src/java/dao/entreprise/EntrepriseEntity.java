@@ -56,4 +56,13 @@ public class EntrepriseEntity implements Serializable {
     public void setProprietaire(UtilisateurEntity proprietaire) {
         this.proprietaire = proprietaire;
     }
+    
+    @Override
+    public String toString(){
+        if (nom.isEmpty()){
+            return String.valueOf(siret);
+        } else {
+            return siret + " (" + nom + ")";
+        }
+    }
 }
