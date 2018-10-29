@@ -4,6 +4,7 @@ import dao.compte.CompteEntity;
 import dao.compte.livret.LivretEntity;
 import dao.transaction.TransactionEntity;
 import exceptions.ServiceException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +43,7 @@ public class CompteController {
 	    table_comptes.append("<tr>");
 	    table_comptes.append("<td scope=\"row\">"+cpt+"</td>");
 	    table_comptes.append("<td scope=\"row\">"+account.getId()+"</td>");
+	    table_comptes.append("<td scope=\"row\">"+account.getProprietaire().getEmail()+"</td>");
 	    table_comptes.append("<td scope=\"row\">"+account+"</td>");
 	    table_comptes.append("<td scope=\"row\">"+account.getSolde()+"</td>");
             // Bouton détail
@@ -91,28 +93,31 @@ public class CompteController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         ModelAndView mv = new ModelAndView("virement");
-        
-        String nomCompteSrc = request.getParameter("id");
-	Long idCompteSrc = Long.parseLong(nomCompteSrc);
-	
-        String montant = request.getParameter("value");
-	Double mnt = Double.parseDouble(montant);
-        
-	String nomDest = request.getParameter("id_dest");
-	Long idCompteDest = Long.parseLong(nomDest);
 	
         try {
+            String nomCompteSrc = request.getParameter("id");
+            Long idCompteSrc = Long.parseLong(nomCompteSrc);
+
+            String montant = request.getParameter("value");
+            Double mnt = Double.parseDouble(montant);
+
+            String nomDest = request.getParameter("id_dest");
+            Long idCompteDest = Long.parseLong(nomDest);
             service.virement(idCompteSrc, idCompteDest, mnt);
             mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Virement effectué."));
         } catch (ServiceException e) {
             mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+        } catch (Exception e){
+            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage("Virement incorrect."));
         }
         
         return mv;
-    }    
+    } 
+    
     //--------------------
+    
     @RequestMapping(value="ajout_livret", method = RequestMethod.GET)
-    protected ModelAndView initAjout(
+    protected ModelAndView initAjoutLivret(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 	if (!ControllerUtils.isUtilisateurConnecte(request))
@@ -142,6 +147,7 @@ public class CompteController {
     }
     
     //----------------------
+    
     @RequestMapping(value="supprimer_livret", method = RequestMethod.POST)
     protected ModelAndView supprimerLivret(
             HttpServletRequest request,
@@ -164,7 +170,52 @@ public class CompteController {
 	return mv;
     }
     
-    //------------------------    
+    //--------------------
+    
+    @RequestMapping(value="ajout_compte_joint", method = RequestMethod.GET)
+    protected ModelAndView initAjoutCompteJoint(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+	if (!ControllerUtils.isUtilisateurConnecte(request))
+	    return new ModelAndView("erreur");
+	
+	return new ModelAndView("ajout_compte_joint");
+    }
+    
+    @RequestMapping(value="ajout_compte_joint", method = RequestMethod.POST)
+    protected ModelAndView ajoutCompteJoint(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+	
+        ModelAndView mv = new ModelAndView("ajout_compte_joint");
+        
+	String login = ControllerUtils.getUserLogin(request);
+
+	String newAccount = request.getParameter("nom_compte");
+        
+        List<String> co_proprietaires = new ArrayList<>();
+        
+        int cpt=1;
+        String proprietaire=null;
+        do {
+            proprietaire = request.getParameter("field"+cpt);
+            cpt++;
+            if (proprietaire!=null) {
+                co_proprietaires.add(proprietaire);
+            }
+        } while (proprietaire!=null);
+
+        try { 
+            service.ajoutCompteJoint(newAccount, login, co_proprietaires);
+            mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Le compte joint a bien été créé."));
+        } catch (ServiceException e){
+            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+        }
+	return mv;
+    }
+    
+    //------------------------  
+    
     @RequestMapping(value="details_compte", method = RequestMethod.POST)
     protected ModelAndView detailsCompte(
             HttpServletRequest request,
@@ -179,7 +230,7 @@ public class CompteController {
 	ModelAndView mv = new ModelAndView("details_compte");
 	StringBuffer table_transactions = new StringBuffer();
 
-	for (TransactionEntity te : ce.getTransactions()) {
+	for (TransactionEntity te : ce.getAllTransactions()) {
 	    // Couleur de la ligne en fonction du type de la transaction
             if (te.getCptSource().getId().equals(idCompte)){
                 table_transactions.append("<tr style=\" background-color:#ff5b5b \">");

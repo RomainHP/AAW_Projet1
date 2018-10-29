@@ -78,10 +78,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public void inscription(String identifiant, String motDePasse) throws ServiceException {
 	if(dao.find(identifiant) == null){
             UtilisateurEntity utilisateur = new UtilisateurEntity(identifiant, motDePasse);
+            dao.save(utilisateur);
 	    CompteEntity compte = new CompteEntity(utilisateur, UtilisateurServiceImpl.SOLDE_OUVERTURE_COMPTE);
-	    dao.save(utilisateur);
+	    daoCompte.save(compte);
 	    utilisateur.addAccount(compte);
-	    dao.save(utilisateur);
+	    dao.update(utilisateur);
 	} else {
             throw new ServiceException("Utilisateur déjà inscrit.");
         }
@@ -92,12 +93,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         if(daoPro.find(identifiant) == null){
             if (entrepriseDao.find(siret) == null){
                 UtilisateurProEntity utilisateur = new UtilisateurProEntity(identifiant, motDePasse);
+                dao.save(utilisateur);
                 EntrepriseEntity entreprise = new EntrepriseEntity(siret,nomEntreprise,utilisateur);
+                entrepriseDao.save(entreprise);
 		CompteEntity compte = new CompteEntity(utilisateur, UtilisateurServiceImpl.SOLDE_OUVERTURE_COMPTE);
-		daoPro.save(utilisateur);
+                daoCompte.save(compte);
 		utilisateur.addAccount(compte);
                 utilisateur.setEntreprise(entreprise);
-                daoPro.save(utilisateur);
+                daoPro.update(utilisateur);
             } else {
                 throw new ServiceException("Entreprise déjà enregistrée.");
             }
@@ -112,7 +115,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             user.setMotDePasse(password);
             user.setNom(nom);
             user.setPrenom(prenom);
-            dao.save(user);
+            dao.update(user);
         }
     }
     
@@ -123,8 +126,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             user.setNom(nom);
             user.setPrenom(prenom);
             user.getEntreprise().setNom(entreprise);
-            daoPro.save(user);
-            entrepriseDao.save(user.getEntreprise());
+            daoPro.update(user);
+            entrepriseDao.update(user.getEntreprise());
         }
     }
     

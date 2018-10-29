@@ -54,7 +54,7 @@ public class TransactionEntity implements Serializable {
 	this.cptSource = cesrc;
 	this.cptDest = cedst;
 	this.montant = val;
-	DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+	DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	Date today = Calendar.getInstance().getTime();
 	this.date = df.format(today);
     }

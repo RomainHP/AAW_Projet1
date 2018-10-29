@@ -29,6 +29,7 @@
           <a class="dropdown-item" href="consultation.htm">Consultation</a>
           <a class="dropdown-item" href="virement.htm">Virement</a>
           <a class="dropdown-item" href="ajout_livret.htm">Ouvrir un nouveau livret</a>
+          <a class="dropdown-item" href="ajout_compte_joint.htm">Ouvrir un compte joint</a>
         </div>
       </li>
       <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>

@@ -1,14 +1,17 @@
 package dao.utilisateur;
 
 import dao.compte.CompteEntity;
+import dao.compte.comptejoint.CompteJointEntity;
 import dao.compte.livret.LivretEntity;
 import dao.message.MessageEntity;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -32,6 +35,9 @@ public class UtilisateurEntity implements Serializable {
     @OneToMany(mappedBy = "proprietaire")
     private List<CompteEntity> comptes;
     
+    @ManyToMany
+    private List<CompteJointEntity> comptes_joints;
+    
     @OneToMany(mappedBy="userTo")
     private List<MessageEntity> messagesRecus;
     
@@ -48,6 +54,30 @@ public class UtilisateurEntity implements Serializable {
         this.motDePasse=password;
         this.nom=nom;
         this.prenom=prenom;
+    }
+    
+    public List<CompteEntity> getAllAccounts(){
+        List<CompteEntity> result = new ArrayList<>(this.comptes);
+        result.addAll(this.comptes_joints);
+        return result;
+    }
+    
+    public void addCompteJoint(CompteJointEntity compte){
+        comptes_joints.add(compte);
+    }
+    
+    public void removeCompteJoint(CompteJointEntity compte){
+	if (this.comptes_joints.contains(compte)){
+            this.comptes_joints.remove(compte);
+        }
+    }
+
+    public void setComptes_joints(List<CompteJointEntity> comptes_joints) {
+        this.comptes_joints = comptes_joints;
+    }
+
+    public List<CompteJointEntity> getComptes_joints() {
+        return comptes_joints;
     }
 
     public String getNom() {

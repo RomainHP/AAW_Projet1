@@ -82,4 +82,8 @@ public class MessageEntity {
     public void setMessage(String message) {
         this.message = message;
     }
+    
+    public String getHtmlMessage(){
+        return message.replaceAll("\\n", "<br />").replaceAll(sujet, message);
+    }
 }

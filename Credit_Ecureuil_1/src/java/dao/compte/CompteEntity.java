@@ -3,7 +3,14 @@ package dao.compte;
 import dao.transaction.TransactionEntity;
 import dao.utilisateur.UtilisateurEntity;
 import java.io.Serializable;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,8 +35,11 @@ public class CompteEntity implements Serializable {
     @ManyToOne
     private UtilisateurEntity proprietaire;
     
-    @OneToMany
-    private List<TransactionEntity> transactions;
+    @OneToMany(mappedBy = "cptDest")
+    private List<TransactionEntity> transactions_in;
+    
+    @OneToMany(mappedBy = "cptSource")
+    private List<TransactionEntity> transactions_out;
     
     private Double solde;
         
@@ -71,12 +81,39 @@ public class CompteEntity implements Serializable {
 	this.solde = val;
     }
 
-    public List<TransactionEntity> getTransactions() {
-	return transactions;
+    public List<TransactionEntity> getTransactions_in() {
+        return transactions_in;
     }
 
-    public void setTransactions(List<TransactionEntity> transactions) {
-	this.transactions = transactions;
+    public List<TransactionEntity> getTransactions_out() {
+        return transactions_out;
+    }
+
+    public void setTransactions_in(List<TransactionEntity> transactions_in) {
+        this.transactions_in = transactions_in;
+    }
+
+    public void setTransactions_out(List<TransactionEntity> transactions_out) {
+        this.transactions_out = transactions_out;
+    }
+    
+    public List<TransactionEntity> getAllTransactions(){
+        List<TransactionEntity> result = new ArrayList<>(this.transactions_in);
+        result.addAll(this.transactions_out);
+        // tri en fonction de la date (en decroissant)
+        result.sort(new Comparator<TransactionEntity>(){
+            @Override
+            public int compare(TransactionEntity o1, TransactionEntity o2) {
+                try {
+                    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    return format.parse(o2.getDate()).compareTo(format.parse(o1.getDate()));
+                } catch (ParseException ex) {
+                    Logger.getLogger(CompteEntity.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return 0;
+            }
+        });
+        return result;
     }
     
     @Override

@@ -60,13 +60,13 @@ public class CommunicationController {
 	    table_messages.append("</tr>");
             // Ligne d'affichage du message (caché par défaut)
 	    table_messages.append("<tr>");
-            table_messages.append("<td colspan=\"4\" class=\"hiddenRow\"><div class=\"accordian-body collapse\" id=\"msg" + cpt + "\">" + message.getMessage() + "</div> </td>");
+            table_messages.append("<td colspan=\"4\" class=\"hiddenRow\"><div class=\"accordian-body collapse\" id=\"msg" + cpt + "\">" + message.getHtmlMessage() + "</div> </td>");
 	    table_messages.append("</tr>");
 	    cpt++;
 	}
 
         mv.addObject("messages", table_messages);
-
+        
         return mv;
     }
     

@@ -35,11 +35,10 @@ public class CommunicationServiceImpl implements CommunicationService {
     public void envoyerMessage(String from, String to, String sujet, String message) throws ServiceException {
         UtilisateurEntity userFrom = userDao.find(from);
         UtilisateurEntity userTo = userDao.find(to);
+        if (userFrom == null) throw new ServiceException("Expéditeur inexistant.");
         if (userTo == null) throw new ServiceException("Destinataire inexistant.");
         MessageEntity msg = new MessageEntity(userFrom, userTo, sujet, message);
-        userTo.addMessageRecu(msg);
-        userDao.save(userFrom);
-        userDao.save(userTo);
+        msgDao.save(msg);
     }
 
     @Override
@@ -51,11 +50,6 @@ public class CommunicationServiceImpl implements CommunicationService {
     public void supprimerMessage(long id) throws ServiceException {
         MessageEntity msg = msgDao.find(id);
         if (msg==null) throw new ServiceException("Message inexistant.");
-        UtilisateurEntity user = msg.getUserTo();
-        if (user!=null){
-            user.removeMessageRecu(msg);
-            userDao.save(user);
-        }
         msgDao.remove(msg);
     }
     

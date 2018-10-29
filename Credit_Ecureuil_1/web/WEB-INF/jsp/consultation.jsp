@@ -45,6 +45,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Id du compte</th>
+                    <th scope="col">Propriétaire</th>
                     <th scope="col">Intitulé</th>
                     <th scope="col">Solde</th>
                     <th colspan="2" scope="col">Options</th>

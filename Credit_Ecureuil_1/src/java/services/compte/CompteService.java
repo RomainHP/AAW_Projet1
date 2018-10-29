@@ -13,5 +13,7 @@ public interface CompteService {
     List<CompteEntity> consultation(String login);
     void ajoutLivret(String nomCompte, String nomUtilisateur) throws ServiceException;
     void supprimerLivret(Long id) throws ServiceException;
+    void ajoutCompteJoint(String nomCompte, String nomUtilisateur, List<String> co_proprietaires) throws ServiceException;
+    void supprimerCompteJoint(Long id) throws ServiceException;
     CompteEntity getAccount(Long id);
 }

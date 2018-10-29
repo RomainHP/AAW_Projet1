@@ -33,6 +33,7 @@ body {
 }
 .hiddenRow {
     padding: 0 4px !important;
-    background-color: #eeeeee;
-    text-align: center;
+    padding-left: 3% !important;
+    padding-right: 3% !important;
+    background-color: #ffb860;
 }
