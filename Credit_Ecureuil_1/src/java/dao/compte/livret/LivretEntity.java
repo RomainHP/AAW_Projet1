@@ -3,6 +3,7 @@ package dao.compte.livret;
 import dao.compte.CompteEntity;
 import dao.utilisateur.UtilisateurEntity;
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -10,6 +11,7 @@ import javax.persistence.Table;
 @Table(name="Livret")
 public class LivretEntity extends CompteEntity implements Serializable {  
     
+    @Column
     private String nom;
         
     public LivretEntity(){

@@ -2,6 +2,7 @@ package dao.entreprise;
 
 import dao.utilisateur.UtilisateurEntity;
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
@@ -17,6 +18,7 @@ public class EntrepriseEntity implements Serializable {
     @Id
     private Long siret;
     
+    @Column
     private String nom;
     
     @OneToOne

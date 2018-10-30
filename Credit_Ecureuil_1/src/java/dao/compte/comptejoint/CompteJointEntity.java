@@ -5,6 +5,7 @@ import dao.utilisateur.UtilisateurEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -16,6 +17,7 @@ public class CompteJointEntity extends CompteEntity implements Serializable {
     @ManyToMany
     private List<UtilisateurEntity> co_proprietaires;
     
+    @Column
     private String nom;
         
     public CompteJointEntity(){

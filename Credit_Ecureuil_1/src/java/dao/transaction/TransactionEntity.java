@@ -7,10 +7,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -29,13 +31,17 @@ public class TransactionEntity implements Serializable {
     private Long id;
     
     @ManyToOne
+    @JoinColumn(name="fk_cpt_src")
     private CompteEntity cptSource;
     
     @ManyToOne
+    @JoinColumn(name="fk_cpt_dest")
     private CompteEntity cptDest;
     
+    @Column
     private String date;
     
+    @Column
     private Double montant;
 
     public Long getId() {
@@ -47,7 +53,7 @@ public class TransactionEntity implements Serializable {
     }
 
     public TransactionEntity(){
-	
+	this(null,null,0d);
     }
     
     public TransactionEntity(CompteEntity cesrc, CompteEntity cedst, Double val){

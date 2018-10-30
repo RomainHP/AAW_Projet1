@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name="UtilisateurPro")
 public class UtilisateurProEntity extends UtilisateurEntity {
     
-    @OneToOne
+    @OneToOne(orphanRemoval = true)
     private EntrepriseEntity entreprise = null;
     
     public UtilisateurProEntity(){

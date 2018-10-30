@@ -25,6 +25,7 @@ public class UtilisateurController {
     UtilisateurService service;
     
     //---------------------------
+    
     @RequestMapping(value="connexion", method = RequestMethod.GET)
     protected String initConnexion(HttpServletRequest request,HttpServletResponse response) {
         return ControllerUtils.isUtilisateurConnecte(request) ? "erreur" : "connexion";
@@ -57,6 +58,7 @@ public class UtilisateurController {
     }
 
     //---------------------------
+    
     @RequestMapping(value="deconnexion", method = RequestMethod.GET)
     protected String initDeconnexion(HttpServletRequest request,HttpServletResponse response) {
         HttpSession session = request.getSession(false);
@@ -71,6 +73,7 @@ public class UtilisateurController {
     }
 
     //---------------------------
+    
     @RequestMapping(value="inscription", method = RequestMethod.GET)
     protected String initInscription(HttpServletRequest request,HttpServletResponse response) {
        if (ControllerUtils.isUtilisateurConnecte(request)) return "erreur";
@@ -131,6 +134,7 @@ public class UtilisateurController {
     }
 
     //---------------------------
+    
     @RequestMapping(value="profil", method = RequestMethod.GET)
     protected ModelAndView initProfil(HttpServletRequest request,HttpServletResponse response) {
         if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
@@ -164,18 +168,19 @@ public class UtilisateurController {
         String password = request.getParameter("password");
         String password_confirmation = request.getParameter("password_confirmation");
         if (!password.equals(password_confirmation)){
-            return new ModelAndView("erreur");
-        }
-        
-        String nom = request.getParameter("nom");
-        String prenom = request.getParameter("prenom");
-        
-        // Actualise les données de l'utilisateur
-        if (ControllerUtils.isUtilisateurPro(request)){
-            String company = request.getParameter("company");
-            service.updateProUser(login, password, nom, prenom, company);
+            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage("Mots de passe différents."));
         } else {
-            service.updateUser(login,password,nom,prenom);
+            String nom = request.getParameter("nom");
+            String prenom = request.getParameter("prenom");
+
+            // Actualise les données de l'utilisateur
+            if (ControllerUtils.isUtilisateurPro(request)){
+                String company = request.getParameter("company");
+                service.updateProUser(login, password, nom, prenom, company);
+            } else {
+                service.updateUser(login,password,nom,prenom);
+            }
+            request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Modification effectuée."));
         }
         
         return initProfil(request,response);

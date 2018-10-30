@@ -9,15 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CompteJointDaoImpl implements CompteJointDao {
     
     @PersistenceContext(unitName="CreditEcureuilPU")
-    private EntityManager em;
-
-    public EntityManager getEm() {
-        return em;
-    }
-
-    public void setEm(EntityManager em) {
-        this.em = em;
-    }
+    EntityManager em;
     
     @Override
     @Transactional

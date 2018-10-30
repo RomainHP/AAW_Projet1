@@ -9,15 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TransactionDaoImpl implements TransactionDao {
 
     @PersistenceContext(unitName="CreditEcureuilPU")
-    private EntityManager em;
-    
-    public void setEm(EntityManager em) {
-        this.em = em;
-    }
-
-    public EntityManager getEm() {
-        return em;
-    }
+    EntityManager em;
     
     @Override
     public void save(TransactionEntity ue) {

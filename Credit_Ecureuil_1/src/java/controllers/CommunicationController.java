@@ -99,6 +99,7 @@ public class CommunicationController {
     }
     
      //----------------------
+    
     @RequestMapping(value="supprimer_message", method = RequestMethod.POST)
     protected ModelAndView supprimerMessage(
             HttpServletRequest request,
@@ -106,22 +107,20 @@ public class CommunicationController {
 	if (!ControllerUtils.isUtilisateurConnecte(request))
 	    return new ModelAndView("erreur");
 	
-        ModelAndView mv = new ModelAndView("consulter_messagerie");
-        
 	String idCompteStr = request.getParameter("id");
         
         // Suppression du message
         try {
             Long idCompte = Long.parseLong(idCompteStr);
             service.supprimerMessage(idCompte);
-            mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Message supprimé."));
+            request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Message supprimé."));
         } catch (NumberFormatException e){
-            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
         } catch (ServiceException e){
-            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
         }
 	
-	return mv;
+	return initConsulterMessagerie(request, response);
     }
     
     //-----------------------------

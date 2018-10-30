@@ -6,8 +6,12 @@ import dao.compte.livret.LivretEntity;
 import dao.message.MessageEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -28,17 +32,23 @@ public class UtilisateurEntity implements Serializable {
     
     @Id
     private String email;
+    
+    @Column
     private String motDePasse;
+    
+    @Column
     private String nom;
+    
+    @Column
     private String prenom;
 
-    @OneToMany(mappedBy = "proprietaire")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="proprietaire")
     private List<CompteEntity> comptes;
     
     @ManyToMany
     private List<CompteJointEntity> comptes_joints;
     
-    @OneToMany(mappedBy="userTo")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="userTo")
     private List<MessageEntity> messagesRecus;
     
     public UtilisateurEntity(){
@@ -57,8 +67,14 @@ public class UtilisateurEntity implements Serializable {
     }
     
     public List<CompteEntity> getAllAccounts(){
-        List<CompteEntity> result = new ArrayList<>(this.comptes);
-        result.addAll(this.comptes_joints);
+        List<CompteEntity> result = new ArrayList<>(comptes);
+        result.addAll(comptes_joints);
+        result.sort(new Comparator<CompteEntity>(){
+            @Override
+            public int compare(CompteEntity o1, CompteEntity o2) {
+                return o1.getId().compareTo(o2.getId());
+            }
+        });
         return result;
     }
     

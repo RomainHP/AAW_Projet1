@@ -33,46 +33,6 @@ public class CompteServiceImpl implements CompteService{
     
     @Resource 
     TransactionDao transactionDao;
-
-    public void setLivretDao(LivretDao livretDao) {
-        this.livretDao = livretDao;
-    }
-
-    public void setCompteJointDao(CompteJointDao compteJointDao) {
-        this.compteJointDao = compteJointDao;
-    }
-
-    public LivretDao getLivretDao() {
-        return livretDao;
-    }
-
-    public CompteJointDao getCompteJointDao() {
-        return compteJointDao;
-    }
-
-    public void setDao(CompteDao dao) {
-        this.dao = dao;
-    }
-
-    public void setUserDao(UtilisateurDao userDao) {
-        this.userDao = userDao;
-    }
-
-    public void setTransactionDao(TransactionDao transactionDao) {
-        this.transactionDao = transactionDao;
-    }
-
-    public CompteDao getDao() {
-        return dao;
-    }
-
-    public UtilisateurDao getUserDao() {
-        return userDao;
-    }
-
-    public TransactionDao getTransactionDao() {
-        return transactionDao;
-    }
     
     @Override
     public void virement(Long src, Long dest, Double montant) throws ServiceException {
@@ -83,12 +43,11 @@ public class CompteServiceImpl implements CompteService{
         if (montant<=0d) throw new ServiceException("Montant invalide (inférieur ou égal à 0).");
         if (cesrc.getSolde()<montant) throw new ServiceException("Solde du compte source insuffisant.");
         TransactionEntity te = new TransactionEntity(cesrc, cedst, montant);
-        transactionDao.save(te);
         cedst.setSolde(cedst.getSolde() + montant);
-        cesrc.setSolde(cesrc.getSolde() - montant);
-        cesrc.getTransactions_out().add(te);
         cedst.getTransactions_in().add(te);
         dao.update(cedst);
+        cesrc.setSolde(cesrc.getSolde() - montant);
+        cesrc.getTransactions_out().add(te);
         dao.update(cesrc);
     }
 
@@ -107,7 +66,6 @@ public class CompteServiceImpl implements CompteService{
         if (ue==null) throw new ServiceException("Utilisateur introuvable.");
         if (ue.hasAccountName(nomCompte)) throw new ServiceException("Nom de livret déjà pris.");
         LivretEntity ce = new LivretEntity(nomCompte, ue);
-        dao.save(ce);
         ue.addAccount(ce);
         userDao.update(ue);
     }
@@ -117,6 +75,18 @@ public class CompteServiceImpl implements CompteService{
 	LivretEntity ce = livretDao.find(id);
 	if(ce == null) throw new ServiceException("Livret introuvable.");
         if(ce.getSolde()!=0d) throw new ServiceException("Le solde du livret à supprimer n'est pas nul (0).");
+        List<TransactionEntity> tmp = new ArrayList<>(ce.getTransactions_in());
+        for (TransactionEntity transaction : tmp){
+            ce.getTransactions_in().remove(transaction);
+            livretDao.update(ce);
+            transactionDao.remove(transaction);
+        }
+        tmp = new ArrayList<>(ce.getTransactions_out());
+        for (TransactionEntity transaction : tmp){
+            ce.getTransactions_out().remove(transaction);
+            livretDao.update(ce);
+            transactionDao.remove(transaction);
+        }
         ce.getProprietaire().removeAccount(ce);
         userDao.update(ce.getProprietaire());
         livretDao.remove(ce);
@@ -127,6 +97,7 @@ public class CompteServiceImpl implements CompteService{
 	if (co_proprietaires.isEmpty()) throw new ServiceException("Pas de co-propriétaires.");
         UtilisateurEntity ue = userDao.find(nomUtilisateur);
         if (ue==null) throw new ServiceException("Utilisateur introuvable.");
+        // On recherche les co proprietaires dans la base
         List<UtilisateurEntity> users = new ArrayList<>();
         for (String prop : co_proprietaires){
             UtilisateurEntity user = userDao.find(prop);
@@ -135,13 +106,12 @@ public class CompteServiceImpl implements CompteService{
         }
         if (ue.hasAccountName(nomCompte)) throw new ServiceException("Nom de compte déjà pris.");
         CompteJointEntity ce = new CompteJointEntity(nomCompte, ue, users);
-        dao.save(ce);
-        ue.addAccount(ce);
-        userDao.update(ue);
         for (UtilisateurEntity user : users){
             user.addCompteJoint(ce);
             userDao.update(user);
         }
+        ue.addAccount(ce);
+        userDao.update(ue);
     }
 
     @Override
@@ -149,12 +119,12 @@ public class CompteServiceImpl implements CompteService{
 	CompteJointEntity ce = compteJointDao.find(id);
 	if(ce == null) throw new ServiceException("Compte joint introuvable.");
         if(ce.getSolde()!=0d) throw new ServiceException("Le solde du compte à supprimer n'est pas nul (0).");
-        ce.getProprietaire().removeAccount(ce);
-        userDao.update(ce.getProprietaire());
         for (UtilisateurEntity user : ce.getCo_proprietaires()){
             user.removeCompteJoint(ce);
             userDao.update(user);
         }
+        ce.getProprietaire().removeAccount(ce);
+        userDao.update(ce.getProprietaire());
         compteJointDao.remove(ce);
     }
 

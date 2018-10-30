@@ -11,12 +11,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -33,14 +37,16 @@ public class CompteEntity implements Serializable {
     private Long id;
     
     @ManyToOne
+    @JoinColumn(name="fk_owner")
     private UtilisateurEntity proprietaire;
     
-    @OneToMany(mappedBy = "cptDest")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="cptDest")
     private List<TransactionEntity> transactions_in;
     
-    @OneToMany(mappedBy = "cptSource")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="cptSource")
     private List<TransactionEntity> transactions_out;
     
+    @Column
     private Double solde;
         
     public CompteEntity(){

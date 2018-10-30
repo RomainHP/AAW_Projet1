@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.compte.CompteEntity;
+import dao.compte.comptejoint.CompteJointEntity;
 import dao.compte.livret.LivretEntity;
 import dao.transaction.TransactionEntity;
 import exceptions.ServiceException;
@@ -54,7 +55,11 @@ public class CompteController {
                 // Bouton supprimer
 		table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"supprimer_livret.htm\" method=\"post\"><div class=\"form-group mb-3\">");
 		table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\""+account.getId()+"\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Supprimer</button></div></form></td>");
-	    } else {
+            } else if (account instanceof CompteJointEntity && account.getProprietaire().getEmail().equals(login)){
+                // Bouton supprimer
+		table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"supprimer_compte_joint.htm\" method=\"post\"><div class=\"form-group mb-3\">");
+		table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\""+account.getId()+"\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Supprimer</button></div></form></td>");
+            } else {
                 table_comptes.append("<td />");
             }
             
@@ -92,8 +97,6 @@ public class CompteController {
     protected ModelAndView virementCompte(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        ModelAndView mv = new ModelAndView("virement");
-	
         try {
             String nomCompteSrc = request.getParameter("id");
             Long idCompteSrc = Long.parseLong(nomCompteSrc);
@@ -104,14 +107,14 @@ public class CompteController {
             String nomDest = request.getParameter("id_dest");
             Long idCompteDest = Long.parseLong(nomDest);
             service.virement(idCompteSrc, idCompteDest, mnt);
-            mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Virement effectué."));
+            request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Virement effectué."));
         } catch (ServiceException e) {
-            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
         } catch (Exception e){
-            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage("Virement incorrect."));
+            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage("Virement incorrect."));
         }
         
-        return mv;
+        return initVirement(request,response);
     } 
     
     //--------------------
@@ -155,19 +158,17 @@ public class CompteController {
 	if (!ControllerUtils.isUtilisateurConnecte(request))
 	    return new ModelAndView("erreur");
 	
-        ModelAndView mv = new ModelAndView("consultation");
-        
 	String idCompteStr = request.getParameter("id");
 	Long idCompte = Long.parseLong(idCompteStr);
 	
         try { 
             service.supprimerLivret(idCompte);
-            mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Le livret a bien été supprimé."));
+            request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Le livret a bien été supprimé."));
         } catch (ServiceException e){
-            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
         }
 	
-	return mv;
+	return initConsult(request, response);
     }
     
     //--------------------
@@ -188,11 +189,8 @@ public class CompteController {
             HttpServletResponse response) throws Exception {
 	
         ModelAndView mv = new ModelAndView("ajout_compte_joint");
-        
 	String login = ControllerUtils.getUserLogin(request);
-
 	String newAccount = request.getParameter("nom_compte");
-        
         List<String> co_proprietaires = new ArrayList<>();
         
         int cpt=1;
@@ -211,6 +209,30 @@ public class CompteController {
         } catch (ServiceException e){
             mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
         }
+	return mv;
+    }
+    
+    //----------------------
+    
+    @RequestMapping(value="supprimer_compte_joint", method = RequestMethod.POST)
+    protected ModelAndView supprimerCompteJoint(
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+	if (!ControllerUtils.isUtilisateurConnecte(request))
+	    return new ModelAndView("erreur");
+	
+        ModelAndView mv = new ModelAndView("consultation");
+        
+	String idCompteStr = request.getParameter("id");
+	Long idCompte = Long.parseLong(idCompteStr);
+	
+        try { 
+            service.supprimerCompteJoint(idCompte);
+            mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Le compte joint a bien été supprimé."));
+        } catch (ServiceException e){
+            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+        }
+	
 	return mv;
     }
     

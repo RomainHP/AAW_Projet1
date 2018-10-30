@@ -38,7 +38,8 @@ public class CommunicationServiceImpl implements CommunicationService {
         if (userFrom == null) throw new ServiceException("Expéditeur inexistant.");
         if (userTo == null) throw new ServiceException("Destinataire inexistant.");
         MessageEntity msg = new MessageEntity(userFrom, userTo, sujet, message);
-        msgDao.save(msg);
+        userTo.addMessageRecu(msg);
+        userDao.update(userTo);
     }
 
     @Override
@@ -50,6 +51,8 @@ public class CommunicationServiceImpl implements CommunicationService {
     public void supprimerMessage(long id) throws ServiceException {
         MessageEntity msg = msgDao.find(id);
         if (msg==null) throw new ServiceException("Message inexistant.");
+        msg.getUserTo().removeMessageRecu(msg);
+        userDao.update(msg.getUserTo());
         msgDao.remove(msg);
     }
     

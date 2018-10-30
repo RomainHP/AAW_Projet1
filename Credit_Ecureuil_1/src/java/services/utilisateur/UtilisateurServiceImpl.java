@@ -1,14 +1,12 @@
 package services.utilisateur;
 
 import dao.entreprise.EntrepriseDao;
-import dao.entreprise.EntrepriseDaoImpl;
 import dao.entreprise.EntrepriseEntity;
 import dao.compte.CompteEntity;
 import dao.utilisateur.UtilisateurDao;
 import dao.utilisateur.UtilisateurDaoImpl;
 import dao.utilisateur.UtilisateurEntity;
 import dao.utilisateur.pro.UtilisateurProDao;
-import dao.utilisateur.pro.UtilisateurProDaoImpl;
 import dao.utilisateur.pro.UtilisateurProEntity;
 import exceptions.ServiceException;
 import javax.annotation.Resource;
@@ -36,27 +34,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     
     @Resource
     EntrepriseDao entrepriseDao;
-
-    public UtilisateurDao getDao() {
-        return dao;
-    }
-
-    public void setDao(UtilisateurDao dao) {
-        this.dao = dao;
-    }
-
-    public CompteDao getDaoCompte() {
-        return daoCompte;
-    }
-
-    public void setDaoCompte(CompteDao daoCompte) {
-        this.daoCompte = daoCompte;
-    }
-
-    public UtilisateurServiceImpl(){
-	this.dao = new UtilisateurDaoImpl();
-	this.daoCompte = new CompteDaoImpl();
-    }
     
     @Override
     public void connexion(String identifiant, String motDePasse) throws ServiceException {
@@ -80,9 +57,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             UtilisateurEntity utilisateur = new UtilisateurEntity(identifiant, motDePasse);
             dao.save(utilisateur);
 	    CompteEntity compte = new CompteEntity(utilisateur, UtilisateurServiceImpl.SOLDE_OUVERTURE_COMPTE);
-	    daoCompte.save(compte);
-	    utilisateur.addAccount(compte);
-	    dao.update(utilisateur);
+            utilisateur.addAccount(compte);
+            dao.update(utilisateur);
 	} else {
             throw new ServiceException("Utilisateur déjà inscrit.");
         }
@@ -95,12 +71,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
                 UtilisateurProEntity utilisateur = new UtilisateurProEntity(identifiant, motDePasse);
                 dao.save(utilisateur);
                 EntrepriseEntity entreprise = new EntrepriseEntity(siret,nomEntreprise,utilisateur);
-                entrepriseDao.save(entreprise);
-		CompteEntity compte = new CompteEntity(utilisateur, UtilisateurServiceImpl.SOLDE_OUVERTURE_COMPTE);
-                daoCompte.save(compte);
-		utilisateur.addAccount(compte);
                 utilisateur.setEntreprise(entreprise);
-                daoPro.update(utilisateur);
+		CompteEntity compte = new CompteEntity(utilisateur, UtilisateurServiceImpl.SOLDE_OUVERTURE_COMPTE);
+                utilisateur.addAccount(compte);
+                dao.update(utilisateur);
             } else {
                 throw new ServiceException("Entreprise déjà enregistrée.");
             }
@@ -127,7 +101,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             user.setPrenom(prenom);
             user.getEntreprise().setNom(entreprise);
             daoPro.update(user);
-            entrepriseDao.update(user.getEntreprise());
         }
     }
     
