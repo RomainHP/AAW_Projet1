@@ -5,7 +5,7 @@ import dao.compte.comptejoint.CompteJointEntity;
 import dao.compte.livret.LivretEntity;
 import dao.transaction.TransactionEntity;
 import exceptions.ServiceException;
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -188,10 +188,9 @@ public class CompteController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 	
-        ModelAndView mv = new ModelAndView("ajout_compte_joint");
 	String login = ControllerUtils.getUserLogin(request);
 	String newAccount = request.getParameter("nom_compte");
-        List<String> co_proprietaires = new ArrayList<>();
+        LinkedHashSet<String> co_proprietaires = new  LinkedHashSet<>();
         
         int cpt=1;
         String proprietaire=null;
@@ -205,11 +204,11 @@ public class CompteController {
 
         try { 
             service.ajoutCompteJoint(newAccount, login, co_proprietaires);
-            mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Le compte joint a bien été créé."));
+            request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Le compte joint a bien été créé."));
         } catch (ServiceException e){
-            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
         }
-	return mv;
+	return initAjoutCompteJoint(request, response);
     }
     
     //----------------------

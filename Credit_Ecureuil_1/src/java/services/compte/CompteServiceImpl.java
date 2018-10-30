@@ -15,6 +15,7 @@ import dao.compte.comptejoint.CompteJointEntity;
 import dao.compte.livret.LivretDao;
 import dao.compte.livret.LivretEntity;
 import exceptions.ServiceException;
+import java.util.LinkedHashSet;
 
 @Service
 public class CompteServiceImpl implements CompteService{
@@ -36,6 +37,7 @@ public class CompteServiceImpl implements CompteService{
     
     @Override
     public void virement(Long src, Long dest, Double montant) throws ServiceException {
+        if (src==dest) throw new ServiceException("Comptes source et destinataire identiques.");
 	CompteEntity cesrc = dao.find(src);
 	CompteEntity cedst = dao.find(dest);
 	if (cesrc==null) throw new ServiceException("Compte source introuvable.");
@@ -79,12 +81,14 @@ public class CompteServiceImpl implements CompteService{
         for (TransactionEntity transaction : tmp){
             ce.getTransactions_in().remove(transaction);
             livretDao.update(ce);
+            transaction.getCptSource().getTransactions_out().remove(transaction);
             transactionDao.remove(transaction);
         }
         tmp = new ArrayList<>(ce.getTransactions_out());
         for (TransactionEntity transaction : tmp){
             ce.getTransactions_out().remove(transaction);
             livretDao.update(ce);
+            transaction.getCptDest().getTransactions_in().remove(transaction);
             transactionDao.remove(transaction);
         }
         ce.getProprietaire().removeAccount(ce);
@@ -93,8 +97,9 @@ public class CompteServiceImpl implements CompteService{
     }
     
     @Override
-    public void ajoutCompteJoint(String nomCompte, String nomUtilisateur, List<String> co_proprietaires) throws ServiceException {
+    public void ajoutCompteJoint(String nomCompte, String nomUtilisateur, LinkedHashSet<String> co_proprietaires) throws ServiceException {
 	if (co_proprietaires.isEmpty()) throw new ServiceException("Pas de co-propriétaires.");
+        if (co_proprietaires.contains(nomUtilisateur)) throw new ServiceException("Le propriétaire ne peut pas être également co-propriétaire.");
         UtilisateurEntity ue = userDao.find(nomUtilisateur);
         if (ue==null) throw new ServiceException("Utilisateur introuvable.");
         // On recherche les co proprietaires dans la base

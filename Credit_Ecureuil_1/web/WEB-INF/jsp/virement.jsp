@@ -58,7 +58,12 @@
                   </select>
                 </div>
                 <div class="col">
-                    <input name="value" type="number" value="0.00" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="value" />
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">€</div>
+                        </div>
+                        <input name="value" type="number" value="0.00" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="value" />
+                    </div>
                 </div>
                 <div class="col">
                     <input name="id_dest" type="text" class="form-control" placeholder="Id du compte destinataire">
