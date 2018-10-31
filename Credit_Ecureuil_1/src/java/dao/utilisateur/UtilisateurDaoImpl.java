@@ -1,7 +1,9 @@
 package dao.utilisateur;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +47,12 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     public void remove(UtilisateurEntity ue) {
 	ue = em.merge(ue);
         em.remove(ue);
+    }
+
+    @Override
+    public List<UtilisateurEntity> findAll() {
+        Query q = em.createQuery("SELECT u FROM UtilisateurEntity u ORDER BY u.isAdmin DESC, u.email");
+        return q.getResultList();
     }
     
 }

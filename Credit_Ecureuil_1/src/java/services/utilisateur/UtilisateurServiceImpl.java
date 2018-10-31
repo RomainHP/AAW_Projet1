@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import dao.compte.CompteDao;
 import dao.compte.CompteDaoImpl;
+import java.util.List;
 
 /**
  *
@@ -104,4 +105,8 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         }
     }
     
+    @Override
+    public List<UtilisateurEntity> getAllUsers(){
+        return dao.findAll();
+    }
 }

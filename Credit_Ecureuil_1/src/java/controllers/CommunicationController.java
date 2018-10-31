@@ -1,6 +1,8 @@
 package controllers;
 
+import dao.compte.CompteEntity;
 import dao.message.MessageEntity;
+import dao.utilisateur.UtilisateurEntity;
 import exceptions.ServiceException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import services.communication.CommunicationService;
+import services.utilisateur.UtilisateurService;
 import utils.ControllerUtils;
 
 /**
@@ -22,6 +25,9 @@ public class CommunicationController {
     
     @Autowired
     CommunicationService service;
+    
+    @Autowired
+    UtilisateurService utilisateurService;
     
     //----------------------------
     
@@ -48,11 +54,7 @@ public class CommunicationController {
 	    table_messages.append("<tr data-toggle=\"collapse\" data-target=\"#msg" + cpt + "\" class=\"accordion-toggle\">");
 	    table_messages.append("<td scope=\"row\">"+cpt+"</td>");
             // Affichage ou non du prénom et nom (si renseigné)
-            if (message.getUserFrom().getNom().isEmpty() && message.getUserFrom().getPrenom().isEmpty()){
-                table_messages.append("<td scope=\"row\">"+message.getUserFrom().getEmail()+"</td>");
-            }else{
-                table_messages.append("<td scope=\"row\">"+message.getUserFrom().getEmail()+"<p style=\"font-size:12px\"> ( " + message.getUserFrom().getPrenom() + " " + message.getUserFrom().getNom() + ")</p> </td>");
-            }
+            table_messages.append("<td scope=\"row\">"+message.getUserFrom()+"</td>");
 	    table_messages.append("<td scope=\"row\">"+message.getSujet()+"</td>");
             // Boutton Supprimer
             table_messages.append("<td scope=\"row\"><form class=\"form\" action=\"supprimer_message.htm\" method=\"post\"><div class=\"form-group mb-3\">");
@@ -73,9 +75,23 @@ public class CommunicationController {
     //----------------------------
     
     @RequestMapping(value="envoyer_message", method = RequestMethod.GET)
-    protected String initEnvoyerMessage(HttpServletRequest request,HttpServletResponse response) {
-        if (!ControllerUtils.isUtilisateurConnecte(request)) return "erreur";
-        return "envoyer_message";
+    protected ModelAndView initEnvoyerMessage(HttpServletRequest request,HttpServletResponse response) {
+        if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
+        ModelAndView mv = new ModelAndView("envoyer_message");
+        // Compte destinataire
+        StringBuilder options_dest = new StringBuilder();
+	List<UtilisateurEntity> all_users = utilisateurService.getAllUsers();
+        for (UtilisateurEntity utilisateur : all_users){
+            System.err.println(utilisateur);
+            options_dest.append("<option value=\"");
+            options_dest.append(utilisateur.getEmail());
+            options_dest.append("\">");
+            options_dest.append(utilisateur);
+            options_dest.append("</option>");
+        }
+        
+        mv.addObject("options_dest", options_dest.toString());
+        return mv;
     }    
     
     @RequestMapping(value="envoyer_message", method = RequestMethod.POST)

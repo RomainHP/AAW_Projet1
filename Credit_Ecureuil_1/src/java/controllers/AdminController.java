@@ -62,8 +62,8 @@ public class AdminController {
                 // Bouton supprimer
 		table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"supprimer_livret_admin.htm\" method=\"post\"><div class=\"form-group mb-3\">");
 		table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\""+account.getId()+"\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Supprimer</button></div></form></td>");
-            } else if (account instanceof CompteJointEntity && account.getProprietaire().getEmail().equals(login)){
-                // Bouton supprimer
+            } else if (account instanceof CompteJointEntity && !account.getProprietaire().getEmail().equals("admin")){
+                // Bouton supprimer (on ne supprime pas le compte de l'admin)
 		table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"supprimer_compte_joint_admin.htm\" method=\"post\"><div class=\"form-group mb-3\">");
 		table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\""+account.getId()+"\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Supprimer</button></div></form></td>");
             } else {
@@ -121,7 +121,7 @@ public class AdminController {
 	Long idCompte = Long.parseLong(idCompteStr);
 	
         try { 
-            compteService.supprimerLivret(idCompte);
+            compteService.supprimerLivret(idCompte,false);
             request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Le livret a bien été supprimé."));
         } catch (ServiceException e){
             request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
@@ -145,7 +145,7 @@ public class AdminController {
 	Long idCompte = Long.parseLong(idCompteStr);
 	
         try { 
-            compteService.supprimerCompteJoint(idCompte);
+            compteService.supprimerCompteJoint(idCompte,false);
             mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Le compte joint a bien été supprimé."));
         } catch (ServiceException e){
             mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
@@ -161,11 +161,9 @@ public class AdminController {
         if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
         ModelAndView mv = new ModelAndView("virement"); 
         
-        StringBuffer options = new StringBuffer();
+        StringBuilder options = new StringBuilder();
         
 	List<CompteEntity> accounts = compteService.getAllAccounts();
-        
-        options.append("<option value=\"-1\">Banque (somme illimitée)</option>");
         
         for (CompteEntity compte : accounts){
             options.append("<option value=\"");
@@ -175,7 +173,8 @@ public class AdminController {
             options.append("</option>");
         }
         
-        mv.addObject("options", options);
+        mv.addObject("options_dest", options.toString());
+        mv.addObject("options", options.toString());
         mv.addObject("form","virement_admin.htm");
         
         return mv;
@@ -195,12 +194,7 @@ public class AdminController {
             String nomDest = request.getParameter("id_dest");
             Long idCompteDest = Long.parseLong(nomDest);
             
-            if (idCompteSrc.longValue()==-1){
-                // virement offert par la banque
-                compteService.virement(idCompteDest, mnt);
-            }else{
-                compteService.virement(idCompteSrc, idCompteDest, mnt);
-            }
+            compteService.virement(idCompteSrc, idCompteDest, mnt, false);
             request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Virement effectué."));
         } catch (ServiceException e) {
             request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));

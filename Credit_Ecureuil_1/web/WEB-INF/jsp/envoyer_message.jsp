@@ -48,11 +48,14 @@
         </c:choose>
         <form action="envoyer_message.htm" method="post">
             ${returnMessage}
-            <div class="d-flex col-lg-5 m-3">
+            <div class="d-flex col-lg-8 m-3">
                 <label for="destinataire">Sujet:</label>
                 <input type="text" class="form-control mx-sm-3" name="sujet" id="sujet">
                 <label for="destinataire">Destinataire:</label>
-                <input type="text" class="form-control mx-sm-3" name="destinataire" id="destinataire">
+                <select name="destinataire" class="custom-select mx-sm-3" id="inlineFormCustomSelect">
+                    <option selected>Selectionner un destinataire</option>
+                    ${options_dest}
+                </select>
             </div>
             <div class="m-3">
                 <label for="message">Message:</label>

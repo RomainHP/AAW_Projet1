@@ -1,5 +1,7 @@
 package dao.utilisateur;
 
+import java.util.List;
+
 public interface UtilisateurDao {
     public void save(UtilisateurEntity ue);
     
@@ -10,4 +12,6 @@ public interface UtilisateurDao {
     public void remove(UtilisateurEntity ue);
     
     public String getUserMdp(String identifiant);
+    
+    public List<UtilisateurEntity> findAll();
 }

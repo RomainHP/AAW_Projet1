@@ -77,10 +77,9 @@ public class CompteController {
         if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
         ModelAndView mv = new ModelAndView("virement"); 
         
-        StringBuffer options = new StringBuffer();
-        
-	List<CompteEntity> accounts = this.service.consultation(ControllerUtils.getUserLogin(request));
-        
+        // Compte source
+        StringBuilder options = new StringBuilder();
+	List<CompteEntity> accounts = service.consultation(ControllerUtils.getUserLogin(request)); 
         for (CompteEntity compte : accounts){
             options.append("<option value=\"");
             options.append(compte.getId());
@@ -89,7 +88,19 @@ public class CompteController {
             options.append("</option>");
         }
         
-        mv.addObject("options", options);
+        // Compte destinataire
+        StringBuilder options_dest = new StringBuilder();
+	List<CompteEntity> all_accounts = service.getAllAccounts();
+        for (CompteEntity compte : all_accounts){
+            options_dest.append("<option value=\"");
+            options_dest.append(compte.getId());
+            options_dest.append("\">");
+            options_dest.append(compte).append(" - ").append(compte.getProprietaire());
+            options_dest.append("</option>");
+        }
+        
+        mv.addObject("options", options.toString());
+        mv.addObject("options_dest", options_dest.toString());
         mv.addObject("form","virement.htm");
         
         return mv;

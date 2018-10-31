@@ -73,7 +73,10 @@
                     </div>
                 </div>
                 <div class="col">
-                    <input name="id_dest" type="text" class="form-control" placeholder="Id du compte destinataire">
+                    <select name="id_dest" class="custom-select mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelect">
+                        <option selected>Selectionner un compte</option>
+                        ${options_dest}
+                    </select>
                 </div>
             </div>
             <div class="d-flex justify-content-center mt-3">

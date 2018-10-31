@@ -65,6 +65,7 @@ public class UtilisateurEntity implements Serializable {
         this.motDePasse=password;
         this.nom=nom;
         this.prenom=prenom;
+        this.isAdmin=false;
     }
     
     public List<CompteEntity> getAllAccounts(){
@@ -185,7 +186,8 @@ public class UtilisateurEntity implements Serializable {
     
     @Override
     public String toString(){
-        if (prenom.isEmpty() && nom.isEmpty()) return email;
-        return email + " (" + prenom + " " + nom +")";
+        String add = isAdmin ? "ADMIN - " : "";
+        if (prenom.isEmpty() && nom.isEmpty() && !isAdmin) return add + email;
+        return add + email + " (" + prenom + " " + nom +")";
     }
 }

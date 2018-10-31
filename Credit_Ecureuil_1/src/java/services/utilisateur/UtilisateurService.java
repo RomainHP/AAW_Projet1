@@ -2,6 +2,7 @@ package services.utilisateur;
 
 import dao.utilisateur.UtilisateurEntity;
 import exceptions.ServiceException;
+import java.util.List;
 
 /**
  *
@@ -59,4 +60,10 @@ public interface UtilisateurService {
      * @param entreprise nom de l'entreprise
      */
     void updateProUser(String id, String password, String nom, String prenom, String entreprise);
+    
+    /**
+     * Retourne la liste de tous les utilisateurs
+     * @return la liste de tous les utilisateurs
+     */
+    List<UtilisateurEntity> getAllUsers();
 }
