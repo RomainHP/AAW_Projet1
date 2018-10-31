@@ -25,7 +25,7 @@ import utils.ControllerUtils;
 public class CompteController {
     
     @Autowired
-    private CompteService service;
+    CompteService service;
     
     //----------------------
     @RequestMapping(value="consultation", method = RequestMethod.GET)

@@ -3,9 +3,7 @@ package controllers;
 import dao.compte.CompteEntity;
 import dao.compte.comptejoint.CompteJointEntity;
 import dao.compte.livret.LivretEntity;
-import dao.transaction.TransactionEntity;
 import exceptions.ServiceException;
-import java.util.LinkedHashSet;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,8 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import services.compte.CompteService;
-import services.utilisateur.UtilisateurService;
 import utils.ControllerUtils;
 
 /**
@@ -26,10 +22,7 @@ import utils.ControllerUtils;
 public class AdminController {
     
     @Autowired
-    UtilisateurService utilisateurService;
-    
-    @Autowired
-    CompteService compteService;
+    CompteController compteController;
     
     //---------------------------
     
@@ -41,7 +34,7 @@ public class AdminController {
 	    return new ModelAndView("erreur");
 
 	String login = ControllerUtils.getUserLogin(request);
-	List<CompteEntity> accounts = compteService.getAllAccounts();
+	List<CompteEntity> accounts = compteController.service.getAllAccounts();
 	
 	ModelAndView mv = new ModelAndView("consultation_comptes_admin");
 	StringBuffer table_comptes = new StringBuffer();
@@ -100,7 +93,7 @@ public class AdminController {
         String utilisateur = request.getParameter("utilisateur");
 
         try { 
-            compteService.ajoutLivret(nomCompte, utilisateur);
+            compteController.service.ajoutLivret(nomCompte, utilisateur);
             mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Le livret a bien été créé."));
         } catch (ServiceException e){
             mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
@@ -121,7 +114,7 @@ public class AdminController {
 	Long idCompte = Long.parseLong(idCompteStr);
 	
         try { 
-            compteService.supprimerLivret(idCompte,false);
+            compteController.service.supprimerLivret(idCompte,false);
             request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Le livret a bien été supprimé."));
         } catch (ServiceException e){
             request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
@@ -145,7 +138,7 @@ public class AdminController {
 	Long idCompte = Long.parseLong(idCompteStr);
 	
         try { 
-            compteService.supprimerCompteJoint(idCompte,false);
+            compteController.service.supprimerCompteJoint(idCompte,false);
             mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Le compte joint a bien été supprimé."));
         } catch (ServiceException e){
             mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
@@ -163,7 +156,7 @@ public class AdminController {
         
         StringBuilder options = new StringBuilder();
         
-	List<CompteEntity> accounts = compteService.getAllAccounts();
+	List<CompteEntity> accounts = compteController.service.getAllAccounts();
         
         for (CompteEntity compte : accounts){
             options.append("<option value=\"");
@@ -194,7 +187,7 @@ public class AdminController {
             String nomDest = request.getParameter("id_dest");
             Long idCompteDest = Long.parseLong(nomDest);
             
-            compteService.virement(idCompteSrc, idCompteDest, mnt, false);
+            compteController.service.virement(idCompteSrc, idCompteDest, mnt, false);
             request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Virement effectué."));
         } catch (ServiceException e) {
             request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));

@@ -1,6 +1,5 @@
 package controllers;
 
-import dao.compte.CompteEntity;
 import dao.message.MessageEntity;
 import dao.utilisateur.UtilisateurEntity;
 import exceptions.ServiceException;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import services.communication.CommunicationService;
-import services.utilisateur.UtilisateurService;
 import utils.ControllerUtils;
 
 /**
@@ -27,7 +25,7 @@ public class CommunicationController {
     CommunicationService service;
     
     @Autowired
-    UtilisateurService utilisateurService;
+    UtilisateurController utilisateurController;
     
     //----------------------------
     
@@ -80,7 +78,7 @@ public class CommunicationController {
         ModelAndView mv = new ModelAndView("envoyer_message");
         // Compte destinataire
         StringBuilder options_dest = new StringBuilder();
-	List<UtilisateurEntity> all_users = utilisateurService.getAllUsers();
+	List<UtilisateurEntity> all_users = utilisateurController.service.getAllUsers();
         for (UtilisateurEntity utilisateur : all_users){
             System.err.println(utilisateur);
             options_dest.append("<option value=\"");

@@ -29,11 +29,11 @@ public class CompteServiceImpl implements CompteService{
     @Resource
     CompteJointDao compteJointDao;
     
-    @Resource
-    UtilisateurDao userDao;
-    
     @Resource 
     TransactionDao transactionDao;
+    
+    @Resource
+    UtilisateurDao userDao;
     
     @Override
     public void virement(Long src, Long dest, Double montant, boolean testSolde) throws ServiceException {

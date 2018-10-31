@@ -4,7 +4,6 @@ import dao.entreprise.EntrepriseDao;
 import dao.entreprise.EntrepriseEntity;
 import dao.compte.CompteEntity;
 import dao.utilisateur.UtilisateurDao;
-import dao.utilisateur.UtilisateurDaoImpl;
 import dao.utilisateur.UtilisateurEntity;
 import dao.utilisateur.pro.UtilisateurProDao;
 import dao.utilisateur.pro.UtilisateurProEntity;
@@ -12,8 +11,9 @@ import exceptions.ServiceException;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import dao.compte.CompteDao;
-import dao.compte.CompteDaoImpl;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import services.compte.CompteService;
 
 /**
  *
@@ -29,9 +29,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     
     @Resource
     UtilisateurProDao daoPro;
-    
-    @Resource
-    CompteDao daoCompte;
     
     @Resource
     EntrepriseDao entrepriseDao;
