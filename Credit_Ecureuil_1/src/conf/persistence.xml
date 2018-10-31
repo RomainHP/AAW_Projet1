@@ -9,6 +9,7 @@
     <class>dao.utilisateur.pro.UtilisateurProEntity</class>
     <class>dao.compte.CompteEntity</class>
     <class>dao.compte.livret.LivretEntity</class>
+    <class>dao.compte.comptejoint.CompteJointEntity</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/CreditEcureuilDB"/>
