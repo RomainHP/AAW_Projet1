@@ -51,6 +51,10 @@
                                 <label for="nom_compte" class="text-info">Livret :</label>
                                 <input type="text" class="form-control" name="nom_compte" id="nom_compte" placeholder="Nom du livret">
                             </div>
+                            <div class="form-group mb-3">
+                                <label for="utilisateur" class="text-info">Utilisateur :</label>
+                                <input type="text" class="form-control" name="utilisateur" id="utilisateur" placeholder="Identifiant de l'utilisateur">
+                            </div>
                             <div class="form-group">
                                 <input type="submit" name="Valider" class="btn btn-primary" value="Valider">
                             </div>

@@ -15,9 +15,10 @@ public interface CompteService {
      * @param src id du compte source
      * @param dest id du compte destinataire
      * @param montant montant de la transaction
+     * @param testSolde verifie le solde avant transaction
      * @throws ServiceException 
      */
-    void virement(Long src, Long dest, Double montant) throws ServiceException;
+    void virement(Long src, Long dest, Double montant, boolean testSolde) throws ServiceException;
     
     /**
      * Renvoie la liste des comptes associés au login
@@ -37,9 +38,10 @@ public interface CompteService {
     /**
      * Supprime le livret correspondant à l'id
      * @param id id du livret à supprimer
+     * @param testSolde vérifie si le solde est nul
      * @throws ServiceException 
      */
-    void supprimerLivret(Long id) throws ServiceException;
+    void supprimerLivret(Long id, boolean testSolde) throws ServiceException;
     
     /**
      * Crée un compte joint
@@ -53,9 +55,10 @@ public interface CompteService {
     /**
      * Supprime le compte joint correspondant à l'id
      * @param id id du compte à supprimer
+     * @param testSolde vérifie si le solde est nul
      * @throws ServiceException 
      */
-    void supprimerCompteJoint(Long id) throws ServiceException;
+    void supprimerCompteJoint(Long id, boolean testSolde) throws ServiceException;
     
     /**
      * Renvoie le compte associé à l'id
@@ -63,4 +66,10 @@ public interface CompteService {
      * @return le compte associé à l'id
      */
     CompteEntity getAccount(Long id);
+
+    /**
+     * Renvoie la liste de tous les comptes existants
+     * @return la liste de tous les comptes existants
+     */
+    List<CompteEntity> getAllAccounts();
 }

@@ -36,14 +36,14 @@ public class CompteServiceImpl implements CompteService{
     TransactionDao transactionDao;
     
     @Override
-    public void virement(Long src, Long dest, Double montant) throws ServiceException {
+    public void virement(Long src, Long dest, Double montant, boolean testSolde) throws ServiceException {
         if (src==dest) throw new ServiceException("Comptes source et destinataire identiques.");
 	CompteEntity cesrc = dao.find(src);
 	CompteEntity cedst = dao.find(dest);
 	if (cesrc==null) throw new ServiceException("Compte source introuvable.");
 	if (cedst==null) throw new ServiceException("Compte destinataire introuvable.");
         if (montant<=0d) throw new ServiceException("Montant invalide (inférieur ou égal à 0).");
-        if (cesrc.getSolde()<montant) throw new ServiceException("Solde du compte source insuffisant.");
+        if (testSolde && cesrc.getSolde()<montant) throw new ServiceException("Solde du compte source insuffisant.");
         TransactionEntity te = new TransactionEntity(cesrc, cedst, montant);
         cedst.setSolde(cedst.getSolde() + montant);
         cedst.getTransactions_in().add(te);
@@ -73,10 +73,10 @@ public class CompteServiceImpl implements CompteService{
     }
 
     @Override
-    public void supprimerLivret(Long id) throws ServiceException {
+    public void supprimerLivret(Long id, boolean testSolde) throws ServiceException {
 	LivretEntity ce = livretDao.find(id);
 	if(ce == null) throw new ServiceException("Livret introuvable.");
-        if(ce.getSolde()!=0d) throw new ServiceException("Le solde du livret à supprimer n'est pas nul (0).");
+        if(testSolde && ce.getSolde()!=0d) throw new ServiceException("Le solde du livret à supprimer n'est pas nul (0).");
         List<TransactionEntity> tmp = new ArrayList<>(ce.getTransactions_in());
         for (TransactionEntity transaction : tmp){
             ce.getTransactions_in().remove(transaction);
@@ -120,10 +120,10 @@ public class CompteServiceImpl implements CompteService{
     }
 
     @Override
-    public void supprimerCompteJoint(Long id) throws ServiceException {
+    public void supprimerCompteJoint(Long id, boolean testSolde) throws ServiceException {
 	CompteJointEntity ce = compteJointDao.find(id);
 	if(ce == null) throw new ServiceException("Compte joint introuvable.");
-        if(ce.getSolde()!=0d) throw new ServiceException("Le solde du compte à supprimer n'est pas nul (0).");
+        if(testSolde && ce.getSolde()!=0d) throw new ServiceException("Le solde du compte à supprimer n'est pas nul (0).");
         for (UtilisateurEntity user : ce.getCo_proprietaires()){
             user.removeCompteJoint(ce);
             userDao.update(user);
@@ -136,5 +136,10 @@ public class CompteServiceImpl implements CompteService{
     @Override
     public CompteEntity getAccount(Long id) {
 	return dao.find(id);
+    }
+    
+    @Override
+    public List<CompteEntity> getAllAccounts(){
+        return dao.findAll();
     }
 }

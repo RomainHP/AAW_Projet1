@@ -31,6 +31,16 @@ public class ControllerUtils {
     }
     
     /**
+     * Renvoie vrai si l'utilisateur est admin
+     * @param request
+     * @return vrai si l'utilisateur est admin
+     */
+    public static boolean isUtilisateurAdmin(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        return (session!=null && session.getAttribute("admin")!=null &&(boolean)session.getAttribute("admin"));
+    }
+    
+    /**
      * Retourne vrai si l'email est valide
      * @param email
      * @return vrai si l'email est valide

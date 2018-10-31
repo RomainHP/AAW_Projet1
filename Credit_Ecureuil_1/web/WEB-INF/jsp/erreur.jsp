@@ -33,7 +33,14 @@
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         <c:choose>
             <c:when test="${login != null}">
-                <%@ include file="bandeau/bandeau_connecte.jsp" %>
+                <c:choose>
+                    <c:when test="${admin != null && admin == true}">
+                        <%@ include file="bandeau/bandeau_admin.jsp" %>
+                    </c:when>    
+                    <c:otherwise>
+                        <%@ include file="bandeau/bandeau_connecte.jsp" %>
+                    </c:otherwise> 
+                </c:choose>
             </c:when>    
             <c:otherwise>
                 <%@ include file="bandeau/bandeau_deconnecte.jsp" %>

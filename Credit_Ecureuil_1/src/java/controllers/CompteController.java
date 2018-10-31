@@ -71,6 +71,7 @@ public class CompteController {
     }
     
     //--------------------
+    
     @RequestMapping(value="virement", method = RequestMethod.GET)
     protected ModelAndView initVirement(HttpServletRequest request,HttpServletResponse response) {
         if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
@@ -89,6 +90,7 @@ public class CompteController {
         }
         
         mv.addObject("options", options);
+        mv.addObject("form","virement.htm");
         
         return mv;
     }    
@@ -106,7 +108,7 @@ public class CompteController {
 
             String nomDest = request.getParameter("id_dest");
             Long idCompteDest = Long.parseLong(nomDest);
-            service.virement(idCompteSrc, idCompteDest, mnt);
+            service.virement(idCompteSrc, idCompteDest, mnt,true);
             request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Virement effectué."));
         } catch (ServiceException e) {
             request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
@@ -162,7 +164,7 @@ public class CompteController {
 	Long idCompte = Long.parseLong(idCompteStr);
 	
         try { 
-            service.supprimerLivret(idCompte);
+            service.supprimerLivret(idCompte,true);
             request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Le livret a bien été supprimé."));
         } catch (ServiceException e){
             request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
@@ -226,7 +228,7 @@ public class CompteController {
 	Long idCompte = Long.parseLong(idCompteStr);
 	
         try { 
-            service.supprimerCompteJoint(idCompte);
+            service.supprimerCompteJoint(idCompte,true);
             mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Le compte joint a bien été supprimé."));
         } catch (ServiceException e){
             mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));

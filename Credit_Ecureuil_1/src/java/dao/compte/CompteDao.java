@@ -1,5 +1,7 @@
 package dao.compte;
 
+import java.util.List;
+
 /**
  *
  * @author rcharpen
@@ -12,4 +14,6 @@ public interface CompteDao {
     public void update(CompteEntity ce);
     
     public void remove(CompteEntity ce);
+
+    public List<CompteEntity> findAll();
 }

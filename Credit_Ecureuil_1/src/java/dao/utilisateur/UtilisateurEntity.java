@@ -2,7 +2,6 @@ package dao.utilisateur;
 
 import dao.compte.CompteEntity;
 import dao.compte.comptejoint.CompteJointEntity;
-import dao.compte.livret.LivretEntity;
 import dao.message.MessageEntity;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -41,6 +39,9 @@ public class UtilisateurEntity implements Serializable {
     
     @Column
     private String prenom;
+    
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isAdmin;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="proprietaire")
     private List<CompteEntity> comptes;
@@ -94,6 +95,14 @@ public class UtilisateurEntity implements Serializable {
 
     public List<CompteJointEntity> getComptes_joints() {
         return comptes_joints;
+    }
+
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     public String getNom() {
@@ -174,4 +183,9 @@ public class UtilisateurEntity implements Serializable {
         return false;
     }
     
+    @Override
+    public String toString(){
+        if (prenom.isEmpty() && nom.isEmpty()) return email;
+        return email + " (" + prenom + " " + nom +")";
+    }
 }

@@ -47,8 +47,11 @@ public class UtilisateurController {
                 session = request.getSession(true); // on la crée
             }
             session.setAttribute("login", identifiant);
+            UtilisateurEntity utilisateur = service.getUtilisateur(identifiant);
+            // si l'utilisateur est admin ou non
+            session.setAttribute("admin", utilisateur.getIsAdmin());
             // si l'utilisateur est pro ou non
-            session.setAttribute("pro", service.getUtilisateur(identifiant) instanceof UtilisateurProEntity);
+            session.setAttribute("pro", utilisateur instanceof UtilisateurProEntity);
             return new ModelAndView("index");
         } catch (ServiceException e){
             ModelAndView mv = new ModelAndView("connexion");

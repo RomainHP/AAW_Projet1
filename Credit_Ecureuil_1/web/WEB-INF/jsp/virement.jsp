@@ -41,13 +41,20 @@
         <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
         <c:choose>
             <c:when test="${login != null}">
-                <%@ include file="bandeau/bandeau_connecte.jsp" %>
+                <c:choose>
+                    <c:when test="${admin != null && admin == true}">
+                        <%@ include file="bandeau/bandeau_admin.jsp" %>
+                    </c:when>    
+                    <c:otherwise>
+                        <%@ include file="bandeau/bandeau_connecte.jsp" %>
+                    </c:otherwise> 
+                </c:choose>
             </c:when>    
             <c:otherwise>
                 <%@ include file="bandeau/bandeau_deconnecte.jsp" %>
             </c:otherwise>
         </c:choose>
-        <form action="virement.htm" method="post">
+        <form action="${form}" method="post">
             <h3 class="text-center text-info m-4">Effectuer un virement</h3>
             ${returnMessage}
             <div class="d-flex">
