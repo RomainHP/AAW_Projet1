@@ -1,6 +1,7 @@
 package controllers;
 
 import dao.utilisateur.UtilisateurEntity;
+import dao.utilisateur.admin.AdminEntity;
 import dao.utilisateur.pro.UtilisateurProEntity;
 import exceptions.ServiceException;
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +50,7 @@ public class UtilisateurController {
             session.setAttribute("login", identifiant);
             UtilisateurEntity utilisateur = service.getUtilisateur(identifiant);
             // si l'utilisateur est admin ou non
-            session.setAttribute("admin", utilisateur.getIsAdmin());
+            session.setAttribute("admin", utilisateur instanceof AdminEntity);
             // si l'utilisateur est pro ou non
             session.setAttribute("pro", utilisateur instanceof UtilisateurProEntity);
             return new ModelAndView("index");

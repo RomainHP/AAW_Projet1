@@ -39,9 +39,6 @@ public class UtilisateurEntity implements Serializable {
     
     @Column
     private String prenom;
-    
-    @Column(columnDefinition = "boolean default false")
-    private Boolean isAdmin;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="proprietaire")
     private List<CompteEntity> comptes;
@@ -65,7 +62,6 @@ public class UtilisateurEntity implements Serializable {
         this.motDePasse=password;
         this.nom=nom;
         this.prenom=prenom;
-        this.isAdmin=false;
     }
     
     public List<CompteEntity> getAllAccounts(){
@@ -96,14 +92,6 @@ public class UtilisateurEntity implements Serializable {
 
     public List<CompteJointEntity> getComptes_joints() {
         return comptes_joints;
-    }
-
-    public Boolean getIsAdmin() {
-        return isAdmin;
-    }
-
-    public void setIsAdmin(Boolean isAdmin) {
-        this.isAdmin = isAdmin;
     }
 
     public String getNom() {
@@ -186,8 +174,7 @@ public class UtilisateurEntity implements Serializable {
     
     @Override
     public String toString(){
-        String add = isAdmin ? "ADMIN - " : "";
-        if (prenom.isEmpty() && nom.isEmpty() && !isAdmin) return add + email;
-        return add + email + " (" + prenom + " " + nom +")";
+        if (prenom.isEmpty() && nom.isEmpty()) return email;
+        return email + " (" + prenom + " " + nom +")";
     }
 }
