@@ -51,7 +51,7 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
 
     @Override
     public List<UtilisateurEntity> findAll() {
-        Query q = em.createQuery("SELECT u FROM UtilisateurEntity u ORDER BY u.isAdmin DESC, u.email");
+        Query q = em.createQuery("SELECT u FROM UtilisateurEntity u ORDER BY u.email");
         return q.getResultList();
     }
     
