@@ -7,13 +7,15 @@ import java.util.List;
  * @author rcharpen
  */
 public interface CompteDao {
-    public void save(CompteEntity ce);
+    void save(CompteEntity ce);
     
-    public CompteEntity find(Long id);
+    CompteEntity find(Long id);
     
-    public void update(CompteEntity ce);
+    void update(CompteEntity ce);
     
-    public void remove(CompteEntity ce);
+    void remove(CompteEntity ce);
 
-    public List<CompteEntity> findAll();
+    List<CompteEntity> findAll();
+    
+    List<CompteEntity> findAllOpenAccounts();
 }

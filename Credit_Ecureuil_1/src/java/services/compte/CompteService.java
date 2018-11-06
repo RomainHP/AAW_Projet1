@@ -71,5 +71,5 @@ public interface CompteService {
      * Renvoie la liste de tous les comptes existants
      * @return la liste de tous les comptes existants
      */
-    List<CompteEntity> getAllAccounts();
+    List<CompteEntity> getAllOpenAccounts();
 }

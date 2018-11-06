@@ -40,11 +40,14 @@ public class CompteEntity implements Serializable {
     @JoinColumn(name="fk_owner")
     private UtilisateurEntity proprietaire;
     
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="cptDest")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cptDest", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<TransactionEntity> transactions_in;
     
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="cptSource")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cptSource", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<TransactionEntity> transactions_out;
+    
+    @Column(columnDefinition = "boolean default false")
+    private boolean cloture;
     
     @Column
     private Double solde;
@@ -61,6 +64,14 @@ public class CompteEntity implements Serializable {
     public CompteEntity(UtilisateurEntity prop, double solde){
 	this.solde = solde;
 	this.proprietaire = prop;
+    }
+
+    public void setCloture(boolean cloture) {
+        this.cloture = cloture;
+    }
+
+    public boolean isCloture() {
+        return cloture;
     }
     
     public Long getId() {

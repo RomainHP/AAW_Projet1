@@ -43,5 +43,11 @@ public class CompteDaoImpl implements CompteDao {
         Query q = em.createQuery("SELECT c FROM CompteEntity c ORDER BY c.id");
         return q.getResultList();
     }
+    
+    @Override
+    public List<CompteEntity> findAllOpenAccounts(){
+        Query q = em.createQuery("SELECT c FROM CompteEntity c WHERE c.cloture=false ORDER BY c.id");
+        return q.getResultList();
+    }
 
 }

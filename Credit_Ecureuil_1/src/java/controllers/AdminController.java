@@ -34,7 +34,7 @@ public class AdminController {
 	    return new ModelAndView("erreur");
 
 	String login = ControllerUtils.getUserLogin(request);
-	List<CompteEntity> accounts = compteController.service.getAllAccounts();
+	List<CompteEntity> accounts = compteController.service.getAllOpenAccounts();
 	
 	ModelAndView mv = new ModelAndView("consultation_comptes_admin");
 	StringBuffer table_comptes = new StringBuffer();
@@ -156,7 +156,7 @@ public class AdminController {
         
         StringBuilder options = new StringBuilder();
         
-	List<CompteEntity> accounts = compteController.service.getAllAccounts();
+	List<CompteEntity> accounts = compteController.service.getAllOpenAccounts();
         
         for (CompteEntity compte : accounts){
             options.append("<option value=\"");

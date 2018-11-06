@@ -90,7 +90,7 @@ public class CompteController {
         
         // Compte destinataire
         StringBuilder options_dest = new StringBuilder();
-	List<CompteEntity> all_accounts = service.getAllAccounts();
+	List<CompteEntity> all_accounts = service.getAllOpenAccounts();
         for (CompteEntity compte : all_accounts){
             options_dest.append("<option value=\"");
             options_dest.append(compte.getId());

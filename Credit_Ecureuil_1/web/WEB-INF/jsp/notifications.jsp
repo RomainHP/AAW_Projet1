@@ -46,6 +46,7 @@
                 <%@ include file="bandeau/bandeau_deconnecte.jsp" %>
             </c:otherwise>
         </c:choose>
+        <h1 style="text-align:center">En cours de construction.</h1>
         <%@ include file="bandeau/footer.jsp" %>
     </body>
 </html>

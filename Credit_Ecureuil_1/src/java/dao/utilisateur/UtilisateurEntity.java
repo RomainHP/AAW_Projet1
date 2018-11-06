@@ -64,9 +64,18 @@ public class UtilisateurEntity implements Serializable {
         this.prenom=prenom;
     }
     
-    public List<CompteEntity> getAllAccounts(){
-        List<CompteEntity> result = new ArrayList<>(comptes);
-        result.addAll(comptes_joints);
+    public List<CompteEntity> getAllOpenAccounts(){
+        List<CompteEntity> result = new ArrayList<>();
+        for (CompteEntity compte : comptes){
+            if (!compte.isCloture()){
+                result.add(compte);
+            }
+        }
+        for (CompteJointEntity compte : comptes_joints){
+            if (!compte.isCloture()){
+                result.add(compte);
+            }
+        }
         result.sort(new Comparator<CompteEntity>(){
             @Override
             public int compare(CompteEntity o1, CompteEntity o2) {
@@ -170,6 +179,13 @@ public class UtilisateurEntity implements Serializable {
             if (ce.toString().equals(name)) return true;
         }
         return false;
+    }
+    
+    public CompteEntity getAccount(String name){
+        for (CompteEntity ce : this.getComptes()){
+            if (ce.toString().equals(name)) return ce;
+        }
+        return null;
     }
     
     @Override

@@ -42,6 +42,8 @@ public class CompteServiceImpl implements CompteService{
 	CompteEntity cedst = dao.find(dest);
 	if (cesrc==null) throw new ServiceException("Compte source introuvable.");
 	if (cedst==null) throw new ServiceException("Compte destinataire introuvable.");
+        if (cesrc.isCloture()) throw new ServiceException("Compte source cloturé.");
+        if (cedst.isCloture()) throw new ServiceException("Compte destinataire cloturé.");
         if (montant<=0d) throw new ServiceException("Montant invalide (inférieur ou égal à 0).");
         if (testSolde && cesrc.getSolde()<montant) throw new ServiceException("Solde du compte source insuffisant.");
         TransactionEntity te = new TransactionEntity(cesrc, cedst, montant);
@@ -57,7 +59,7 @@ public class CompteServiceImpl implements CompteService{
     public List<CompteEntity> consultation(String username) {
         UtilisateurEntity ant = userDao.find(username);
         if (ant!=null){
-            return ant.getAllAccounts();
+            return ant.getAllOpenAccounts();
         }
         return new ArrayList<>();
     }
@@ -66,7 +68,16 @@ public class CompteServiceImpl implements CompteService{
     public void ajoutLivret(String nomCompte, String nomUtilisateur) throws ServiceException {
 	UtilisateurEntity ue = userDao.find(nomUtilisateur);
         if (ue==null) throw new ServiceException("Utilisateur introuvable.");
-        if (ue.hasAccountName(nomCompte)) throw new ServiceException("Nom de livret déjà pris.");
+        if (ue.hasAccountName(nomCompte)){
+            CompteEntity ce = ue.getAccount(nomCompte);
+            if (ce!=null && ce.isCloture()){
+                ce.setCloture(false);
+                dao.update(ce);
+                return;
+            } else {
+                throw new ServiceException("Nom de livret déjà pris.");
+            }
+        }
         LivretEntity ce = new LivretEntity(nomCompte, ue);
         ue.addAccount(ce);
         userDao.update(ue);
@@ -77,23 +88,8 @@ public class CompteServiceImpl implements CompteService{
 	LivretEntity ce = livretDao.find(id);
 	if(ce == null) throw new ServiceException("Livret introuvable.");
         if(testSolde && ce.getSolde()!=0d) throw new ServiceException("Le solde du livret à supprimer n'est pas nul (0).");
-        List<TransactionEntity> tmp = new ArrayList<>(ce.getTransactions_in());
-        for (TransactionEntity transaction : tmp){
-            ce.getTransactions_in().remove(transaction);
-            livretDao.update(ce);
-            transaction.getCptSource().getTransactions_out().remove(transaction);
-            transactionDao.remove(transaction);
-        }
-        tmp = new ArrayList<>(ce.getTransactions_out());
-        for (TransactionEntity transaction : tmp){
-            ce.getTransactions_out().remove(transaction);
-            livretDao.update(ce);
-            transaction.getCptDest().getTransactions_in().remove(transaction);
-            transactionDao.remove(transaction);
-        }
-        ce.getProprietaire().removeAccount(ce);
-        userDao.update(ce.getProprietaire());
-        livretDao.remove(ce);
+        ce.setCloture(true);
+        livretDao.update(ce);
     }
     
     @Override
@@ -124,13 +120,8 @@ public class CompteServiceImpl implements CompteService{
 	CompteJointEntity ce = compteJointDao.find(id);
 	if(ce == null) throw new ServiceException("Compte joint introuvable.");
         if(testSolde && ce.getSolde()!=0d) throw new ServiceException("Le solde du compte à supprimer n'est pas nul (0).");
-        for (UtilisateurEntity user : ce.getCo_proprietaires()){
-            user.removeCompteJoint(ce);
-            userDao.update(user);
-        }
-        ce.getProprietaire().removeAccount(ce);
-        userDao.update(ce.getProprietaire());
-        compteJointDao.remove(ce);
+        ce.setCloture(true);
+        compteJointDao.update(ce);
     }
 
     @Override
@@ -139,7 +130,7 @@ public class CompteServiceImpl implements CompteService{
     }
     
     @Override
-    public List<CompteEntity> getAllAccounts(){
-        return dao.findAll();
+    public List<CompteEntity> getAllOpenAccounts(){
+        return dao.findAllOpenAccounts();
     }
 }
