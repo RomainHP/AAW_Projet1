@@ -46,11 +46,12 @@
                 <%@ include file="bandeau/bandeau_deconnecte.jsp" %>
             </c:otherwise>
         </c:choose>
+        <h1 style="text-align: center">En cours de construction.</h1>
         <div class="container">
-            <h3 class="text-center text-info">Formulaire d'inscription</h3>
+            <h3 class="text-center text-info mb-4">Envoyer l'entreprise en bourse</h3>
             ${returnMessage}
             <form>
-                <div class="form-row align-items-center">
+                <div class="row justify-content-center">
                   <div class="col-sm-1 my-1">
                     <p class="form-control-static">${entreprise}</p>
                   </div>
