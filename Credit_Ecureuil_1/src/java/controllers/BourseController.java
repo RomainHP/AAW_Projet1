@@ -15,8 +15,7 @@ import services.utilisateur.UtilisateurService;
 import utils.ControllerUtils;
 
 /**
- *
- * @author rcharpen
+ * Le controller utilisé pour la gestion de l'ordre en bourse
  */
 @Controller
 public class BourseController {
@@ -28,6 +27,10 @@ public class BourseController {
     UtilisateurService userService;
     
     //------------------
+    /**
+     * Affichage de la page ordre en bourse en method GET
+     * @return ModelAndView correspondant à la page "ordre_bourse"
+     */
     @RequestMapping(value="ordre_bourse", method = RequestMethod.GET)
     protected ModelAndView initBourse(HttpServletRequest request,HttpServletResponse response) {
         if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
@@ -49,6 +52,10 @@ public class BourseController {
         return mv;
     }
     
+    /**
+     * Affichage de la page ordre en bourse en method POST
+     * @return ModelAndView correspondant à la page "ordre_bourse"
+     */
     @RequestMapping(value="ordre_bourse", method = RequestMethod.POST)
     public ModelAndView bourse(
             HttpServletRequest request,

@@ -15,8 +15,7 @@ import services.communication.CommunicationService;
 import utils.ControllerUtils;
 
 /**
- *
- * @author rcharpen
+ * Le controller utilisé par le système de communication
  */
 @Controller
 public class CommunicationController {
@@ -35,7 +34,10 @@ public class CommunicationController {
     }
     
     //----------------------------
-    
+    /**
+     * Affichage de la page "consulter_messagerie" en methode GET
+     * @return ModelAndView correspondant a la page "consulter_messagerie"
+     */
     @RequestMapping(value="consulter_messagerie", method = RequestMethod.GET)
     protected ModelAndView initConsulterMessagerie(HttpServletRequest request,HttpServletResponse response) {
         if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
@@ -71,7 +73,10 @@ public class CommunicationController {
     }
     
     //----------------------------
-    
+    /**
+     * Affichage de la page "envoyer_message" en methode GET
+     * @return ModelAndView correspondant a la page "envoyer_message"
+     */
     @RequestMapping(value="envoyer_message", method = RequestMethod.GET)
     protected ModelAndView initEnvoyerMessage(HttpServletRequest request,HttpServletResponse response) {
         if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
@@ -92,6 +97,10 @@ public class CommunicationController {
         return mv;
     }    
     
+    /**
+     * Affichage de la page "envoyer_message" en methode POST
+     * @return ModelAndView correspondant a la page "envoyer_message" avec indication de réussite ou non
+     */
     @RequestMapping(value="envoyer_message", method = RequestMethod.POST)
     public ModelAndView serviceEnvoyerMessage(
             HttpServletRequest request,
@@ -114,6 +123,10 @@ public class CommunicationController {
     
      //----------------------
     
+    /**
+     * Affichage de la page "supprimer_message" en methode POST
+     * @return ModelAndView correspondant a la page "supprimer_message" avec indication de réussite ou non
+     */
     @RequestMapping(value="supprimer_message", method = RequestMethod.POST)
     protected ModelAndView supprimerMessage(
             HttpServletRequest request,

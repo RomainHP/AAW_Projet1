@@ -18,8 +18,7 @@ import services.compte.CompteService;
 import utils.ControllerUtils;
 
 /**
- *
- * @author rcharpen
+ * Le controller correspondant à l'affichage des comptes utilisateurs
  */
 @Controller
 public class CompteController {
@@ -28,6 +27,10 @@ public class CompteController {
     CompteService service;
     
     //----------------------
+    /**
+     * Affichage de la page "consultation" en methode GET
+     * @return ModelAndView correspondant a la page "consultation"
+     */
     @RequestMapping(value="consultation", method = RequestMethod.GET)
     protected ModelAndView initConsult(HttpServletRequest request,HttpServletResponse response) {
         if (!ControllerUtils.isUtilisateurConnecte(request))
@@ -71,7 +74,10 @@ public class CompteController {
     }
     
     //--------------------
-    
+    /**
+     * Affichage de la page "virement" en methode GET
+     * @return ModelAndView correspondant a la page "virement"
+     */
     @RequestMapping(value="virement", method = RequestMethod.GET)
     protected ModelAndView initVirement(HttpServletRequest request,HttpServletResponse response) {
         if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
@@ -106,6 +112,10 @@ public class CompteController {
         return mv;
     }    
     
+    /**
+     * Affichage de la page "virement" en methode POST
+     * @return ModelAndView correspondant a la page "virement" avec indication de réussite ou non
+     */
     @RequestMapping(value="virement", method = RequestMethod.POST)
     protected ModelAndView virementCompte(
             HttpServletRequest request,
@@ -132,6 +142,10 @@ public class CompteController {
     
     //--------------------
     
+    /**
+     * Affichage de la page "ajout_livret" en methode GET
+     * @return ModelAndView correspondant a la page "ajout_livret"
+     */
     @RequestMapping(value="ajout_livret", method = RequestMethod.GET)
     protected ModelAndView initAjoutLivret(
             HttpServletRequest request,
@@ -142,6 +156,10 @@ public class CompteController {
 	return new ModelAndView("ajout_livret");
     }
     
+    /**
+     * Affichage de la page "ajout_livret" en methode POST
+     * @return ModelAndView correspondant a la page "ajout_livret" avec indication de réussite ou non
+     */
     @RequestMapping(value="ajout_livret", method = RequestMethod.POST)
     protected ModelAndView ajoutLivret(
             HttpServletRequest request,
@@ -164,6 +182,10 @@ public class CompteController {
     
     //----------------------
     
+    /**
+     * Affichage de la page "supprimer_livret" en methode POST
+     * @return ModelAndView correspondant a la page "supprimer_livret" avec indication de réussite ou non
+     */
     @RequestMapping(value="supprimer_livret", method = RequestMethod.POST)
     protected ModelAndView supprimerLivret(
             HttpServletRequest request,
@@ -186,6 +208,10 @@ public class CompteController {
     
     //--------------------
     
+    /**
+     * Affichage de la page "ajout_compte_joint" en methode GET
+     * @return ModelAndView correspondant a la page "ajout_compte_joint"
+     */
     @RequestMapping(value="ajout_compte_joint", method = RequestMethod.GET)
     protected ModelAndView initAjoutCompteJoint(
             HttpServletRequest request,
@@ -196,6 +222,10 @@ public class CompteController {
 	return new ModelAndView("ajout_compte_joint");
     }
     
+    /**
+     * Affichage de la page "ajout_compte_joint" en methode POST
+     * @return ModelAndView correspondant a la page "ajout_compte_joint" avec indication de réussite ou non
+     */
     @RequestMapping(value="ajout_compte_joint", method = RequestMethod.POST)
     protected ModelAndView ajoutCompteJoint(
             HttpServletRequest request,
@@ -226,6 +256,10 @@ public class CompteController {
     
     //----------------------
     
+    /**
+     * Affichage de la page "conulstation" en methode GET après suppression d'un compte
+     * @return ModelAndView correspondant a la page "consultation" avec indication de réussite ou non dans la suppression de compte joint
+     */
     @RequestMapping(value="supprimer_compte_joint", method = RequestMethod.POST)
     protected ModelAndView supprimerCompteJoint(
             HttpServletRequest request,
@@ -249,7 +283,10 @@ public class CompteController {
     }
     
     //------------------------  
-    
+    /**
+     * Affichage de la page "details_compte" en methode POST
+     * @return ModelAndView correspondant a la page "details_compte" si réussite, page "erreur" autrement
+     */
     @RequestMapping(value="details_compte", method = RequestMethod.POST)
     protected ModelAndView detailsCompte(
             HttpServletRequest request,

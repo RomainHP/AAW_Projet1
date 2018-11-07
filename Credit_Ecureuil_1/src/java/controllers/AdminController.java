@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import utils.ControllerUtils;
 
 /**
- *
+ * Le controller utilisé par les utilisateur de type Admin
  * @author romain
  */
 @Controller
@@ -26,6 +26,11 @@ public class AdminController {
     
     //---------------------------
     
+    /**
+     * Fonction de type GET utilisée pour la consultation de compte d'admin
+     * @return Un ModelAndView correspondant soit a la page consultation_comptes_admins si autorisation correcte, soit la page erreur
+     * @throws Exception 
+     */
     @RequestMapping(value="consultation_comptes_admin", method = RequestMethod.GET)
     protected ModelAndView initConsultationComptesAdmin(
             HttpServletRequest request,
@@ -72,6 +77,11 @@ public class AdminController {
     
     //--------------------
     
+    /**
+     * Affichage de la page ajout de livret en mode admin avec une methode GET
+     * @return Un ModelAndView correspondant soit a la page ajout_livret_admin si autorisation correcte, soit la page erreur
+     * @throws Exception 
+     */
     @RequestMapping(value="ajout_livret_admin", method = RequestMethod.GET)
     protected ModelAndView initAjoutLivret(
             HttpServletRequest request,
@@ -82,6 +92,11 @@ public class AdminController {
 	return new ModelAndView("ajout_livret_admin");
     }
     
+    /**
+     * Affichage de la page ajout de livret en mode admin avec une methode POST
+     * @return Un ModelAndView correspondant à la page "ajout_livre_admin" avec indication de si l'ajout de livret s'est faite correctement ou non
+     * @throws Exception 
+     */
     @RequestMapping(value="ajout_livret_admin", method = RequestMethod.POST)
     protected ModelAndView ajoutLivret(
             HttpServletRequest request,
@@ -103,6 +118,11 @@ public class AdminController {
     
     //----------------------
     
+    /**
+     * Affichage de la page suppression de livret en mode admin avec une methode POST
+     * @return Un ModelAndView correspondant à la page "supprimer_livret_admin" avec indication de si la suppression de livret s'est faite correctement ou non
+     * @throws Exception 
+     */
     @RequestMapping(value="supprimer_livret_admin", method = RequestMethod.POST)
     protected ModelAndView supprimerLivret(
             HttpServletRequest request,
@@ -125,6 +145,11 @@ public class AdminController {
     
    //----------------------
     
+    /**
+     * Affichage de la page suppression de compte joint en mode admin avec une methode POST
+     * @return Un ModelAndView correspondant à la page "consultation" avec indication de si la suppression de compte joint s'est faite correctement ou non
+     * @throws Exception 
+     */
     @RequestMapping(value="supprimer_compte_joint_admin", method = RequestMethod.POST)
     protected ModelAndView supprimerCompteJoint(
             HttpServletRequest request,
@@ -149,6 +174,11 @@ public class AdminController {
     
     //--------------------
     
+    /**
+     * Affichage de la page virement en mode admin avec une methode GET
+     * @return Un ModelAndView correspondant à la page "virement"
+     * @throws Exception 
+     */
     @RequestMapping(value="virement_admin", method = RequestMethod.GET)
     protected ModelAndView initVirementAdmin(HttpServletRequest request,HttpServletResponse response) {
         if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
@@ -173,6 +203,11 @@ public class AdminController {
         return mv;
     }    
     
+    /**
+     * Affichage de la page virement en mode admin avec une methode POST
+     * @return Un ModelAndView correspondant à la page "virement" avec indication de si le virement s'est fait correctement ou non
+     * @throws Exception 
+     */
     @RequestMapping(value="virement_admin", method = RequestMethod.POST)
     protected ModelAndView virementAdmin(
             HttpServletRequest request,

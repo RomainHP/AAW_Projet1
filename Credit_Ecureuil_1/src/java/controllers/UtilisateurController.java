@@ -16,8 +16,7 @@ import services.utilisateur.UtilisateurService;
 import utils.ControllerUtils;
 
 /**
- *
- * @author rcharpen
+ * Le controller utilisé par les utilisateurs de types classiques (hors admin)
  */
 @Controller
 public class UtilisateurController {
@@ -26,12 +25,19 @@ public class UtilisateurController {
     UtilisateurService service;
     
     //---------------------------
-    
+    /**
+     * Affichage de la page "connexion" en methode GET
+     * @return ModelAndView correspondant a la page "connexion" si réussite, page "erreur" sinon
+     */
     @RequestMapping(value="connexion", method = RequestMethod.GET)
     protected String initConnexion(HttpServletRequest request,HttpServletResponse response) {
         return ControllerUtils.isUtilisateurConnecte(request) ? "erreur" : "connexion";
     }
     
+    /**
+     * Affichage de la page "index" en methode POST
+     * @return ModelAndView correspondant a la page "index" si connexion réussite, page "erreur" sinon
+     */
     @RequestMapping(value="connexion", method = RequestMethod.POST)
     protected ModelAndView connexion(
             HttpServletRequest request,
@@ -63,6 +69,10 @@ public class UtilisateurController {
 
     //---------------------------
     
+    /**
+     * Affichage de la page "deconnexion" en methode GET
+     * @return ModelAndView correspondant a la page "index" si réussite, page "erreur" sinon
+     */
     @RequestMapping(value="deconnexion", method = RequestMethod.GET)
     protected String initDeconnexion(HttpServletRequest request,HttpServletResponse response) {
         HttpSession session = request.getSession(false);
@@ -78,12 +88,21 @@ public class UtilisateurController {
 
     //---------------------------
     
+    /**
+     * Affichage de la page "inscription" en methode GET
+     * @return ModelAndView correspondant a la page "inscription" si réussite, page "erreur" sinon
+     */
     @RequestMapping(value="inscription", method = RequestMethod.GET)
     protected String initInscription(HttpServletRequest request,HttpServletResponse response) {
        if (ControllerUtils.isUtilisateurConnecte(request)) return "erreur";
        return "inscription";
     }
 
+    
+    /**
+     * Affichage de la page "inscription" en methode POST
+     * @return ModelAndView correspondant a la page "inscription" si réussite affichage d'une erreur sinon
+     */
     @RequestMapping(value="inscription", method = RequestMethod.POST)
     protected ModelAndView inscription(
             HttpServletRequest request,
@@ -106,12 +125,20 @@ public class UtilisateurController {
     }
     
     //---------------------------
+    /**
+     * Affichage de la page "inscription_pro" en methode GET
+     * @return ModelAndView correspondant a la page "inscription_pro" si réussite affichage d'une erreur sinon
+     */
     @RequestMapping(value="inscription_pro", method = RequestMethod.GET)
     protected String initInscriptionPro(HttpServletRequest request,HttpServletResponse response) {
        if (ControllerUtils.isUtilisateurConnecte(request)) return "erreur";
        return "inscription_pro";
     }
 
+    /**
+     * Affichage de la page "inscription_pro" en methode POST
+     * @return ModelAndView correspondant a la page "inscription_pro" si réussite affichage d'une erreur sinon
+     */
     @RequestMapping(value="inscription_pro", method = RequestMethod.POST)
     protected ModelAndView inscriptionPro(
             HttpServletRequest request,
@@ -139,6 +166,10 @@ public class UtilisateurController {
 
     //---------------------------
     
+    /**
+     * Affichage de la page "profil" en methode GET
+     * @return ModelAndView correspondant a la page "profil" si réussite affichage de la page "erreur" autrement
+     */
     @RequestMapping(value="profil", method = RequestMethod.GET)
     protected ModelAndView initProfil(HttpServletRequest request,HttpServletResponse response) {
         if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
@@ -162,6 +193,10 @@ public class UtilisateurController {
 	return mv;
     }
 
+    /**
+     * Affichage de la page "profil" en methode POST
+     * @return ModelAndView correspondant a la page "profil" si réussite affichage d'une erreur sinon
+     */
     @RequestMapping(value="profil", method = RequestMethod.POST)
     protected ModelAndView profilUtilisateur(
             HttpServletRequest request,
