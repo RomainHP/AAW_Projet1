@@ -9,7 +9,7 @@ and open the template in the editor.
     
 <head>
     <meta charset="utf-8" />
-    <title>Index</title>
+    <title>Crédit de l'écureuil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <!-- jQuery library -->
@@ -24,6 +24,12 @@ and open the template in the editor.
     
     <link href="app.css" rel="stylesheet" />
     
+    <!-- Theme personnel -->
+    <link rel="stylesheet" href="css/theme.css" type="text/css">
+
+    <!-- Icone -->
+    <link rel="shortcut icon" href="images/logo.png?" type="image/x-icon" />
+    
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-cookies.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-route.min.js"></script>
@@ -31,18 +37,11 @@ and open the template in the editor.
 </head>
 
 <body>
-    <p>test</p>
-     <div class="jumbotron">
-        <div class="container">
-            <div class="col-sm-8 col-sm-offset-2">
-                <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close" /><span aria-hidden="true">&times;</span>
-                    
-                </div>
-                <div ng-view></div>
-            </div>
-        </div>
-    </div>
+    <div ng-view></div>
+    
+    <footer class="footer fixed-bottom">
+        <div class="d-flex justify-content-center p-3 bg-dark text-white">&copy; Crédit de l'écureuil 2017-2018</div>
+    </footer>
     
     <script src="app.js"></script>
    

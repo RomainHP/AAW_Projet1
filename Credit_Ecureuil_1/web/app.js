@@ -14,7 +14,20 @@
                 templateUrl: 'home.html',
                 controllerAs: 'vm'
             })
-            .otherwise({ redirectTo: '/' });
+
+            .when('/login', {
+                controller: 'LoginController',
+                templateUrl: 'login.html',
+                controllerAs: 'vm'
+            })
+
+            .when('/register', {
+                controller: 'RegisterController',
+                templateUrl: 'register.html',
+                controllerAs: 'vm'
+            })
+
+            .otherwise({ redirectTo: '/login' });
     }
 
     run.$inject = ['$rootScope', '$location', '$cookies', '$http'];
@@ -32,7 +45,7 @@
             var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {
-                $location.path('/login');
+                $location.path('/');
             }
         });
     }
