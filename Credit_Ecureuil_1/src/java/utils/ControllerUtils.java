@@ -1,14 +1,33 @@
 package utils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
  * @author rcharpen
  */
 public class ControllerUtils {
+    
+    public static JSONObject requestToJSONObj(HttpServletRequest request) throws JSONException, IOException
+        {
+            StringBuilder sb = new StringBuilder();
+            BufferedReader br = request.getReader();
+            try {
+                String str = null;
+                while ((str = br.readLine()) != null) {
+                    sb.append(str);
+                }
+            } catch (IOException ex) {
+            }
+            JSONObject jObj = new JSONObject(sb.toString());
+            return jObj;
+        }
     
     /**
      * Permet de tester si l'utilisateur est connecté ou non sur le site

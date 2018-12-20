@@ -7,7 +7,10 @@ import exceptions.ServiceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -103,25 +106,27 @@ public class UtilisateurController {
      * Affichage de la page "inscription" en methode POST
      * @return ModelAndView correspondant a la page "inscription" si réussite affichage d'une erreur sinon
      */
-    @RequestMapping(value="inscription", method = RequestMethod.POST)
-    protected ModelAndView inscription(
+    @RequestMapping(value="register", method = RequestMethod.POST)
+    protected ResponseEntity<?> inscription(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        ModelAndView mv = new ModelAndView("inscription");
+	JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.NOT_FOUND;
         String email = request.getParameter("email");
         // Si l'email est valide
         if (ControllerUtils.testEmail(email)){
             String password = request.getParameter("password");
             try {
                 service.inscription(email, password);
-                mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Inscription réussie."));
+		userResponse = ;
             } catch (ServiceException e){
                 mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
             }
         } else {
             mv.addObject("returnMessage", ControllerUtils.generateErrorMessage("Email incorrecte."));
         }
-        return mv;
+        return new ResponseEntity(userResponse, status);
     }
     
     //---------------------------
