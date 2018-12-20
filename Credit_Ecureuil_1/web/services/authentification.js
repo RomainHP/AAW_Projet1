@@ -3,10 +3,10 @@
  
     angular
         .module('app')
-        .factory('AuthenticationService', AuthenticationService);
+        .factory('AuthentificationService', AuthentificationService);
  
-    AuthenticationService.$inject = ['$cookies', '$rootScope', 'UserService'];
-    function AuthenticationService($cookies, $rootScope, UserService) {
+    AuthentificationService.$inject = ['$cookies', '$rootScope', 'UserService'];
+    function AuthentificationService($cookies, $rootScope, UserService) {
         var service = {};
  
         service.Login = Login;
@@ -16,22 +16,22 @@
         return service;
  
         function Login(username, password, callback) {
-                var response;
-                UserService.GetByName(username)
-                    .then(function (user) {
-                        if (user !== null) {
-                            if (user.password === password) {
-                                response = { success: true };
-                            }
-                            else {
-                                response = { success: false, message: 'Erreur login / Mot de passe' };
-                            }
+            var response;
+            UserService.GetByName(username)
+                .then(function (user) {
+                    if (user !== null) {
+                        if (user.password === password) {
+                            response = { success: true };
                         }
                         else {
-                            response = { success: false, message: 'Compte inexistant' };
+                            response = { success: false, message: 'Erreur login / Mot de passe' };
                         }
-                        callback(response);
-                    });
+                    }
+                    else {
+                        response = { success: false, message: 'Compte inexistant' };
+                    }
+                    callback(response);
+                });
             }
  
         function SetCredentials(username, password) {
@@ -41,8 +41,6 @@
                     password: password
                 }
             };
-            console.log('currentUser: username:' + $rootScope.globals.currentUser.username + 'pass:' + $rootScope.globals.currentUser.password
-                    );
             $cookies.putObject('globals', $rootScope.globals);
         }
  

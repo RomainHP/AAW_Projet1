@@ -9,15 +9,11 @@
     function HomeController(UserService, $rootScope, $location, AuthenticationService, FlashService) {
         
         var vm = this;
-
-        vm.user = null;
-        vm.allUsers = [];
-        vm.allFriends = [];
         
         initController();
 
         function initController() {
-            
+           
         }
     }
 

@@ -5,9 +5,9 @@
         .module('app')
         .controller('LoginController', LoginController);
  
-    LoginController.$inject = ['$location', 'AuthenticationService', 'FlashService'];
+    LoginController.$inject = ['$location', 'AuthentificationService', 'FlashService'];
     
-    function LoginController($location, AuthenticationService, FlashService) {
+    function LoginController($location, AuthentificationService, FlashService) {
         var vm = this;
  
         vm.login = login;
@@ -15,13 +15,13 @@
         initController();
         
         function initController() {
-            AuthenticationService.ClearCredentials();
+            AuthentificationService.ClearCredentials();
         }
  
         function login() {
-            AuthenticationService.Login(vm.username, vm.password, function (response) {
+            AuthentificationService.Login(vm.username, vm.password, function (response) {
                 if (response.success) {
-                    AuthenticationService.SetCredentials(vm.username, vm.password);
+                    AuthentificationService.SetCredentials(vm.username, vm.password);
                     FlashService.Success('Utilisateur connecté', true);
                     $location.path('/');
                 } else {

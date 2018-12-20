@@ -11,18 +11,17 @@
  
         vm.register = register;
  
-        
         function register() {
             vm.dataLoading = true;
             UserService.Create(vm.user)
-                    .then(function () {
-                        FlashService.Success('Utilisateur enregistré avec succès', true);
-                        $location.path('/login');
-                    },
-                    function (errResponse) {
-                        FlashService.Error('Utilisateur déja enregistré');
-                    }
-                );
+                .then(function () {
+                    FlashService.Success('Utilisateur enregistré avec succès', true);
+                    $location.path('/login');
+                },
+                function (errResponse) {
+                    FlashService.Error('Utilisateur déja enregistré');
+                }
+            );
         }
     }
  

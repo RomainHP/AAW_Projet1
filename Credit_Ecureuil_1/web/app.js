@@ -41,11 +41,27 @@
         }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
-            // redirect to login page if not logged in and trying to access a restricted page
-            var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+            // pages qui sont restreintes aux personnes connectees
+            var restrictedPage = $.inArray($location.path(), []) !== -1 ;
+            // pages seulement pour les pros
+            var restrictedProPage = $.inArray($location.path(), []) !== -1 ;
+            // pages seulement pour les admin
+            var restrictedAdminPage = $.inArray($location.path(), []) !== -1 ;
             var loggedIn = $rootScope.globals.currentUser;
-            if (restrictedPage && !loggedIn) {
+            var isPro = $rootScope.globals.currentUser.pro;
+            var isAdmin = $rootScope.globals.currentUser.admin;
+            // si la personne n'est pas connectee (ou non pro) et que la page est restreinte, on le renvoie sur l'accueuil
+            if ((restrictedPage && ((typeof loggedIn) === 'undefined' || !loggedIn)) 
+                    && (restrictedProPage && ((typeof isPro) === 'undefined' || !isPro))
+                    && (restrictedAdminPage && ((typeof isAdmin) === 'undefined' || !isAdmin))) {
                 $location.path('/');
+                $rootScope.flash = {
+                    message: 'Vous n\'avez pas les autorisations requises pour acceder a la page.',
+                    type: 'success', 
+                    keepAfterLocationChange: false
+                };
+            } else {
+                delete $rootScope.flash;
             }
         });
     }
