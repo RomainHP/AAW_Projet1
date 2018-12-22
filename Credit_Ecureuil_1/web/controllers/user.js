@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService', '$rootScope', '$location', 'AuthenticationService', 'FlashService'];
-    function HomeController(UserService, $rootScope, $location, AuthenticationService, FlashService) {
+    HomeController.$inject = [];
+    function HomeController() {
         
         var vm = this;
         

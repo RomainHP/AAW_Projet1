@@ -1,9 +1,36 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#!/">
+        <img src="images/logo.png" width="40" height="40" alt="logo">
+    </a>
+    <a class="navbar-brand" href="#!/">Crédit de l'écureuil</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#!/">Accueil<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#!/register">Inscription<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="inscription_pro.htm" style="color:yellow;">Inscription Pro<span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#!/login">Connexion<span class="sr-only">(current)</span></a>
+          </li>
+      </ul>
+    </div>
+</nav>
+
 <div class="container">
     <div id="login-row" class="row justify-content-center align-items-center">
         <div id="login-column" class="col-md-6">
             <div class="login-box col-md-12">
                 <form name="form" id="login-form" ng-submit="vm.register()" role="form">
-                    <h3 class="text-center text-info">Formulaire d'inscription</h3>
+                    <h3 class="text-center text-info">Formulaire de connexion</h3>
                     <div class="form-group" ng-class="{ 'has-error': form.email.$dirty && form.email.$error.required }">
                         <label for="email">Email</label>
                         <input type="email" name="email" id="email" class="form-control" ng-model="vm.user.email" required />

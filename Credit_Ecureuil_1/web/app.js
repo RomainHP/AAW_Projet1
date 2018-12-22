@@ -34,12 +34,13 @@
     
     function run($rootScope, $location, $cookies, $http) {
         
-        // keep user logged in after page refresh
+        // garde l'utilisateur connecte, meme apres rafraichissement de la page
         $rootScope.globals = $cookies.getObject('globals') || {};
         if ($rootScope.globals.currentUser) {
             $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
         }
 
+        // teste si l'utilisateur a le droit d'acceder a la page
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // pages qui sont restreintes aux personnes non connectees
             var restrictedInvitePage = $.inArray($location.path(), ['/login', '/register']) !== -1 ;
