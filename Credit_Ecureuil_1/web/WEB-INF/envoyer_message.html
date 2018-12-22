@@ -1,0 +1,18 @@
+<form action="envoyer_message.htm" method="post">
+    <div class="d-flex col-lg-8 m-3">
+        <label for="destinataire">Sujet:</label>
+        <input type="text" class="form-control mx-sm-3" name="sujet" id="sujet">
+        <label for="destinataire">Destinataire:</label>
+        <select name="destinataire" class="custom-select mx-sm-3" id="inlineFormCustomSelect">
+            <option selected>Selectionner un destinataire</option>
+            ${options_dest}
+        </select>
+    </div>
+    <div class="m-3">
+        <label for="message">Message:</label>
+        <textarea class="form-control" rows="5" name="message" id="message"></textarea>
+    </div>
+    <div class="d-flex m-3 justify-content-center">
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    </div>
+</form>
