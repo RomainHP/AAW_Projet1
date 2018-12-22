@@ -12,13 +12,14 @@
         vm.register = register;
                 
         function register() {
-            UtilisateurService.register(vm.user.email.toString(), vm.user.password.toString())
+            vm.dataLoading = true;
+            UtilisateurService.register(vm.user.email, vm.user.password)
                     .then(function () {
                         FlashService.Success('Utilisateur enregistré avec succès', true);
-                        $location.path('/login');
+                        $location.path('/');
                     },
                     function (errResponse) {
-                        FlashService.Error('Utilisateur déja enregistré');
+                        FlashService.Error(errResponse);
                     }
                 );
         }

@@ -41,6 +41,8 @@
         }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            // pages qui sont restreintes aux personnes non connectees
+            var restrictedInvitePage = $.inArray($location.path(), ['/login', '/register']) !== -1 ;
             // pages qui sont restreintes aux personnes connectees
             var restrictedPage = $.inArray($location.path(), []) !== -1 ;
             // pages seulement pour les pros
@@ -48,20 +50,31 @@
             // pages seulement pour les admin
             var restrictedAdminPage = $.inArray($location.path(), []) !== -1 ;
             var loggedIn = $rootScope.globals.currentUser;
-            var isPro = $rootScope.globals.currentUser.pro;
-            var isAdmin = $rootScope.globals.currentUser.admin;
-            // si la personne n'est pas connectee (ou non pro) et que la page est restreinte, on le renvoie sur l'accueuil
-            if ((restrictedPage && ((typeof loggedIn) === 'undefined' || !loggedIn)) 
-                    && (restrictedProPage && ((typeof isPro) === 'undefined' || !isPro))
-                    && (restrictedAdminPage && ((typeof isAdmin) === 'undefined' || !isAdmin))) {
-                $location.path('/');
-                $rootScope.flash = {
-                    message: 'Vous n\'avez pas les autorisations requises pour acceder a la page.',
-                    type: 'success', 
-                    keepAfterLocationChange: false
-                };
+            if ((typeof loggedIn) === 'undefined' || !loggedIn){    // non connecte
+                if (restrictedPage) {
+                    $location.path('/');
+                    $rootScope.flash = {
+                        message: 'Vous n\'avez pas les autorisations requises pour acceder a la page.',
+                        type: 'error', 
+                        keepAfterLocationChange: false
+                    };
+                }
             } else {
-                delete $rootScope.flash;
+                var isPro = $rootScope.globals.currentUser.pro;
+                var isAdmin = $rootScope.globals.currentUser.admin;
+                 // si la personne n'est pas connectee (ou non pro) et que la page est restreinte, on le renvoie sur l'accueuil
+                if (restrictedInvitePage 
+                        || (restrictedProPage && ((typeof isPro) === 'undefined' || !isPro))
+                        || (restrictedAdminPage && ((typeof isAdmin) === 'undefined' || !isAdmin))) {
+                    $location.path('/');
+                    $rootScope.flash = {
+                        message: 'Vous n\'avez pas les autorisations requises pour acceder a la page.',
+                        type: 'error', 
+                        keepAfterLocationChange: false
+                    };
+                } else {
+                    delete $rootScope.flash;
+                }
             }
         });
     }

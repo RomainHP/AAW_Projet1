@@ -113,18 +113,22 @@ public class UtilisateurController {
 	JSONObject jObj = ControllerUtils.requestToJSONObj(request);
         String userResponse = "[]";
 	HttpStatus status = HttpStatus.NOT_FOUND;
-        String email = request.getParameter("email");
+        String email = jObj.getString("email");
         // Si l'email est valide
         if (ControllerUtils.testEmail(email)){
-            String password = request.getParameter("password");
+            String password = jObj.getString("password");
             try {
                 service.inscription(email, password);
-		userResponse = ;
+                JSONObject json = new JSONObject()
+                                .put("email", email)
+                                .put("password", password);
+		userResponse = json.toString();
+                status = HttpStatus.OK;
             } catch (ServiceException e){
-                mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+                System.err.println(e);
             }
         } else {
-            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage("Email incorrecte."));
+            System.err.println("erreur 2");
         }
         return new ResponseEntity(userResponse, status);
     }
