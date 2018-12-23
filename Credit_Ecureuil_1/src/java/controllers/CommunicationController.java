@@ -3,10 +3,15 @@ package controllers;
 import dao.message.MessageEntity;
 import dao.utilisateur.UtilisateurEntity;
 import exceptions.ServiceException;
+import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -102,23 +107,25 @@ public class CommunicationController {
      * @return ModelAndView correspondant a la page "envoyer_message" avec indication de réussite ou non
      */
     @RequestMapping(value="envoyer_message", method = RequestMethod.POST)
-    public ModelAndView serviceEnvoyerMessage(
+    public ResponseEntity<?> serviceEnvoyerMessage(
             HttpServletRequest request,
-            HttpServletResponse response) {
-        ModelAndView mv = new ModelAndView("envoyer_message");
+            HttpServletResponse response) throws JSONException, IOException {
+        JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
         
-        String sujet = request.getParameter("sujet");
-        String destinataire = request.getParameter("destinataire");
-        String message = request.getParameter("message");
+        String sujet = jObj.getString("sujet");
+        String destinataire = jObj.getString("destinataire");
+        String message = jObj.getString("message");
         
         // Envoi du message
         try {
             service.envoyerMessage(ControllerUtils.getUserLogin(request), destinataire, sujet, message);
-            mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Message envoyé."));
+            status = HttpStatus.OK;
         } catch (ServiceException e) {
-            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
-        return mv;
+        return new ResponseEntity(userResponse, status);
     }
     
      //----------------------
@@ -128,26 +135,27 @@ public class CommunicationController {
      * @return ModelAndView correspondant a la page "supprimer_message" avec indication de réussite ou non
      */
     @RequestMapping(value="supprimer_message", method = RequestMethod.POST)
-    protected ModelAndView supprimerMessage(
+    protected ResponseEntity<?> supprimerMessage(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-	if (!ControllerUtils.isUtilisateurConnecte(request))
-	    return new ModelAndView("erreur");
+        JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
 	
-	String idCompteStr = request.getParameter("id");
+	String idCompteStr = jObj.getString("id");
         
         // Suppression du message
         try {
             Long idCompte = Long.parseLong(idCompteStr);
             service.supprimerMessage(idCompte);
-            request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Message supprimé."));
+            status = HttpStatus.OK;
         } catch (NumberFormatException e){
-            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         } catch (ServiceException e){
-            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
 	
-	return initConsulterMessagerie(request, response);
+        return new ResponseEntity(userResponse, status);
     }
     
     //-----------------------------

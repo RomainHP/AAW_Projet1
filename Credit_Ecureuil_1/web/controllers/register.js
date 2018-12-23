@@ -14,14 +14,14 @@
         function register() {
             vm.dataLoading = true;
             UtilisateurService.register(vm.user.email, vm.user.password)
-                    .then(function () {
-                        FlashService.Success('Utilisateur enregistré avec succès', true);
-                        $location.path('/');
-                    },
-                    function (errResponse) {
-                        FlashService.Error(errResponse);
-                    }
-                );
+                .then(function () {
+                    FlashService.Success('Utilisateur enregistré avec succès', true);
+                    $location.path('/');
+                },
+                function (errResponse) {
+                    FlashService.Error(errResponse.data);
+                }
+            );
         }
     }
  

@@ -4,9 +4,10 @@ import dao.utilisateur.UtilisateurEntity;
 import dao.utilisateur.admin.AdminEntity;
 import dao.utilisateur.pro.UtilisateurProEntity;
 import exceptions.ServiceException;
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 import services.utilisateur.UtilisateurService;
 import utils.ControllerUtils;
 
@@ -30,62 +30,53 @@ public class UtilisateurController {
     //---------------------------
     /**
      * Affichage de la page "connexion" en methode GET
-     * @return ModelAndView correspondant a la page "connexion" si réussite, page "erreur" sinon
+     * @return ResponseEntity<?> correspondant a la page "connexion" si réussite, page "erreur" sinon
      */
     @RequestMapping(value="connexion", method = RequestMethod.GET)
     protected String initConnexion(HttpServletRequest request,HttpServletResponse response) {
-        return ControllerUtils.isUtilisateurConnecte(request) ? "erreur" : "connexion";
+        return "connexion";
     }
     
     /**
      * Affichage de la page "index" en methode POST
-     * @return ModelAndView correspondant a la page "index" si connexion réussite, page "erreur" sinon
+     * @return ResponseEntity<?> correspondant a la page "index" si connexion réussite, page "erreur" sinon
      */
     @RequestMapping(value="connexion", method = RequestMethod.POST)
-    protected ModelAndView connexion(
+    protected ResponseEntity<?> connexion(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        HttpSession session = request.getSession(false);
+        JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
         
-        String identifiant = request.getParameter("email");
-        String mdp = request.getParameter("password");
+        String identifiant = jObj.getString("email");
+        String mdp = jObj.getString("password");
         
-        // Si la session n'est pas déjà crée
         try{
+            JSONObject json = new JSONObject();
             service.connexion(identifiant, mdp);
-            if (session==null){
-                session = request.getSession(true); // on la crée
-            }
-            session.setAttribute("login", identifiant);
+            json.put("login", identifiant);
             UtilisateurEntity utilisateur = service.getUtilisateur(identifiant);
             // si l'utilisateur est admin ou non
-            session.setAttribute("admin", utilisateur instanceof AdminEntity);
+            json.put("admin", utilisateur instanceof AdminEntity);
             // si l'utilisateur est pro ou non
-            session.setAttribute("pro", utilisateur instanceof UtilisateurProEntity);
-            return new ModelAndView("index");
+            json.put("pro", utilisateur instanceof UtilisateurProEntity);
+            userResponse = json.toString();
+            status = HttpStatus.OK;
         } catch (ServiceException e){
-            ModelAndView mv = new ModelAndView("connexion");
-            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
-            return mv;
+            userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
+        return new ResponseEntity(userResponse, status);
     }
 
     //---------------------------
     
     /**
      * Affichage de la page "deconnexion" en methode GET
-     * @return ModelAndView correspondant a la page "index" si réussite, page "erreur" sinon
+     * @return ResponseEntity<?> correspondant a la page "index" si réussite, page "erreur" sinon
      */
     @RequestMapping(value="deconnexion", method = RequestMethod.GET)
     protected String initDeconnexion(HttpServletRequest request,HttpServletResponse response) {
-        HttpSession session = request.getSession(false);
-
-        // Si l'utilisateur n'est pas déjà connecté
-        if (!ControllerUtils.isUtilisateurConnecte(request)){
-            return "erreur"; // on renvoie la page d'erreur
-        }
-        
-        session.invalidate();
         return "index";
     }
 
@@ -93,18 +84,17 @@ public class UtilisateurController {
     
     /**
      * Affichage de la page "inscription" en methode GET
-     * @return ModelAndView correspondant a la page "inscription" si réussite, page "erreur" sinon
+     * @return ResponseEntity<?> correspondant a la page "inscription" si réussite, page "erreur" sinon
      */
     @RequestMapping(value="inscription", method = RequestMethod.GET)
     protected String initInscription(HttpServletRequest request,HttpServletResponse response) {
-       if (ControllerUtils.isUtilisateurConnecte(request)) return "erreur";
        return "inscription";
     }
 
     
     /**
      * Affichage de la page "inscription" en methode POST
-     * @return ModelAndView correspondant a la page "inscription" si réussite affichage d'une erreur sinon
+     * @return ResponseEntity<?> correspondant a la page "inscription" si réussite affichage d'une erreur sinon
      */
     @RequestMapping(value="register", method = RequestMethod.POST)
     protected ResponseEntity<?> inscription(
@@ -112,23 +102,20 @@ public class UtilisateurController {
             HttpServletResponse response) throws Exception {
 	JSONObject jObj = ControllerUtils.requestToJSONObj(request);
         String userResponse = "[]";
-	HttpStatus status = HttpStatus.NOT_FOUND;
+	HttpStatus status = HttpStatus.BAD_REQUEST;
+        
         String email = jObj.getString("email");
         // Si l'email est valide
         if (ControllerUtils.testEmail(email)){
             String password = jObj.getString("password");
             try {
                 service.inscription(email, password);
-                JSONObject json = new JSONObject()
-                                .put("email", email)
-                                .put("password", password);
-		userResponse = json.toString();
                 status = HttpStatus.OK;
             } catch (ServiceException e){
-                System.err.println(e);
+                userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
             }
         } else {
-            System.err.println("erreur 2");
+            userResponse = new JSONObject().put("errorMessage", "Email non valide").toString();
         }
         return new ResponseEntity(userResponse, status);
     }
@@ -136,85 +123,89 @@ public class UtilisateurController {
     //---------------------------
     /**
      * Affichage de la page "inscription_pro" en methode GET
-     * @return ModelAndView correspondant a la page "inscription_pro" si réussite affichage d'une erreur sinon
+     * @return ResponseEntity<?> correspondant a la page "inscription_pro" si réussite affichage d'une erreur sinon
      */
     @RequestMapping(value="inscription_pro", method = RequestMethod.GET)
     protected String initInscriptionPro(HttpServletRequest request,HttpServletResponse response) {
-       if (ControllerUtils.isUtilisateurConnecte(request)) return "erreur";
        return "inscription_pro";
     }
 
     /**
      * Affichage de la page "inscription_pro" en methode POST
-     * @return ModelAndView correspondant a la page "inscription_pro" si réussite affichage d'une erreur sinon
+     * @return ResponseEntity<?> correspondant a la page "inscription_pro" si réussite affichage d'une erreur sinon
      */
     @RequestMapping(value="inscription_pro", method = RequestMethod.POST)
-    protected ModelAndView inscriptionPro(
+    protected ResponseEntity<?> inscriptionPro(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        String email = request.getParameter("email");
-        ModelAndView mv = new ModelAndView("inscription_pro");
+        JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
+        String email = jObj.getString("email");
         // Si l'email est valide
         if (ControllerUtils.testEmail(email)){
-            String password = request.getParameter("password");
+            String password = jObj.getString("password");
             String company = request.getParameter("company");
             try {
                 long siret = Long.parseLong(request.getParameter("siret"));
                 service.inscriptionPro(email, password, company, siret);
-                mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Inscription réussie."));
+                status = HttpStatus.OK;
             } catch (NumberFormatException e){
-                mv.addObject("returnMessage", ControllerUtils.generateErrorMessage("Le SIRET n'est pas un nombre."));
+                userResponse = new JSONObject().put("errorMessage", "Le SIRET n'est pas un nombre.").toString();
             } catch (ServiceException e){
-                mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+                userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
             }
         } else {
-            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage("Email incorrecte."));
+            userResponse = new JSONObject().put("errorMessage", "Email non valide").toString();
         }
-        return mv;
+        return new ResponseEntity(userResponse, status);
     }
 
     //---------------------------
     
     /**
      * Affichage de la page "profil" en methode GET
-     * @return ModelAndView correspondant a la page "profil" si réussite affichage de la page "erreur" autrement
+     * @return ResponseEntity<?> correspondant a la page "profil" si réussite affichage de la page "erreur" autrement
      */
     @RequestMapping(value="profil", method = RequestMethod.GET)
-    protected ModelAndView initProfil(HttpServletRequest request,HttpServletResponse response) {
-        if (!ControllerUtils.isUtilisateurConnecte(request)) return new ModelAndView("erreur");
-        
-        HttpSession session = request.getSession(false);
-	String login = String.valueOf(session.getAttribute("login"));
+    protected ResponseEntity<?> initProfil(HttpServletRequest request,HttpServletResponse response) throws JSONException, IOException {
+        JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
+        String login = jObj.getString("login");
 	UtilisateurEntity user = this.service.getUtilisateur(login);
-
-	ModelAndView mv = new ModelAndView("profil");
 	
         // On envoie les champs de l'utilisateur à la vue
-	mv.addObject("email",user.getEmail());
-	mv.addObject("password",user.getMotDePasse());
-        mv.addObject("prenom", user.getPrenom());
-        mv.addObject("nom", user.getNom());
+        JSONObject json = new JSONObject()
+                            .put("email", user.getEmail())
+                            .put("password", user.getMotDePasse())
+                            .put("prenom", user.getPrenom())
+                            .put("nom", user.getNom());
         // Si l'utilisateur est pro, il a des champs supplémentaires
         if (user instanceof UtilisateurProEntity){
-           mv.addObject("entreprise", ((UtilisateurProEntity)user).getEntreprise().getNom());
-           mv.addObject("siret", ((UtilisateurProEntity)user).getEntreprise().getSiret());
+            json.put("entreprise", ((UtilisateurProEntity)user).getEntreprise().getNom());
+            json.put("siret", ((UtilisateurProEntity)user).getEntreprise().getSiret());
         }
-	return mv;
+        status = HttpStatus.OK;
+	return new ResponseEntity(userResponse, status);
     }
 
     /**
      * Affichage de la page "profil" en methode POST
-     * @return ModelAndView correspondant a la page "profil" si réussite affichage d'une erreur sinon
+     * @return ResponseEntity<?> correspondant a la page "profil" si réussite affichage d'une erreur sinon
      */
     @RequestMapping(value="profil", method = RequestMethod.POST)
-    protected ModelAndView profilUtilisateur(
+    protected ResponseEntity<?> profilUtilisateur(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-	String login = ControllerUtils.getUserLogin(request);
+        JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
         
+	String login = jObj.getString("login");
         // Vérification du mot de passe
-        String password = request.getParameter("password");
-        String password_confirmation = request.getParameter("password_confirmation");
+        String password = jObj.getString("password");
+        String password_confirmation = jObj.getString("password_confirmation");
         if (!password.equals(password_confirmation)){
             request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage("Mots de passe différents."));
         } else {
@@ -231,6 +222,6 @@ public class UtilisateurController {
             request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Modification effectuée."));
         }
         
-        return initProfil(request,response);
+        return new ResponseEntity(userResponse, status);
     }
 }

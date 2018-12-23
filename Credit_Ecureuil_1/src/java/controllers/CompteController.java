@@ -9,7 +9,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -117,27 +120,30 @@ public class CompteController {
      * @return ModelAndView correspondant a la page "virement" avec indication de réussite ou non
      */
     @RequestMapping(value="virement", method = RequestMethod.POST)
-    protected ModelAndView virementCompte(
+    protected ResponseEntity<?> virementCompte(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
+        JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
-            String nomCompteSrc = request.getParameter("id");
+            String nomCompteSrc = jObj.getString("id");
             Long idCompteSrc = Long.parseLong(nomCompteSrc);
 
-            String montant = request.getParameter("value");
+            String montant = jObj.getString("value");
             Double mnt = Double.parseDouble(montant);
 
-            String nomDest = request.getParameter("id_dest");
+            String nomDest = jObj.getString("id_dest");
             Long idCompteDest = Long.parseLong(nomDest);
             service.virement(idCompteSrc, idCompteDest, mnt,true);
-            request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Virement effectué."));
+            status = HttpStatus.OK;
         } catch (ServiceException e) {
-            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         } catch (Exception e){
-            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage("Virement incorrect."));
+            userResponse = new JSONObject().put("errorMessage", "Virement incorrect.").toString();
         }
         
-        return initVirement(request,response);
+        return new ResponseEntity(userResponse, status);
     } 
     
     //--------------------
@@ -161,23 +167,24 @@ public class CompteController {
      * @return ModelAndView correspondant a la page "ajout_livret" avec indication de réussite ou non
      */
     @RequestMapping(value="ajout_livret", method = RequestMethod.POST)
-    protected ModelAndView ajoutLivret(
+    protected ResponseEntity<?> ajoutLivret(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 	
-        ModelAndView mv = new ModelAndView("ajout_livret");
+        JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
         
-	String login = ControllerUtils.getUserLogin(request);
-
-	String newAccount = request.getParameter("nom_compte");
+	String login = jObj.getString("login");
+	String newAccount = jObj.getString("nom_compte");
 
         try { 
             service.ajoutLivret(newAccount, login);
-            mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Le livret a bien été créé."));
+            status = HttpStatus.OK;
         } catch (ServiceException e){
-            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
-	return mv;
+        return new ResponseEntity(userResponse, status);
     }
     
     //----------------------
@@ -187,23 +194,24 @@ public class CompteController {
      * @return ModelAndView correspondant a la page "supprimer_livret" avec indication de réussite ou non
      */
     @RequestMapping(value="supprimer_livret", method = RequestMethod.POST)
-    protected ModelAndView supprimerLivret(
+    protected ResponseEntity<?> supprimerLivret(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-	if (!ControllerUtils.isUtilisateurConnecte(request))
-	    return new ModelAndView("erreur");
+        JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
 	
-	String idCompteStr = request.getParameter("id");
+	String idCompteStr = jObj.getString("id");
 	Long idCompte = Long.parseLong(idCompteStr);
 	
         try { 
             service.supprimerLivret(idCompte,true);
-            request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Le livret a bien été supprimé."));
+            status = HttpStatus.OK;
         } catch (ServiceException e){
-            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
 	
-	return initConsult(request, response);
+        return new ResponseEntity(userResponse, status);
     }
     
     //--------------------
@@ -227,18 +235,21 @@ public class CompteController {
      * @return ModelAndView correspondant a la page "ajout_compte_joint" avec indication de réussite ou non
      */
     @RequestMapping(value="ajout_compte_joint", method = RequestMethod.POST)
-    protected ModelAndView ajoutCompteJoint(
+    protected ResponseEntity<?> ajoutCompteJoint(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-	
-	String login = ControllerUtils.getUserLogin(request);
-	String newAccount = request.getParameter("nom_compte");
+        JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
+        
+        String login = jObj.getString("login");
+	String newAccount = jObj.getString("nom_compte");
         LinkedHashSet<String> co_proprietaires = new  LinkedHashSet<>();
         
         int cpt=1;
         String proprietaire=null;
         do {
-            proprietaire = request.getParameter("field"+cpt);
+            proprietaire = jObj.getString("field"+cpt);
             cpt++;
             if (proprietaire!=null) {
                 co_proprietaires.add(proprietaire);
@@ -247,11 +258,11 @@ public class CompteController {
 
         try { 
             service.ajoutCompteJoint(newAccount, login, co_proprietaires);
-            request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Le compte joint a bien été créé."));
+            status = HttpStatus.OK;
         } catch (ServiceException e){
-            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
-	return initAjoutCompteJoint(request, response);
+        return new ResponseEntity(userResponse, status);
     }
     
     //----------------------
@@ -261,25 +272,24 @@ public class CompteController {
      * @return ModelAndView correspondant a la page "consultation" avec indication de réussite ou non dans la suppression de compte joint
      */
     @RequestMapping(value="supprimer_compte_joint", method = RequestMethod.POST)
-    protected ModelAndView supprimerCompteJoint(
+    protected ResponseEntity<?> supprimerCompteJoint(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-	if (!ControllerUtils.isUtilisateurConnecte(request))
-	    return new ModelAndView("erreur");
-	
-        ModelAndView mv = new ModelAndView("consultation");
+        JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
         
-	String idCompteStr = request.getParameter("id");
+	String idCompteStr = jObj.getString("id");
 	Long idCompte = Long.parseLong(idCompteStr);
 	
         try { 
             service.supprimerCompteJoint(idCompte,true);
-            mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Le compte joint a bien été supprimé."));
+            status = HttpStatus.OK;
         } catch (ServiceException e){
-            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
 	
-	return mv;
+        return new ResponseEntity(userResponse, status);
     }
     
     //------------------------  
@@ -288,17 +298,17 @@ public class CompteController {
      * @return ModelAndView correspondant a la page "details_compte" si réussite, page "erreur" autrement
      */
     @RequestMapping(value="details_compte", method = RequestMethod.POST)
-    protected ModelAndView detailsCompte(
+    protected ResponseEntity<?> detailsCompte(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-	if (!ControllerUtils.isUtilisateurConnecte(request))
-	    return new ModelAndView("erreur");
+        JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
 	
-	String idCompteStr = request.getParameter("idCpt");
+	String idCompteStr = jObj.getString("idCpt");
 	Long idCompte = Long.parseLong(idCompteStr);
 	CompteEntity ce = service.getAccount(idCompte);
 	
-	ModelAndView mv = new ModelAndView("details_compte");
 	StringBuffer table_transactions = new StringBuffer();
 
 	for (TransactionEntity te : ce.getAllTransactions()) {
@@ -332,7 +342,6 @@ public class CompteController {
 	    table_transactions.append("</tr>");
 	}
 
-	mv.addObject("table_transactions",table_transactions);
-	return mv;
+        return new ResponseEntity(userResponse, status);
     }
 }

@@ -7,7 +7,10 @@ import exceptions.ServiceException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -98,22 +101,23 @@ public class AdminController {
      * @throws Exception 
      */
     @RequestMapping(value="ajout_livret_admin", method = RequestMethod.POST)
-    protected ModelAndView ajoutLivret(
+    protected ResponseEntity<?> ajoutLivret(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-	
-        ModelAndView mv = new ModelAndView("ajout_livret_admin");
+	JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
 
-	String nomCompte = request.getParameter("nom_compte");
-        String utilisateur = request.getParameter("utilisateur");
+	String nomCompte = jObj.getString("nom_compte");
+        String utilisateur = jObj.getString("utilisateur");
 
         try { 
             compteController.service.ajoutLivret(nomCompte, utilisateur);
-            mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Le livret a bien été créé."));
+            status = HttpStatus.OK;
         } catch (ServiceException e){
-            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            userResponse = new JSONObject().put("errorMessage", "Email non valide").toString();
         }
-	return mv;
+        return new ResponseEntity(userResponse, status);
     }
     
     //----------------------
@@ -124,23 +128,24 @@ public class AdminController {
      * @throws Exception 
      */
     @RequestMapping(value="supprimer_livret_admin", method = RequestMethod.POST)
-    protected ModelAndView supprimerLivret(
+    protected ResponseEntity<?> supprimerLivret(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-	if (!ControllerUtils.isUtilisateurConnecte(request))
-	    return new ModelAndView("erreur");
+	JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
 	
-	String idCompteStr = request.getParameter("id");
+	String idCompteStr = jObj.getString("id");
 	Long idCompte = Long.parseLong(idCompteStr);
 	
         try { 
             compteController.service.supprimerLivret(idCompte,false);
-            request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Le livret a bien été supprimé."));
+            status = HttpStatus.OK;
         } catch (ServiceException e){
-            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            userResponse = new JSONObject().put("errorMessage", "Email non valide").toString();
         }
 	
-	return initConsultationComptesAdmin(request, response);
+        return new ResponseEntity(userResponse, status);
     }
     
    //----------------------
@@ -151,25 +156,24 @@ public class AdminController {
      * @throws Exception 
      */
     @RequestMapping(value="supprimer_compte_joint_admin", method = RequestMethod.POST)
-    protected ModelAndView supprimerCompteJoint(
+    protected ResponseEntity<?> supprimerCompteJoint(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-	if (!ControllerUtils.isUtilisateurConnecte(request))
-	    return new ModelAndView("erreur");
-	
-        ModelAndView mv = new ModelAndView("consultation");
+	JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
         
-	String idCompteStr = request.getParameter("id");
+	String idCompteStr = jObj.getString("id");
 	Long idCompte = Long.parseLong(idCompteStr);
 	
         try { 
             compteController.service.supprimerCompteJoint(idCompte,false);
-            mv.addObject("returnMessage", ControllerUtils.generateSuccessMessage("Le compte joint a bien été supprimé."));
+            status = HttpStatus.OK;
         } catch (ServiceException e){
-            mv.addObject("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            userResponse = new JSONObject().put("errorMessage", "Email non valide").toString();
         }
 	
-	return mv;
+        return new ResponseEntity(userResponse, status);
     }
     
     //--------------------
@@ -209,27 +213,30 @@ public class AdminController {
      * @throws Exception 
      */
     @RequestMapping(value="virement_admin", method = RequestMethod.POST)
-    protected ModelAndView virementAdmin(
+    protected ResponseEntity<?> virementAdmin(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
+	JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+        String userResponse = "[]";
+	HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
-            String nomCompteSrc = request.getParameter("id");
+            String nomCompteSrc = jObj.getString("id");
             Long idCompteSrc = Long.parseLong(nomCompteSrc);
 
-            String montant = request.getParameter("value");
+            String montant = jObj.getString("value");
             Double mnt = Double.parseDouble(montant);
 
-            String nomDest = request.getParameter("id_dest");
+            String nomDest = jObj.getString("id_dest");
             Long idCompteDest = Long.parseLong(nomDest);
             
             compteController.service.virement(idCompteSrc, idCompteDest, mnt, false);
-            request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Virement effectué."));
+            status = HttpStatus.OK;
         } catch (ServiceException e) {
-            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage(e.getMessage()));
+            userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         } catch (Exception e){
-            request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage("Virement incorrect."));
+            userResponse = new JSONObject().put("errorMessage", "Virement incorrect").toString();
         }
         
-        return initVirementAdmin(request,response);
+        return new ResponseEntity(userResponse, status);
     } 
 }
