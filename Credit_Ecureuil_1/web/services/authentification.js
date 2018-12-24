@@ -9,32 +9,34 @@
     function AuthentificationService($cookies, $rootScope, UserService) {
         var service = {};
  
-        service.Login = Login;
-        service.SetCredentials = SetCredentials;
-        service.ClearCredentials = ClearCredentials;
+        service.login = login;
+        service.setCredentials = setCredentials;
+        service.clearCredentials = clearCredentials;
  
         return service;
  
-        function Login(username, password, callback) {
-            var response;
-            UserService.GetByName(username)
-                .then(function (user) {
-                    if (user !== null) {
-                        if (user.password === password) {
-                            response = { success: true };
-                        }
-                        else {
-                            response = { success: false, message: 'Erreur login / Mot de passe' };
-                        }
+        function login(username, password) {
+            var deferred = $q.defer();
+            $http({
+                url: 'http://localhost:8084/Credit_Ecureuil_1/login.htm',
+                method: "POST",
+                data: {
+                        'email': username,
+                        'password': password
                     }
-                    else {
-                        response = { success: false, message: 'Compte inexistant' };
-                    }
-                    callback(response);
-                });
-            }
+                }
+            ).then(
+                function(response){
+                    deferred.resolve(response);
+                },
+                function(errResponse){
+                    deferred.reject(errResponse);
+                }
+            );
+            return deferred.promise;
+        }
  
-        function SetCredentials(username, password) {
+        function setCredentials(username, password) {
             $rootScope.globals = {
                 currentUser: {
                     username: username,
@@ -44,7 +46,7 @@
             $cookies.putObject('globals', $rootScope.globals);
         }
  
-        function ClearCredentials() {
+        function clearCredentials() {
             $cookies.remove('globals');
         }
     }

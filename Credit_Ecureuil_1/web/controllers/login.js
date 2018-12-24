@@ -19,15 +19,16 @@
         }
  
         function login() {
-            AuthentificationService.Login(vm.username, vm.password, function (response) {
-                if (response.success) {
-                    AuthentificationService.SetCredentials(vm.username, vm.password);
+            AuthentificationService.login(vm.user.email, vm.user.password)
+                .then(function () {
+                    AuthenticationService.setCredentials(vm.username, vm.password);
                     FlashService.Success('Utilisateur connecté', true);
                     $location.path('/');
-                } else {
-                    FlashService.Error(response.message);
+                },
+                function (errResponse) {
+                    FlashService.Error(errResponse.data);
                 }
-            });
+            );
         };
     }
  
