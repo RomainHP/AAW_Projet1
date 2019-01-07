@@ -26,6 +26,12 @@
                 templateUrl: 'register.html',
                 controllerAs: 'vm'
             })
+            
+            .when('/registerpro', {
+                controller: 'RegisterProController',
+                templateUrl: 'registerpro.html',
+                controllerAs: 'vm'
+            })
 
             .otherwise({ redirectTo: '/login' });
     }
@@ -43,7 +49,7 @@
         // teste si l'utilisateur a le droit d'acceder a la page
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // pages qui sont restreintes aux personnes non connectees
-            var restrictedInvitePage = $.inArray($location.path(), ['/login', '/register']) !== -1 ;
+            var restrictedInvitePage = $.inArray($location.path(), ['/login', '/register', '/registerpro']) !== -1 ;
             // pages qui sont restreintes aux personnes connectees
             var restrictedPage = $.inArray($location.path(), []) !== -1 ;
             // pages seulement pour les pros

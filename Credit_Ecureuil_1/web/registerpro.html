@@ -29,18 +29,28 @@
     <div id="login-row" class="row justify-content-center align-items-center">
         <div id="login-column" class="col-md-6">
             <div class="login-box col-md-12">
-                <form name="form" id="login-form" ng-submit="vm.login()" role="form">
-                    <h3 class="text-center text-info">Formulaire de connexion</h3>
+                <form id="login-form" class="form" ng-submit="vm.registerpro()" role="form">
+                    <h3 class="text-center text-info">Formulaire d'inscription pour les professionnels</h3>
                     <div class="form-group" ng-class="{ 'has-error': form.email.$dirty && form.email.$error.required }">
-                        <label for="email">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" ng-model="vm.user.email" required />
+                        <label for="email" class="text-info">Email:</label>
+                        <input type="email" class="form-control" name="email" id="email" ng-model="vm.user.email" required>
                     </div>
-                    <div class="form-group" ng-class="{ 'has-error': form.password.$dirty">
-                        <label for="password">Password</label>
-                        <input type="password" name="password" id="password" class="form-control" ng-model="vm.user.password" />
+                    <div class="form-row mb-3">
+                        <div class="col-md-6" ng-class="{ 'has-error': form.entreprise.$dirty}">
+                            <label for="text" class="text-info">Entreprise:</label>
+                            <input type="text" class="form-control" name="company" id="company" ng-model="vm.user.entreprise" required>
+                        </div>
+                        <div class="col-md-6" ng-class="{ 'has-error': form.siret.$error.required && form.siret.$dirty}">
+                            <label for="text" class="text-info">SIRET:</label>
+                            <input type="text" class="form-control" name="siret" id="siret" ng-model="vm.user.siret" required>
+                        </div>
                     </div>
-                    <div class="form-actions">
-                        <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Se connecter</button>
+                    <div class="form-group mb-3" ng-class="{ 'has-error': form.password.$dirty">
+                        <label for="password" class="text-info">Mot de passe:</label>
+                        <input type="password" class="form-control" name="password" id="password" ng-model="vm.user.password">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">S'inscrire</button>
                     </div>
                 </form>
             </div>

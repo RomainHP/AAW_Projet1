@@ -18,7 +18,7 @@
         function login(username, password) {
             var deferred = $q.defer();
             $http({
-                url: 'http://localhost:8084/Credit_Ecureuil_1/login.htm',
+                url: 'http://localhost:8080/Credit_Ecureuil_1/login.htm',
                 method: "POST",
                 data: {
                         'email': username,

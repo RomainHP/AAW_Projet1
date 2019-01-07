@@ -142,9 +142,9 @@ public class UtilisateurController {
      * @return ResponseEntity<?> correspondant a la page "inscription_pro" si
      * réussite affichage d'une erreur sinon
      */
-    @RequestMapping(value = "inscription_pro", method = RequestMethod.GET)
+    @RequestMapping(value = "registerpro", method = RequestMethod.GET)
     protected String initInscriptionPro(HttpServletRequest request, HttpServletResponse response) {
-        return "inscription_pro";
+        return "registerpro";
     }
 
     /**
@@ -153,7 +153,7 @@ public class UtilisateurController {
      * @return ResponseEntity<?> correspondant a la page "inscription_pro" si
      * réussite affichage d'une erreur sinon
      */
-    @RequestMapping(value = "inscription_pro", method = RequestMethod.POST)
+    @RequestMapping(value = "registerpro", method = RequestMethod.POST)
     protected ResponseEntity<?> inscriptionPro(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
@@ -165,9 +165,9 @@ public class UtilisateurController {
             // Si l'email est valide
             if (ControllerUtils.testEmail(email)) {
                 String password = jObj.getString("password");
-                String company = request.getParameter("company");
+                String company = jObj.getString("entreprise");
                 try {
-                    long siret = Long.parseLong(request.getParameter("siret"));
+                    long siret = Long.parseLong(jObj.getString("siret"));
                     service.inscriptionPro(email, password, company, siret);
                     status = HttpStatus.OK;
                 } catch (NumberFormatException e) {
