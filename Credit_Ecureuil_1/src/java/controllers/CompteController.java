@@ -160,22 +160,6 @@ public class CompteController {
 
     //--------------------
     /**
-     * Affichage de la page "ajout_livret" en methode GET
-     *
-     * @return ModelAndView correspondant a la page "ajout_livret"
-     */
-    @RequestMapping(value = "ajout_livret", method = RequestMethod.GET)
-    protected ModelAndView initAjoutLivret(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        if (!ControllerUtils.isUtilisateurConnecte(request)) {
-            return new ModelAndView("erreur");
-        }
-
-        return new ModelAndView("ajout_livret");
-    }
-
-    /**
      * Affichage de la page "ajout_livret" en methode POST
      *
      * @return ModelAndView correspondant a la page "ajout_livret" avec
@@ -238,22 +222,6 @@ public class CompteController {
     }
 
     //--------------------
-    /**
-     * Affichage de la page "ajout_compte_joint" en methode GET
-     *
-     * @return ModelAndView correspondant a la page "ajout_compte_joint"
-     */
-    @RequestMapping(value = "ajout_compte_joint", method = RequestMethod.GET)
-    protected ModelAndView initAjoutCompteJoint(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        if (!ControllerUtils.isUtilisateurConnecte(request)) {
-            return new ModelAndView("erreur");
-        }
-
-        return new ModelAndView("ajout_compte_joint");
-    }
-
     /**
      * Affichage de la page "ajout_compte_joint" en methode POST
      *

@@ -5,8 +5,8 @@
         .module('app')
         .factory('AuthentificationService', AuthentificationService);
  
-    AuthentificationService.$inject = ['$cookies', '$rootScope', 'UserService'];
-    function AuthentificationService($cookies, $rootScope, UserService) {
+    AuthentificationService.$inject = ['$http', '$q', '$cookies', '$rootScope'];
+    function AuthentificationService($http, $q, $cookies, $rootScope) {
         var service = {};
  
         service.login = login;

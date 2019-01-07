@@ -19,7 +19,8 @@
                     $location.path('/');
                 },
                 function (errResponse) {
-                    FlashService.Error(errResponse.data);
+                    FlashService.Error("Erreur : " + errResponse.data["errorMessage"], true);
+                    $location.path('/');
                 }
             );
         }

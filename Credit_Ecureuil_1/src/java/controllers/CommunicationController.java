@@ -32,12 +32,6 @@ public class CommunicationController {
     UtilisateurController utilisateurController;
 
     //----------------------------
-    @RequestMapping(value = "index", method = RequestMethod.GET)
-    protected String initIndex(HttpServletRequest request, HttpServletResponse response) {
-        return "index";
-    }
-
-    //----------------------------
     /**
      * Affichage de la page "consulter_messagerie" en methode GET
      *
@@ -175,14 +169,6 @@ public class CommunicationController {
     }
 
     //-----------------------------
-    @RequestMapping(value = "notifications", method = RequestMethod.GET)
-    protected String initNotif(HttpServletRequest request, HttpServletResponse response) {
-        if (!ControllerUtils.isUtilisateurConnecte(request)) {
-            return "erreur";
-        }
-        return "notifications";
-    }
-
     @RequestMapping(value = "notifications", method = RequestMethod.POST)
     public ModelAndView notifications(
             HttpServletRequest request,

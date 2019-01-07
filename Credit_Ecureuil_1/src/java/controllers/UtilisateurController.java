@@ -29,17 +29,6 @@ public class UtilisateurController {
 
     //---------------------------
     /**
-     * Affichage de la page "connexion" en methode GET
-     *
-     * @return ResponseEntity<?> correspondant a la page "connexion" si
-     * réussite, page "erreur" sinon
-     */
-    @RequestMapping(value = "connexion", method = RequestMethod.GET)
-    protected String initConnexion(HttpServletRequest request, HttpServletResponse response) {
-        return "connexion";
-    }
-
-    /**
      * Affichage de la page "index" en methode POST
      *
      * @return ResponseEntity<?> correspondant a la page "index" si connexion
@@ -80,29 +69,6 @@ public class UtilisateurController {
 
     //---------------------------
     /**
-     * Affichage de la page "deconnexion" en methode GET
-     *
-     * @return ResponseEntity<?> correspondant a la page "index" si réussite,
-     * page "erreur" sinon
-     */
-    @RequestMapping(value = "deconnexion", method = RequestMethod.GET)
-    protected String initDeconnexion(HttpServletRequest request, HttpServletResponse response) {
-        return "index";
-    }
-
-    //---------------------------
-    /**
-     * Affichage de la page "inscription" en methode GET
-     *
-     * @return ResponseEntity<?> correspondant a la page "inscription" si
-     * réussite, page "erreur" sinon
-     */
-    @RequestMapping(value = "inscription", method = RequestMethod.GET)
-    protected String initInscription(HttpServletRequest request, HttpServletResponse response) {
-        return "inscription";
-    }
-
-    /**
      * Affichage de la page "inscription" en methode POST
      *
      * @return ResponseEntity<?> correspondant a la page "inscription" si
@@ -136,17 +102,6 @@ public class UtilisateurController {
     }
 
     //---------------------------
-    /**
-     * Affichage de la page "inscription_pro" en methode GET
-     *
-     * @return ResponseEntity<?> correspondant a la page "inscription_pro" si
-     * réussite affichage d'une erreur sinon
-     */
-    @RequestMapping(value = "registerpro", method = RequestMethod.GET)
-    protected String initInscriptionPro(HttpServletRequest request, HttpServletResponse response) {
-        return "registerpro";
-    }
-
     /**
      * Affichage de la page "inscription_pro" en methode POST
      *

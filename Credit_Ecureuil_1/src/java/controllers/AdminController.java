@@ -84,24 +84,6 @@ public class AdminController {
 
     //--------------------
     /**
-     * Affichage de la page ajout de livret en mode admin avec une methode GET
-     *
-     * @return Un ModelAndView correspondant soit a la page ajout_livret_admin
-     * si autorisation correcte, soit la page erreur
-     * @throws Exception
-     */
-    @RequestMapping(value = "ajout_livret_admin", method = RequestMethod.GET)
-    protected ModelAndView initAjoutLivret(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        if (!ControllerUtils.isUtilisateurConnecte(request)) {
-            return new ModelAndView("erreur");
-        }
-
-        return new ModelAndView("ajout_livret_admin");
-    }
-
-    /**
      * Affichage de la page ajout de livret en mode admin avec une methode POST
      *
      * @return Un ModelAndView correspondant à la page "ajout_livre_admin" avec

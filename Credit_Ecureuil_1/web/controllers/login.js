@@ -9,24 +9,26 @@
     
     function LoginController($location, AuthentificationService, FlashService) {
         var vm = this;
- 
+        
         vm.login = login;
  
         initController();
         
         function initController() {
-            AuthentificationService.ClearCredentials();
+            AuthentificationService.clearCredentials();
         }
  
         function login() {
+            vm.dataLoading = true;
             AuthentificationService.login(vm.user.email, vm.user.password)
                 .then(function () {
-                    AuthenticationService.setCredentials(vm.username, vm.password);
+                    AuthentificationService.setCredentials(vm.user.email, vm.user.password);
                     FlashService.Success('Utilisateur connecté', true);
                     $location.path('/');
                 },
                 function (errResponse) {
-                    FlashService.Error(errResponse.data);
+                    FlashService.Error("Erreur : " + errResponse.data["errorMessage"], true);
+                    $location.path('/');
                 }
             );
         };
