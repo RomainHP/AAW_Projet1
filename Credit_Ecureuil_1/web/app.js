@@ -32,6 +32,11 @@
                 templateUrl: 'registerpro.html',
                 controllerAs: 'vm'
             })
+            
+            .when('/disconnect', {
+                controller: 'DisconnectController',
+                controllerAs: 'vm'
+            })
 
             .otherwise({ redirectTo: '/login' });
     }
