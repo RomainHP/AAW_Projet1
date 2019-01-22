@@ -35,6 +35,7 @@
             
             .when('/disconnect', {
                 controller: 'DisconnectController',
+                templateUrl: 'registerpro.html',
                 controllerAs: 'vm'
             })
 
@@ -56,7 +57,7 @@
             // pages qui sont restreintes aux personnes non connectees
             var restrictedInvitePage = $.inArray($location.path(), ['/login', '/register', '/registerpro']) !== -1 ;
             // pages qui sont restreintes aux personnes connectees
-            var restrictedPage = $.inArray($location.path(), []) !== -1 ;
+            var restrictedPage = $.inArray($location.path(), ['/disconnect']) !== -1 ;
             // pages seulement pour les pros
             var restrictedProPage = $.inArray($location.path(), []) !== -1 ;
             // pages seulement pour les admin
