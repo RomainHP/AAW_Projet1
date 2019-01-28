@@ -32,6 +32,12 @@
                 templateUrl: 'registerpro.html',
                 controllerAs: 'vm'
             })
+            
+            .when('/consultation', {
+                controller: 'ConsultationController',
+                templateUrl: 'consultation.html',
+                controllerAs: 'vm'
+            })
 
             .otherwise({ redirectTo: '/login' });
     }
@@ -51,7 +57,7 @@
             // pages qui sont restreintes aux personnes non connectees
             var restrictedInvitePage = $.inArray($location.path(), ['/login', '/register', '/registerpro']) !== -1 ;
             // pages qui sont restreintes aux personnes connectees
-            var restrictedPage = $.inArray($location.path(), []) !== -1 ;
+            var restrictedPage = $.inArray($location.path(), ['/consultation']) !== -1 ;
             // pages seulement pour les pros
             var restrictedProPage = $.inArray($location.path(), []) !== -1 ;
             // pages seulement pour les admin
