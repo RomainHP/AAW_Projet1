@@ -48,6 +48,7 @@
  
         function clearCredentials() {
             $cookies.remove('globals');
+            $rootScope.globals.currentUser = null;
         }
     }
  
