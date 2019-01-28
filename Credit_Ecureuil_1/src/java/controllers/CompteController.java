@@ -37,46 +37,44 @@ public class CompteController {
      * @return ModelAndView correspondant a la page "consultation"
      */
     @RequestMapping(value = "consultation", method = RequestMethod.GET)
-    protected ModelAndView initConsult(HttpServletRequest request, HttpServletResponse response) {
-        if (!ControllerUtils.isUtilisateurConnecte(request)) {
-            return new ModelAndView("erreur");
-        }
-
+    protected ResponseEntity<?> initConsult(HttpServletRequest request, HttpServletResponse response) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+	
         String login = ControllerUtils.getUserLogin(request);
         List<CompteEntity> accounts = this.service.consultation(login);
 
-        ModelAndView mv = new ModelAndView("consultation");
-        StringBuffer table_comptes = new StringBuffer();
+	return (ResponseEntity<?>) accounts;
+	
+//        StringBuffer table_comptes = new StringBuffer();
+//
+//        int cpt = 1;
+//        for (CompteEntity account : accounts) {
+//            table_comptes.append("<tr>");
+//            table_comptes.append("<td scope=\"row\">" + cpt + "</td>");
+//            table_comptes.append("<td scope=\"row\">" + account.getId() + "</td>");
+//            table_comptes.append("<td scope=\"row\">" + account.getProprietaire().getEmail() + "</td>");
+//            table_comptes.append("<td scope=\"row\">" + account + "</td>");
+//            table_comptes.append("<td scope=\"row\">" + account.getSolde() + "</td>");
+//            // Bouton détail
+//            table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"details_compte.htm\" method=\"post\"><div class=\"form-group mb-3\">");
+//            table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"idCpt\" value=\"" + account.getId() + "\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Détails</button></div></form></td>");
+//
+//            if (account instanceof LivretEntity) {
+//                // Bouton supprimer
+//                table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"supprimer_livret.htm\" method=\"post\"><div class=\"form-group mb-3\">");
+//                table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\"" + account.getId() + "\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Supprimer</button></div></form></td>");
+//            } else if (account instanceof CompteJointEntity && account.getProprietaire().getEmail().equals(login)) {
+//                // Bouton supprimer
+//                table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"supprimer_compte_joint.htm\" method=\"post\"><div class=\"form-group mb-3\">");
+//                table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\"" + account.getId() + "\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Supprimer</button></div></form></td>");
+//            } else {
+//                table_comptes.append("<td />");
+//            }
+//
+//            cpt++;
+//        }
 
-        int cpt = 1;
-        for (CompteEntity account : accounts) {
-            table_comptes.append("<tr>");
-            table_comptes.append("<td scope=\"row\">" + cpt + "</td>");
-            table_comptes.append("<td scope=\"row\">" + account.getId() + "</td>");
-            table_comptes.append("<td scope=\"row\">" + account.getProprietaire().getEmail() + "</td>");
-            table_comptes.append("<td scope=\"row\">" + account + "</td>");
-            table_comptes.append("<td scope=\"row\">" + account.getSolde() + "</td>");
-            // Bouton détail
-            table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"details_compte.htm\" method=\"post\"><div class=\"form-group mb-3\">");
-            table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"idCpt\" value=\"" + account.getId() + "\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Détails</button></div></form></td>");
-
-            if (account instanceof LivretEntity) {
-                // Bouton supprimer
-                table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"supprimer_livret.htm\" method=\"post\"><div class=\"form-group mb-3\">");
-                table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\"" + account.getId() + "\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Supprimer</button></div></form></td>");
-            } else if (account instanceof CompteJointEntity && account.getProprietaire().getEmail().equals(login)) {
-                // Bouton supprimer
-                table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"supprimer_compte_joint.htm\" method=\"post\"><div class=\"form-group mb-3\">");
-                table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\"" + account.getId() + "\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Supprimer</button></div></form></td>");
-            } else {
-                table_comptes.append("<td />");
-            }
-
-            cpt++;
-        }
-
-        mv.addObject("table_comptes", table_comptes);
-        return mv;
+        //return (ResponseEntity<?>) accounts;
     }
 
     //--------------------
