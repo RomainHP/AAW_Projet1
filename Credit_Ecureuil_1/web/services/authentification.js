@@ -40,7 +40,21 @@
             $rootScope.globals = {
                 currentUser: {
                     username: username,
-                    password: password
+                    password: password,
+                    isPro: false,
+                    isAdmin: false
+                }
+            };
+            $cookies.putObject('globals', $rootScope.globals);
+        }
+        
+        function setCredentials(username, password, isPro, isAdmin) {
+            $rootScope.globals = {
+                currentUser: {
+                    username: username,
+                    password: password,
+                    isPro: isPro,
+                    isAdmin: isAdmin
                 }
             };
             $cookies.putObject('globals', $rootScope.globals);
