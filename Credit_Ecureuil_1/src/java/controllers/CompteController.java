@@ -9,6 +9,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,44 +38,32 @@ public class CompteController {
      * @return ModelAndView correspondant a la page "consultation"
      */
     @RequestMapping(value = "consultation", method = RequestMethod.GET)
-    protected ResponseEntity<?> initConsult(HttpServletRequest request, HttpServletResponse response) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+    protected ResponseEntity<?> initConsult(HttpServletRequest request, HttpServletResponse response) throws JSONException {        
+	String login = ControllerUtils.getUserLogin(request);	
+
+	System.out.println("login : " + login);
 	
-        String login = ControllerUtils.getUserLogin(request);
         List<CompteEntity> accounts = this.service.consultation(login);
 
-	return (ResponseEntity<?>) accounts;
+	System.out.println("taille compte : " + accounts.size());
 	
-//        StringBuffer table_comptes = new StringBuffer();
-//
-//        int cpt = 1;
-//        for (CompteEntity account : accounts) {
-//            table_comptes.append("<tr>");
-//            table_comptes.append("<td scope=\"row\">" + cpt + "</td>");
-//            table_comptes.append("<td scope=\"row\">" + account.getId() + "</td>");
-//            table_comptes.append("<td scope=\"row\">" + account.getProprietaire().getEmail() + "</td>");
-//            table_comptes.append("<td scope=\"row\">" + account + "</td>");
-//            table_comptes.append("<td scope=\"row\">" + account.getSolde() + "</td>");
-//            // Bouton détail
-//            table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"details_compte.htm\" method=\"post\"><div class=\"form-group mb-3\">");
-//            table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"idCpt\" value=\"" + account.getId() + "\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Détails</button></div></form></td>");
-//
-//            if (account instanceof LivretEntity) {
-//                // Bouton supprimer
-//                table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"supprimer_livret.htm\" method=\"post\"><div class=\"form-group mb-3\">");
-//                table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\"" + account.getId() + "\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Supprimer</button></div></form></td>");
-//            } else if (account instanceof CompteJointEntity && account.getProprietaire().getEmail().equals(login)) {
-//                // Bouton supprimer
-//                table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"supprimer_compte_joint.htm\" method=\"post\"><div class=\"form-group mb-3\">");
-//                table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\"" + account.getId() + "\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Supprimer</button></div></form></td>");
-//            } else {
-//                table_comptes.append("<td />");
-//            }
-//
-//            cpt++;
-//        }
-
-        //return (ResponseEntity<?>) accounts;
+	JSONObject jObj = new JSONObject();
+	
+	for (CompteEntity account : accounts) {
+	    jObj.append("id", account.getId());
+	    jObj.append("prop", account.getProprietaire());
+	    
+	    if(account instanceof CompteJointEntity || account instanceof LivretEntity){
+		jObj.append("name", ((LivretEntity)account).getNom());
+	    }else{
+		jObj.append("name", "Compte courant");
+	    }
+	    
+	    
+	    jObj.append("solde", account.getSolde());
+	}
+	System.out.println(jObj.toString());
+	return new ResponseEntity(jObj.toString(), HttpStatus.OK);
     }
 
     //--------------------

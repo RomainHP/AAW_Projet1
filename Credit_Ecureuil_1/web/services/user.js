@@ -12,7 +12,7 @@
         var service = {};
         service.register = register;
         service.registerpro = registerpro;
-        service.consultation = consultation;
+        //service.consultation = consultation;
         
         return service;
         
@@ -60,22 +60,22 @@
             return deferred.promise;
         }
         
-        function consultation(){
-            var deferred = $q.defer();
-            $http({
-                url: 'http://localhost:8080/Credit_Ecureuil_1/consultation.htm',
-                method: "GET"
-            }
-            ).then(
-                function(response){
-                    deferred.resolve(response);
-                },
-                function(errResponse){
-                    deferred.reject(errResponse);
-                }
-            );
-            return deferred.promise;
-        }
+//        function consultation(){
+//            var deferred = $q.defer();
+//            $http({
+//                url: 'http://localhost:8080/Credit_Ecureuil_1/consultation.htm',
+//                method: "GET"
+//            }
+//            ).then(
+//                function(response){
+//                    deferred.resolve(response);
+//                },
+//                function(errResponse){
+//                    deferred.reject(errResponse);
+//                }
+//            );
+//            return deferred.promise;
+//        }
     }
  
 })();

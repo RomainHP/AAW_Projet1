@@ -84,7 +84,8 @@ public class ControllerUtils {
     public static String getUserLogin(HttpServletRequest request){
         String login = null;
         HttpSession session = request.getSession();
-        if (session!=null) login = String.valueOf(session.getAttribute("login"));
+        if (session!=null) 
+	    login = String.valueOf(session.getAttribute("username"));
         return login;
     }
     

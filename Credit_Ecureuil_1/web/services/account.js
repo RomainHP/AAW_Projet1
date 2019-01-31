@@ -22,15 +22,13 @@
             }
             ).then(
                 function(response){
-                    console.log("service "+response);
-                    deferred.resolve(response);
+                    console.log(response.data);
+                    deferred.resolve(response.data);
                 },
                 function(errResponse){
-                    console.log("service "+errResponse);
+                    console.log("erreur recuperation compte");
                     deferred.reject(errResponse);
                 }
-            ).error(
-                console.log("error")
             );
             return deferred.promise;
         }

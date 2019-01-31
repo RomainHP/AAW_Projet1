@@ -9,19 +9,21 @@
     function ConsultationController(CompteService, $location, FlashService) {
         var vm = this;
   
-        vm.consultation = consultation;
-        vm.accounts;
+        vm.accounts = [];
         
+        initConsultation();
+        function initConsultation(){
+            consultation();
+        }
+          
         function consultation() {
             CompteService.consultation()
                     .then(function(response){
-                vm.accounts = response.data;
-                console.log("controlle "+response);
-                console.log("controlle "+response.data);
+                vm.accounts = JSON.parse(response);
             }
             );
-        }
-    }
+        };
+    };
  
 })();
 
