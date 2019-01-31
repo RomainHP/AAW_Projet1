@@ -21,8 +21,8 @@
         function login() {
             vm.dataLoading = true;
             AuthentificationService.login(vm.user.email, vm.user.password)
-                .then(function () {
-                    AuthentificationService.setCredentials(vm.user.email, vm.user.password);
+                .then(function (response) {
+                    AuthentificationService.setCredentials(vm.user.email, vm.user.password, response.data["isPro"], response.data["isAdmin"]);
                     FlashService.Success('Utilisateur connecté', true);
                     $location.path('/');
                 },

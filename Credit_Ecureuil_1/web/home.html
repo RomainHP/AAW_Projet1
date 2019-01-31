@@ -4,24 +4,93 @@
     </a>
     <a class="navbar-brand" href="#!/">Crédit de l'écureuil</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#!/">Accueil<span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="#!/register">Inscription<span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="#!/registerpro" style="color:yellow;">Inscription Pro<span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="#!/login">Connexion<span class="sr-only">(current)</span></a>
-          </li>
-      </ul>
+        <div ng-if="!vm.user">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#!/">Accueil<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#!/register">Inscription<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#!/registerpro" style="color:yellow;">Inscription Pro<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#!/login">Connexion<span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+        <div ng-if="vm.user.isAdmin">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.htm">Accueil<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="profil.htm">Profil<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Gestion des comptes
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="consultation_comptes_admin.htm">Consultation</a>
+                        <a class="dropdown-item" href="virement_admin.htm">Virement</a>
+                        <a class="dropdown-item" href="ajout_livret_admin.htm">Ouvrir un nouveau livret</a>
+                    </div>
+                </li>
+                <li class="nav-item active dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Messagerie
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="envoyer_message.htm">Envoyer un message</a>
+                        <a class="dropdown-item" href="consulter_messagerie.htm">Consulter la messagerie</a>
+                    </div>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="deconnexion.htm">Deconnexion<span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+        <div ng-if="!vm.user.isAdmin && vm.user">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Gestion des comptes
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="consultation">Consultation</a>
+                        <a class="dropdown-item" href="virement">Virement</a>
+                        <a class="dropdown-item" href="ajout_livret">Ouvrir un nouveau livret</a>
+                        <a class="dropdown-item" href="ajout_compte_joint">Ouvrir un compte joint</a>
+                    </div>
+                </li>
+                <div ng-if="vm.user.isPro">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#!/ordre_bourse">Ordre en bourse<span class="sr-only">(current)</span></a>
+                    </li>
+                </div>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#!/notifications">Notifications<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Messagerie
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#!/envoyer_message">Envoyer un message</a>
+                        <a class="dropdown-item" href="#!/consulter_messagerie">Consulter la messagerie</a>
+                    </div>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#!/disconnect">Deconnexion<span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 

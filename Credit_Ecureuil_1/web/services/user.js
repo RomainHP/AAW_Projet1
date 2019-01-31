@@ -40,7 +40,7 @@
         function registerpro(email, entreprise, siret, password){
             var deferred = $q.defer();
             $http({
-                url: 'http://localhost:8080/Credit_Ecureuil_1/register.htm',
+                url: 'http://localhost:8080/Credit_Ecureuil_1/register_pro.htm',
                 method: "POST",
                 data: {
                         'email': email,

@@ -6,16 +6,16 @@
         .controller('HomeController', HomeController);
 
     HomeController.$inject = ['$rootScope'];
-    function HomeController() {
+    function HomeController($rootScope) {
         
         var vm = this;
         
         vm.user = null;
         
-        initController();
+        initController($rootScope);
 
         function initController($rootScope) {
-           //vm.user = $rootScope.globals.currentUser;
+           vm.user = $rootScope.globals.currentUser;
         }
     }
 

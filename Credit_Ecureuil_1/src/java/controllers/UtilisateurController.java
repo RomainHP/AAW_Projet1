@@ -53,9 +53,9 @@ public class UtilisateurController {
                 json.put("login", identifiant);
                 UtilisateurEntity utilisateur = service.getUtilisateur(identifiant);
                 // si l'utilisateur est admin ou non
-                json.put("admin", utilisateur instanceof AdminEntity);
+                json.put("isAdmin", utilisateur instanceof AdminEntity);
                 // si l'utilisateur est pro ou non
-                json.put("pro", utilisateur instanceof UtilisateurProEntity);
+                json.put("isPro", utilisateur instanceof UtilisateurProEntity);
                 userResponse = json.toString();
                 status = HttpStatus.OK;
             } catch (ServiceException e) {
@@ -108,7 +108,7 @@ public class UtilisateurController {
      * @return ResponseEntity<?> correspondant a la page "inscription_pro" si
      * réussite affichage d'une erreur sinon
      */
-    @RequestMapping(value = "registerpro", method = RequestMethod.POST)
+    @RequestMapping(value = "register_pro", method = RequestMethod.POST)
     protected ResponseEntity<?> inscriptionPro(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
