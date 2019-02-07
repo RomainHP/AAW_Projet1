@@ -5,22 +5,26 @@
         .module('app')
         .controller('ConsultationController', ConsultationController);
  
-    ConsultationController.$inject = ['CompteService', '$location', 'FlashService'];
-    function ConsultationController(CompteService, $location, FlashService) {
+    ConsultationController.$inject = ['$rootScope', 'CompteService', '$location', 'FlashService'];
+    function ConsultationController($rootScope, CompteService, $location, FlashService) {
         var vm = this;
   
-        vm.accounts = [];
+        vm.user = null;
+        vm.accounts = null;
+        
+        var mail = $rootScope.globals.currentUser.username;
         
         initConsultation();
         function initConsultation(){
-            consultation();
+            vm.user = $rootScope.globals.currentUser;
+            consultation(mail);
         }
           
-        function consultation() {
-            CompteService.consultation()
+        function consultation(mail) {
+            CompteService.consultation(mail)
                     .then(function(response){
-                vm.accounts = JSON.parse(response);
-            }
+                        vm.accounts = response;
+                    }
             );
         };
     };

@@ -39,28 +39,28 @@ public class CompteController {
      */
     @RequestMapping(value = "consultation", method = RequestMethod.GET)
     protected ResponseEntity<?> initConsult(HttpServletRequest request, HttpServletResponse response) throws JSONException {        
-	String login = ControllerUtils.getUserLogin(request);	
-
-	System.out.println("login : " + login);
+	String login = request.getParameter("mail");	
 	
         List<CompteEntity> accounts = this.service.consultation(login);
-
-	System.out.println("taille compte : " + accounts.size());
 	
 	JSONObject jObj = new JSONObject();
-	
+	int i = 0;
 	for (CompteEntity account : accounts) {
-	    jObj.append("id", account.getId());
-	    jObj.append("prop", account.getProprietaire());
+	    i++;
+	    String compte = "Compte";
+	    JSONObject jObj2 = new JSONObject();
+	    jObj2.append("id", account.getId());
+	    jObj2.append("prop", account.getProprietaire());
 	    
 	    if(account instanceof CompteJointEntity || account instanceof LivretEntity){
-		jObj.append("name", ((LivretEntity)account).getNom());
+		jObj2.append("name", ((LivretEntity)account).getNom());
 	    }else{
-		jObj.append("name", "Compte courant");
+		jObj2.append("name", "Compte courant");
 	    }
 	    
 	    
-	    jObj.append("solde", account.getSolde());
+	    jObj2.append("solde", account.getSolde());
+	    jObj.append(compte, jObj2);
 	}
 	System.out.println(jObj.toString());
 	return new ResponseEntity(jObj.toString(), HttpStatus.OK);

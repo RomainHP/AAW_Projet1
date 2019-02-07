@@ -10,11 +10,12 @@
         </tr>
     </thead>
     <tbody>
-<!--        <tr ng-repeat="acc in accounts">
-            <td scope="row">acc.getId()</td>
-            <td scope="row">acc.getProprietaire().getEmail()</td>
-            <td scope="row">acc</td>
-            <td scope="row">acc.getSolde()</td>
+        <tr ng-repeat="acc in vm.accounts">
+            <td>{{ $index + 1 }}</td>
+            <td scope="row">{{vm.accounts.Compte[0].id[0]}}</td>
+            <td scope="row">{{vm.accounts.Compte[0].prop[0]}}</td>
+            <td scope="row">{{vm.accounts.Compte[0].name[0]}}</td>
+            <td scope="row">{{vm.accounts.Compte[0].solde[0]}}</td>
             <td scope="row">
                 <form class="form" action="details_compte.htm" method="post">
                     <div class="form-group mb-3">
@@ -23,7 +24,6 @@
                     </div>
                 </form>
             </td>
-            <td scope="row">acc.id</td>
-        </tr>-->
+        </tr>
     </tbody>
 </table>

@@ -5,7 +5,7 @@
         .module('app')
         .factory('CompteService', CompteService);
  
-    CompteService.$inject = ['$http', '$q'];
+    CompteService.$inject = ['$http', '$q', '$rootScope'];
     
     function CompteService($http, $q) {
         
@@ -14,11 +14,12 @@
         
         return service;
     
-        function consultation(){
+        function consultation(mail){
             var deferred = $q.defer();
             $http({
                 url: 'http://localhost:8080/Credit_Ecureuil_1/consultation.htm',
-                method: "GET"
+                method: "GET",
+                params : {mail : mail}
             }
             ).then(
                 function(response){
