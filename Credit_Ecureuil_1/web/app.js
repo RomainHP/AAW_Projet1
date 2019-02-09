@@ -44,7 +44,19 @@
                 templateUrl: 'consultation.html',
                 controllerAs: 'vm'
             })
-
+            
+            .when('/create_account', {
+                controller: 'ConsultationController',
+                templateUrl: 'create_account.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/virement', {
+                controller: 'ConsultationController',
+                templateUrl: 'virement.html',
+                controllerAs: 'vm'
+            })
+            
             .otherwise({ redirectTo: '/login' });
     }
 

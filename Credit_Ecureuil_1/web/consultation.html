@@ -1,4 +1,4 @@
-<table class="table table-fit table-striped">
+<table class="table table-fit table-striped" id="table">
     <thead style="background-color:#ffb860;">
         <tr>
             <th scope="col">#</th>
@@ -9,21 +9,8 @@
             <th colspan="2" scope="col">Options</th>
         </tr>
     </thead>
+    <pre>{{vm.accounts}}</pre>
     <tbody>
-        <tr ng-repeat="acc in vm.accounts">
-            <td>{{ $index + 1 }}</td>
-            <td scope="row">{{vm.accounts.Compte[0].id[0]}}</td>
-            <td scope="row">{{vm.accounts.Compte[0].prop[0]}}</td>
-            <td scope="row">{{vm.accounts.Compte[0].name[0]}}</td>
-            <td scope="row">{{vm.accounts.Compte[0].solde[0]}}</td>
-            <td scope="row">
-                <form class="form" action="details_compte.htm" method="post">
-                    <div class="form-group mb-3">
-                        <input type="hidden" class="form-control" name="idCpt" value=account.getId()>
-                        <button type="submit" class="btn btn-primary btn-md">Détails</button>
-                    </div>
-                </form>
-            </td>
-        </tr>
+        {{vm.displayAccount()}}
     </tbody>
 </table>

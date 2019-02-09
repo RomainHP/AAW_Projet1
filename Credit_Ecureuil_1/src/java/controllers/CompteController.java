@@ -44,9 +44,7 @@ public class CompteController {
         List<CompteEntity> accounts = this.service.consultation(login);
 	
 	JSONObject jObj = new JSONObject();
-	int i = 0;
 	for (CompteEntity account : accounts) {
-	    i++;
 	    String compte = "Compte";
 	    JSONObject jObj2 = new JSONObject();
 	    jObj2.append("id", account.getId());
@@ -62,7 +60,6 @@ public class CompteController {
 	    jObj2.append("solde", account.getSolde());
 	    jObj.append(compte, jObj2);
 	}
-	System.out.println(jObj.toString());
 	return new ResponseEntity(jObj.toString(), HttpStatus.OK);
     }
 
@@ -73,46 +70,27 @@ public class CompteController {
      * @return ModelAndView correspondant a la page "virement"
      */
     @RequestMapping(value = "virement", method = RequestMethod.GET)
-    protected ModelAndView initVirement(HttpServletRequest request, HttpServletResponse response) {
-        if (!ControllerUtils.isUtilisateurConnecte(request)) {
-            return new ModelAndView("erreur");
-        }
-        ModelAndView mv = new ModelAndView("virement");
-
-        // Compte source
-        StringBuilder options = new StringBuilder();
-        List<CompteEntity> accounts = service.consultation(ControllerUtils.getUserLogin(request));
-        for (CompteEntity compte : accounts) {
-            options.append("<option value=\"");
-            options.append(compte.getId());
-            options.append("\">");
-            options.append(compte).append(" (").append(compte.getSolde()).append("€)");
-            options.append("</option>");
-        }
-
+    protected ResponseEntity<?> initVirement(HttpServletRequest request, HttpServletResponse response) throws JSONException {
         // Compte destinataire
-        StringBuilder options_dest = new StringBuilder();
         List<CompteEntity> all_accounts = service.getAllOpenAccounts();
+	JSONObject jObj = new JSONObject();
         for (CompteEntity compte : all_accounts) {
-            options_dest.append("<option value=\"");
-            options_dest.append(compte.getId());
-            options_dest.append("\">");
-            options_dest.append(compte).append(" - ").append(compte.getProprietaire());
-            options_dest.append("</option>");
+	    jObj.append("id", compte.getId());
+	    jObj.append("prop", compte.getProprietaire());
+	    if(compte instanceof CompteJointEntity || compte instanceof LivretEntity){
+		jObj.append("name", ((LivretEntity)compte).getNom());
+	    }else{
+		jObj.append("name", "Compte courant");
+	    }
+	    jObj.append("solde", compte.getSolde());
         }
-
-        mv.addObject("options", options.toString());
-        mv.addObject("options_dest", options_dest.toString());
-        mv.addObject("form", "virement.htm");
-
-        return mv;
+	
+        return new ResponseEntity(jObj.toString(), HttpStatus.OK);
     }
 
     /**
      * Affichage de la page "virement" en methode POST
-     *
-     * @return ModelAndView correspondant a la page "virement" avec indication
-     * de réussite ou non
+     *	
      */
     @RequestMapping(value = "virement", method = RequestMethod.POST)
     protected ResponseEntity<?> virementCompte(
@@ -123,19 +101,19 @@ public class CompteController {
         try {
             JSONObject jObj = ControllerUtils.requestToJSONObj(request);
             try {
-                String nomCompteSrc = jObj.getString("id");
+                String nomCompteSrc = jObj.getString("source");
                 Long idCompteSrc = Long.parseLong(nomCompteSrc);
 
-                String montant = jObj.getString("value");
+                String montant = jObj.getString("montant");
                 Double mnt = Double.parseDouble(montant);
 
-                String nomDest = jObj.getString("id_dest");
+                String nomDest = jObj.getString("dest");
                 Long idCompteDest = Long.parseLong(nomDest);
                 service.virement(idCompteSrc, idCompteDest, mnt, true);
                 status = HttpStatus.OK;
             } catch (ServiceException e) {
                 userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
-            } catch (Exception e) {
+            } catch (NumberFormatException | JSONException e) {
                 userResponse = new JSONObject().put("errorMessage", "Virement incorrect.").toString();
             }
 
@@ -159,13 +137,13 @@ public class CompteController {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
-            JSONObject jObj = ControllerUtils.requestToJSONObj(request);
-
+	    JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+	    
             String login = jObj.getString("login");
-            String newAccount = jObj.getString("nom_compte");
-
+            String nameAccount = jObj.getString("name");
+	    
             try {
-                service.ajoutLivret(newAccount, login);
+                service.ajoutLivret(nameAccount, login);
                 status = HttpStatus.OK;
             } catch (ServiceException e) {
                 userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();

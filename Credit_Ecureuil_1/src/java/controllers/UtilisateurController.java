@@ -38,7 +38,6 @@ public class UtilisateurController {
     protected ResponseEntity<?> connexion(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        System.err.println("test");
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
