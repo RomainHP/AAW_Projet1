@@ -103,19 +103,18 @@
     </div>
 </nav>
 
-<form action="vm.envoyer_message()" method="post">
+<form ng-submit="vm.envoyer_message()" method="post">
     <div class="d-flex col-lg-8 m-3">
         <label for="destinataire">Sujet:</label>
-        <input type="text" class="form-control mx-sm-3" name="sujet" id="sujet">
+        <input type="text" class="form-control mx-sm-3" name="sujet" id="sujet" ng-model="vm.message.sujet" required>
         <label for="destinataire">Destinataire:</label>
-        <select name="destinataire" class="custom-select mx-sm-3" id="inlineFormCustomSelect">
-            <option selected>Selectionner un destinataire</option>
+        <select name="destinataire" class="custom-select mx-sm-3" id="destinataire" ng-model="vm.message.destinataire" required>
             {{vm.displayUsers()}}
         </select>
     </div>
     <div class="m-3">
         <label for="message">Message:</label>
-        <textarea class="form-control" rows="5" name="message" id="message"></textarea>
+        <textarea class="form-control" rows="5" name="message" id="message" ng-model="vm.message.message"></textarea>
     </div>
     <div class="d-flex m-3 justify-content-center">
         <button type="submit" class="btn btn-primary">Envoyer</button>

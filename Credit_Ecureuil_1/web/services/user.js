@@ -12,6 +12,7 @@
         var service = {};
         service.register = register;
         service.registerpro = registerpro;
+        service.getAllUsers = getAllUsers;
         
         return service;
         
@@ -58,6 +59,24 @@
             );
             return deferred.promise;
         }
+        
+        function getAllUsers(){
+            var deferred = $q.defer();
+            $http({
+                url: 'http://localhost:8080/Credit_Ecureuil_1/envoyer_message.htm',
+                method: "GET"
+            }
+            ).then(
+                function(response){
+                    deferred.resolve(response.data);
+                },
+                function(errResponse){
+                    deferred.reject(errResponse);
+                }
+            );
+            return deferred.promise;
+        }
+        
     }
  
 })();

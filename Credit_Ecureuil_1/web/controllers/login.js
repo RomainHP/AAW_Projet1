@@ -5,7 +5,7 @@
         .module('app')
         .controller('LoginController', LoginController);
  
-    LoginController.$inject = ['rootScope', '$location', 'AuthentificationService', 'FlashService'];
+    LoginController.$inject = ['$rootScope', '$location', 'AuthentificationService', 'FlashService'];
     
     function LoginController($rootScope, $location, AuthentificationService, FlashService) {
         var vm = this;

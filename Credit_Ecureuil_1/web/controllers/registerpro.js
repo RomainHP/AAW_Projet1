@@ -5,7 +5,7 @@
         .module('app')
         .controller('RegisterProController', RegisterProController);
  
-    RegisterProController.$inject = ['rootScope', 'UtilisateurService', '$location', 'FlashService'];
+    RegisterProController.$inject = ['$rootScope', 'UtilisateurService', '$location', 'FlashService'];
     function RegisterProController($rootScope, UtilisateurService, $location, FlashService) {
         var vm = this;
   

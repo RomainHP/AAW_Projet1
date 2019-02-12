@@ -32,7 +32,7 @@ public class CompteController {
     /**
      * Affichage de la page "consultation" en methode GET
      *
-     * @return ModelAndView correspondant a la page "consultation"
+     * @return ResponseEntity correspondant a la page "consultation"
      */
     @RequestMapping(value = "consultation", method = RequestMethod.GET)
     protected ResponseEntity<?> initConsult(HttpServletRequest request, HttpServletResponse response) throws Exception {        
@@ -64,7 +64,7 @@ public class CompteController {
     /**
      * Affichage de la page "virement" en methode GET
      *
-     * @return ModelAndView correspondant a la page "virement"
+     * @return ResponseEntity correspondant a la page "virement"
      */
     @RequestMapping(value = "virement", method = RequestMethod.GET)
     protected ResponseEntity<?> initVirement(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -124,7 +124,7 @@ public class CompteController {
     /**
      * Affichage de la page "ajout_livret" en methode POST
      *
-     * @return ModelAndView correspondant a la page "ajout_livret" avec
+     * @return ResponseEntity correspondant a la page "ajout_livret" avec
      * indication de réussite ou non
      */
     @RequestMapping(value = "ajout_livret", method = RequestMethod.POST)
@@ -155,7 +155,7 @@ public class CompteController {
     /**
      * Affichage de la page "supprimer_livret" en methode POST
      *
-     * @return ModelAndView correspondant a la page "supprimer_livret" avec
+     * @return ResponseEntity correspondant a la page "supprimer_livret" avec
      * indication de réussite ou non
      */
     @RequestMapping(value = "supprimer_livret", method = RequestMethod.POST)
@@ -187,7 +187,7 @@ public class CompteController {
     /**
      * Affichage de la page "ajout_compte_joint" en methode POST
      *
-     * @return ModelAndView correspondant a la page "ajout_compte_joint" avec
+     * @return ResponseEntity correspondant a la page "ajout_compte_joint" avec
      * indication de réussite ou non
      */
     @RequestMapping(value = "ajout_compte_joint", method = RequestMethod.POST)
@@ -230,7 +230,7 @@ public class CompteController {
      * Affichage de la page "conulstation" en methode GET après suppression d'un
      * compte
      *
-     * @return ModelAndView correspondant a la page "consultation" avec
+     * @return ResponseEntity correspondant a la page "consultation" avec
      * indication de réussite ou non dans la suppression de compte joint
      */
     @RequestMapping(value = "supprimer_compte_joint", method = RequestMethod.POST)
@@ -262,7 +262,7 @@ public class CompteController {
     /**
      * Affichage de la page "details_compte" en methode POST
      *
-     * @return ModelAndView correspondant a la page "details_compte" si
+     * @return ResponseEntity correspondant a la page "details_compte" si
      * réussite, page "erreur" autrement
      */
     @RequestMapping(value = "details_compte", method = RequestMethod.POST)
