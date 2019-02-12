@@ -64,7 +64,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
     @Override
     public void inscriptionPro(String identifiant, String motDePasse, String nomEntreprise, long siret) throws ServiceException {
-        if(daoPro.find(identifiant) == null){
+        if(daoPro.find(identifiant) == null && dao.find(identifiant)==null){
             if (entrepriseDao.find(siret) == null){
                 UtilisateurProEntity utilisateur = new UtilisateurProEntity(identifiant, motDePasse);
                 dao.save(utilisateur);

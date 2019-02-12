@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -110,7 +109,7 @@ public class CommunicationController {
     @RequestMapping(value = "envoyer_message", method = RequestMethod.POST)
     public ResponseEntity<?> serviceEnvoyerMessage(
             HttpServletRequest request,
-            HttpServletResponse response) throws JSONException, IOException {
+            HttpServletResponse response) throws Exception, IOException {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -127,7 +126,7 @@ public class CommunicationController {
             } catch (ServiceException e) {
                 userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);
@@ -162,7 +161,7 @@ public class CommunicationController {
                 userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
             }
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);

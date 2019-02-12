@@ -9,8 +9,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 import services.compte.CompteService;
 import utils.ControllerUtils;
 
@@ -38,7 +35,7 @@ public class CompteController {
      * @return ModelAndView correspondant a la page "consultation"
      */
     @RequestMapping(value = "consultation", method = RequestMethod.GET)
-    protected ResponseEntity<?> initConsult(HttpServletRequest request, HttpServletResponse response) throws JSONException {        
+    protected ResponseEntity<?> initConsult(HttpServletRequest request, HttpServletResponse response) throws Exception {        
 	String login = request.getParameter("mail");	
 	
         List<CompteEntity> accounts = this.service.consultation(login);
@@ -70,7 +67,7 @@ public class CompteController {
      * @return ModelAndView correspondant a la page "virement"
      */
     @RequestMapping(value = "virement", method = RequestMethod.GET)
-    protected ResponseEntity<?> initVirement(HttpServletRequest request, HttpServletResponse response) throws JSONException {
+    protected ResponseEntity<?> initVirement(HttpServletRequest request, HttpServletResponse response) throws Exception {
         // Compte destinataire
         List<CompteEntity> all_accounts = service.getAllOpenAccounts();
 	JSONObject jObj = new JSONObject();
@@ -111,13 +108,13 @@ public class CompteController {
                 Long idCompteDest = Long.parseLong(nomDest);
                 service.virement(idCompteSrc, idCompteDest, mnt, true);
                 status = HttpStatus.OK;
-            } catch (ServiceException e) {
-                userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
-            } catch (NumberFormatException | JSONException e) {
+            } catch (NumberFormatException e) {
                 userResponse = new JSONObject().put("errorMessage", "Virement incorrect.").toString();
-            }
+            } catch (Exception e) {
+                userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
+            } 
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);
@@ -148,7 +145,7 @@ public class CompteController {
             } catch (ServiceException e) {
                 userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);
@@ -180,7 +177,7 @@ public class CompteController {
                 userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
             }
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);
@@ -222,7 +219,7 @@ public class CompteController {
             } catch (ServiceException e) {
                 userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);
@@ -255,7 +252,7 @@ public class CompteController {
                 userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
             }
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);
@@ -314,7 +311,7 @@ public class CompteController {
                 table_transactions.append("</tr>");
             }
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);

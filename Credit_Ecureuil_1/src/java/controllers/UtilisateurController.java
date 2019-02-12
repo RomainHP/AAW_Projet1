@@ -7,7 +7,6 @@ import exceptions.ServiceException;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -60,7 +59,7 @@ public class UtilisateurController {
             } catch (ServiceException e) {
                 userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);
@@ -94,7 +93,7 @@ public class UtilisateurController {
             } else {
                 userResponse = new JSONObject().put("errorMessage", "Email non valide").toString();
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);
@@ -132,7 +131,7 @@ public class UtilisateurController {
             } else {
                 userResponse = new JSONObject().put("errorMessage", "Email non valide").toString();
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);
@@ -146,7 +145,7 @@ public class UtilisateurController {
      * affichage de la page "erreur" autrement
      */
     @RequestMapping(value = "profil", method = RequestMethod.GET)
-    protected ResponseEntity<?> initProfil(HttpServletRequest request, HttpServletResponse response) throws JSONException, IOException {
+    protected ResponseEntity<?> initProfil(HttpServletRequest request, HttpServletResponse response) throws Exception, IOException {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -166,7 +165,7 @@ public class UtilisateurController {
                 json.put("siret", ((UtilisateurProEntity) user).getEntreprise().getSiret());
             }
             status = HttpStatus.OK;
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);
@@ -206,7 +205,7 @@ public class UtilisateurController {
                 }
                 request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Modification effectuée."));
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);

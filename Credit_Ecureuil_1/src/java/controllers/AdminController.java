@@ -7,7 +7,6 @@ import exceptions.ServiceException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -108,7 +107,7 @@ public class AdminController {
             } catch (ServiceException e) {
                 userResponse = new JSONObject().put("errorMessage", "Email non valide").toString();
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);
@@ -143,7 +142,7 @@ public class AdminController {
                 userResponse = new JSONObject().put("errorMessage", "Email non valide").toString();
             }
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);
@@ -178,7 +177,7 @@ public class AdminController {
                 userResponse = new JSONObject().put("errorMessage", "Email non valide").toString();
             }
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);
@@ -250,7 +249,7 @@ public class AdminController {
                 userResponse = new JSONObject().put("errorMessage", "Virement incorrect").toString();
             }
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);

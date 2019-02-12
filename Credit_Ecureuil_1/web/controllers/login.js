@@ -5,24 +5,26 @@
         .module('app')
         .controller('LoginController', LoginController);
  
-    LoginController.$inject = ['$location', 'AuthentificationService', 'FlashService'];
+    LoginController.$inject = ['rootScope', '$location', 'AuthentificationService', 'FlashService'];
     
-    function LoginController($location, AuthentificationService, FlashService) {
+    function LoginController($rootScope, $location, AuthentificationService, FlashService) {
         var vm = this;
         
         vm.login = login;
+        vm.user = null;
  
-        initController();
+        initController($rootScope);
         
-        function initController() {
+        function initController($rootScope) {
+            vm.user = $rootScope.globals.currentUser;
             AuthentificationService.clearCredentials();
         }
  
         function login() {
             vm.dataLoading = true;
-            AuthentificationService.login(vm.user.email, vm.user.password)
+            AuthentificationService.login(vm.userTmp.email, vm.userTmp.password)
                 .then(function (response) {
-                    AuthentificationService.setCredentials(vm.user.email, vm.user.password, response.data["isPro"], response.data["isAdmin"]);
+                    AuthentificationService.setCredentials(vm.userTmp.email, vm.userTmp.password, response.data["isPro"], response.data["isAdmin"]);
                     FlashService.Success('Utilisateur connecté', true);
                     $location.path('/');
                 },

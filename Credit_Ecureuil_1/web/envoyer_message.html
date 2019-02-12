@@ -103,19 +103,21 @@
     </div>
 </nav>
 
-<table class="table table-fit table-striped" id="table">
-    <thead style="background-color:#ffb860;">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Id du compte</th>
-            <th scope="col">Proprietaire</th>
-            <th scope="col">Intitule</th>
-            <th scope="col">Solde</th>
-            <th colspan="2" scope="col">Options</th>
-        </tr>
-    </thead>
-    <pre>{{vm.accounts}}</pre>
-    <tbody>
-        {{vm.displayAccount()}}
-    </tbody>
-</table>
+<form action="vm.envoyer_message()" method="post">
+    <div class="d-flex col-lg-8 m-3">
+        <label for="destinataire">Sujet:</label>
+        <input type="text" class="form-control mx-sm-3" name="sujet" id="sujet">
+        <label for="destinataire">Destinataire:</label>
+        <select name="destinataire" class="custom-select mx-sm-3" id="inlineFormCustomSelect">
+            <option selected>Selectionner un destinataire</option>
+            {{vm.displayUsers()}}
+        </select>
+    </div>
+    <div class="m-3">
+        <label for="message">Message:</label>
+        <textarea class="form-control" rows="5" name="message" id="message"></textarea>
+    </div>
+    <div class="d-flex m-3 justify-content-center">
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    </div>
+</form>
