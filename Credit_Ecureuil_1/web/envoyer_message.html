@@ -103,12 +103,12 @@
     </div>
 </nav>
 
-<form ng-submit="vm.envoyer_message()" method="post">
+<form ng-submit="vm.envoyer_message()" role="form" method="post">
     <div class="d-flex col-lg-8 m-3">
         <label for="destinataire">Sujet:</label>
         <input type="text" class="form-control mx-sm-3" name="sujet" id="sujet" ng-model="vm.message.sujet" required>
         <label for="destinataire">Destinataire:</label>
-        <select name="destinataire" class="custom-select mx-sm-3" id="destinataire" ng-model="vm.message.destinataire" required>
+        <select name="destinataire" class="custom-select mx-sm-3" id="destinataire">
             {{vm.displayUsers()}}
         </select>
     </div>
