@@ -58,7 +58,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             utilisateur.addAccount(compte);
             dao.update(utilisateur);
 	} else {
-            throw new ServiceException("Utilisateur déjà inscrit.");
+            throw new ServiceException("Utilisateur deja inscrit.");
         }
     }
 
@@ -74,10 +74,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
                 utilisateur.addAccount(compte);
                 dao.update(utilisateur);
             } else {
-                throw new ServiceException("Entreprise déjà enregistrée.");
+                throw new ServiceException("Entreprise deja enregistree.");
             }
 	} else {
-            throw new ServiceException("Utilisateur déjà inscrit.");
+            throw new ServiceException("Utilisateur deja inscrit.");
         }
     }
 

@@ -187,7 +187,7 @@ public class UtilisateurController {
             String password = jObj.getString("password");
             String password_confirmation = jObj.getString("password_confirmation");
             if (!password.equals(password_confirmation)) {
-                request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage("Mots de passe différents."));
+                request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage("Mots de passe differents."));
             } else {
                 String nom = "";
                 String prenom = "";
@@ -205,7 +205,7 @@ public class UtilisateurController {
                 } else {
                     service.updateUser(login, password, nom, prenom);
                 }
-                request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Modification effectuée."));
+                request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Modification effectuee."));
             }
         } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();

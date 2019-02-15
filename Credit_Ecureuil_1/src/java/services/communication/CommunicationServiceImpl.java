@@ -35,7 +35,7 @@ public class CommunicationServiceImpl implements CommunicationService {
     public void envoyerMessage(String from, String to, String sujet, String message) throws ServiceException {
         UtilisateurEntity userFrom = userDao.find(from);
         UtilisateurEntity userTo = userDao.find(to);
-        if (userFrom == null) throw new ServiceException("Expéditeur inexistant.");
+        if (userFrom == null) throw new ServiceException("Expediteur inexistant.");
         if (userTo == null) throw new ServiceException("Destinataire inexistant.");
         MessageEntity msg = new MessageEntity(userFrom, userTo, sujet, message);
         userTo.addMessageRecu(msg);

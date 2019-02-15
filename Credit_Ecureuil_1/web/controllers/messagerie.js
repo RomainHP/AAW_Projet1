@@ -78,7 +78,7 @@
             if (destSelected !== 'default' && dest.selectedIndex !== 0) {
                 MessageService.sendMessage(vm.user.username, destSelected, vm.message.sujet, vm.message.message)
                     .then(function () {
-                        FlashService.Success('Message envoyé avec succès', true);
+                        FlashService.Success('Message envoye avec succes', true);
                         $location.path('/');
                     },
                     function (errResponse) {
@@ -99,7 +99,7 @@
                 MessageService.removeMessage(vm.messageRemoved)
                     .then(function () {
                         vm.messageRemoved = null;
-                        FlashService.Success('Message supprimé avec succès', true);
+                        FlashService.Success('Message supprime avec succeès', true);
                         $location.path('/consulter_messagerie');
                     },
                     function (errResponse) {
