@@ -69,6 +69,18 @@
                 controllerAs: 'vm'
             })
             
+            .when('/create_linked_account', {
+                controller: 'ConsultationController',
+                templateUrl: 'create_linked_account.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/details', {
+                controller: 'ConsultationController',
+                templateUrl: 'create_linked_account.html',
+                controllerAs: 'vm'
+            })
+            
             .otherwise({ redirectTo: '/login' });
     }
 

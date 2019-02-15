@@ -39,22 +39,33 @@ public class CompteController {
 	String login = request.getParameter("mail");	
 	
         List<CompteEntity> accounts = this.service.consultation(login);
-	
+	boolean alreadyAdded = false;
 	JSONObject jObj = new JSONObject();
-	for (CompteEntity account : accounts) {
+	for (CompteEntity account : accounts) {	    
 	    String compte = "Compte";
 	    JSONObject jObj2 = new JSONObject();
-	    jObj2.append("id", account.getId());
-	    jObj2.append("prop", account.getProprietaire());
-	    
-	    if(account instanceof CompteJointEntity || account instanceof LivretEntity){
-		jObj2.append("name", ((LivretEntity)account).getNom());
-	    }else{
-		jObj2.append("name", "Compte courant");
+	    if(account instanceof CompteEntity || account instanceof LivretEntity){
+		jObj2.append("id", account.getId());
+		jObj2.append("prop", account.getProprietaire());
 	    }
 	    
+	    if(account instanceof LivretEntity)
+		jObj2.append("name", ((LivretEntity)account).getNom());
+	    else if(account instanceof CompteJointEntity){
+		if(!alreadyAdded){
+		    jObj2.append("id", account.getId());
+		    jObj2.append("prop", account.getProprietaire());
+		    jObj2.append("name", ((CompteJointEntity)account).getNom());
+		    jObj2.append("solde", account.getSolde());
+		    alreadyAdded = true;
+		}
+	    }
+	    else
+		jObj2.append("name", "Compte courant");
 	    
-	    jObj2.append("solde", account.getSolde());
+	    if(account instanceof CompteEntity || account instanceof LivretEntity)
+		jObj2.append("solde", account.getSolde());
+	    
 	    jObj.append(compte, jObj2);
 	}
 	return new ResponseEntity(jObj.toString(), HttpStatus.OK);
@@ -190,7 +201,7 @@ public class CompteController {
      * @return ResponseEntity correspondant a la page "ajout_compte_joint" avec
      * indication de réussite ou non
      */
-    @RequestMapping(value = "ajout_compte_joint", method = RequestMethod.POST)
+    @RequestMapping(value = "create_linked_account", method = RequestMethod.POST)
     protected ResponseEntity<?> ajoutCompteJoint(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
@@ -203,16 +214,13 @@ public class CompteController {
             String newAccount = jObj.getString("nom_compte");
             LinkedHashSet<String> co_proprietaires = new LinkedHashSet<>();
 
-            int cpt = 1;
             String proprietaire = null;
-            do {
-                proprietaire = jObj.getString("field" + cpt);
-                cpt++;
-                if (proprietaire != null) {
-                    co_proprietaires.add(proprietaire);
-                }
-            } while (proprietaire != null);
-
+	    JSONArray tt = jObj.getJSONArray("listeCoPro");
+	    int nbCopro = tt.length();
+	    for(int i=0; i<nbCopro;i++){
+		proprietaire = tt.get(i).toString();
+		co_proprietaires.add(proprietaire);
+	    }
             try {
                 service.ajoutCompteJoint(newAccount, login, co_proprietaires);
                 status = HttpStatus.OK;
@@ -265,7 +273,7 @@ public class CompteController {
      * @return ResponseEntity correspondant a la page "details_compte" si
      * réussite, page "erreur" autrement
      */
-    @RequestMapping(value = "details_compte", method = RequestMethod.POST)
+    @RequestMapping(value = "details", method = RequestMethod.POST)
     protected ResponseEntity<?> detailsCompte(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {

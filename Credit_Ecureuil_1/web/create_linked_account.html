@@ -1,0 +1,54 @@
+<div class="container">
+    <div id="login-row" class="row justify-content-center align-items-center">
+        <div id="login-column" class="col-md-6">
+            <div class="login-box col-md-12">
+                <form id="login-form" class="form" ng-submit="vm.createLinkedAccount()" role="form">
+                    <h3 class="text-center text-info">Ouverture d'un compte joint</h3>
+                    <div class="form-group mb-3">
+                        <label for="nom_compte" class="text-info">Livret :</label>
+                        <input type="text" class="form-control" name="nom_compte" id="nom_compte" ng-model="vm.account.name" placeholder="Nom du compte" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="text-info" for="field1">Co-Proprietaires</label>
+                        <div class="controls" id="profs"> 
+                            <div id="field">
+                                <input autocomplete="off" class="input" id="field1" name="field1" type="text"/>
+                                <button id="b1" class="btn btn-primary add-more" type="button">+</button>
+                                <script>
+                                    $(document).ready(function(){
+                                        var next = 1;
+                                        $(".add-more").click(function(e){
+                                            e.preventDefault();
+                                            var addto = "#field" + next;
+                                            var addRemove = "#field" + (next);
+                                            next = next + 1;
+                                            var newIn = '<input autocomplete="off" class="input" id="field' + next + '" name="field' + next + '" type="text">';
+                                            var newInput = $(newIn);
+                                            var removeBtn = '<button id="remove' + (next - 1) + '" class="btn btn-danger remove-me" >-</button></div><div id="field">';
+                                            var removeButton = $(removeBtn);
+                                            $(addto).after(newInput);
+                                            $(addRemove).after(removeButton);
+                                            $("#field" + next).attr('data-source',$(addto).attr('data-source'));
+                                            $("#count").val(next);
+                                            $('.remove-me').click(function(e){
+                                                e.preventDefault();
+                                                var fieldNum = this.id.charAt(this.id.length-1);
+                                                var fieldID = "#field" + fieldNum;
+                                                $(this).remove();
+                                                $(fieldID).remove();
+                                            });
+                                        });
+                                    });
+                                </script>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" ng-disabled="form.$invalid" name="Valider" class="btn btn-primary" value="Valider">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
