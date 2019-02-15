@@ -7,6 +7,7 @@ import exceptions.ServiceException;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -193,8 +194,14 @@ public class UtilisateurController {
             if (!password.equals(password_confirmation)) {
                 request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage("Mots de passe différents."));
             } else {
-                String nom = request.getParameter("nom");
-                String prenom = request.getParameter("prenom");
+                String nom = "";
+                String prenom = "";
+                try {
+                    nom = request.getParameter("nom");
+                    prenom = request.getParameter("prenom");
+                } catch (Exception e) {
+                    
+                }
 
                 // Actualise les données de l'utilisateur
                 if (ControllerUtils.isUtilisateurPro(request)) {

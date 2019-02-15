@@ -98,14 +98,19 @@ public class CommunicationController {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
             JSONObject jObj = ControllerUtils.requestToJSONObj(request);
-
             String sujet = jObj.getString("sujet");
-            String destinataire = jObj.getString("destinataire");
-            String message = jObj.getString("message");
+            String from = jObj.getString("from");
+            String to = jObj.getString("to");
+            String message = "";
+            try {
+                message = jObj.getString("message");
+            } catch (JSONException ex) {
+                
+            }
 
             // Envoi du message
             try {
-                service.envoyerMessage(ControllerUtils.getUserLogin(request), destinataire, sujet, message);
+                service.envoyerMessage(from, to, sujet, message);
                 status = HttpStatus.OK;
             } catch (ServiceException e) {
                 userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();

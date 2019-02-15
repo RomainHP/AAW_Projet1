@@ -19,9 +19,9 @@
         function register(email, password){
             var deferred = $q.defer();
             $http({
-                url: 'http://localhost:8080/Credit_Ecureuil_1/register.htm',
+                url: 'http://localhost:8084/Credit_Ecureuil_1/register.htm',
                 method: "POST",
-                data: {
+                params: {
                         'email': email,
                         'password': password
                     }
@@ -40,9 +40,9 @@
         function registerpro(email, entreprise, siret, password){
             var deferred = $q.defer();
             $http({
-                url: 'http://localhost:8080/Credit_Ecureuil_1/register_pro.htm',
+                url: 'http://localhost:8084/Credit_Ecureuil_1/register_pro.htm',
                 method: "POST",
-                data: {
+                params: {
                         'email': email,
                         'entreprise': entreprise,
                         'siret': siret,
@@ -63,7 +63,7 @@
         function getAllUsers(){
             var deferred = $q.defer();
             $http({
-                url: 'http://localhost:8080/Credit_Ecureuil_1/envoyer_message.htm',
+                url: 'http://localhost:8084/Credit_Ecureuil_1/envoyer_message.htm',
                 method: "GET"
             }
             ).then(

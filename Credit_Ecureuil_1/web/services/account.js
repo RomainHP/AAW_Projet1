@@ -20,7 +20,7 @@
         function consultation(mail){
             var deferred = $q.defer();
             $http({
-                url: 'http://localhost:8080/Credit_Ecureuil_1/consultation.htm',
+                url: 'http://localhost:8084/Credit_Ecureuil_1/consultation.htm',
                 method: "GET",
                 params : {mail : mail}
             }
@@ -38,9 +38,9 @@
         function createAccount(name, user){
             var deferred = $q.defer();
             $http({
-                url: 'http://localhost:8080/Credit_Ecureuil_1/ajout_livret.htm',
+                url: 'http://localhost:8084/Credit_Ecureuil_1/ajout_livret.htm',
                 method: "POST",
-                data : {
+                params: {
                         'name': name,
                         'login': user
                     }
@@ -59,7 +59,7 @@
         function getAllAccounts(){
             var deferred = $q.defer();
             $http({
-                url: 'http://localhost:8080/Credit_Ecureuil_1/virement.htm',
+                url: 'http://localhost:8084/Credit_Ecureuil_1/virement.htm',
                 method: "GET"
             }
             ).then(
@@ -76,9 +76,9 @@
         function virement(source, dest, montant){
             var deferred = $q.defer();
             $http({
-                url: 'http://localhost:8080/Credit_Ecureuil_1/virement.htm',
+                url: 'http://localhost:8084/Credit_Ecureuil_1/virement.htm',
                 method: "POST",
-                data : {
+                params: {
                     'source' : source,
                     'dest' : dest,
                     'montant' : montant
