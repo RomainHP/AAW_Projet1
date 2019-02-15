@@ -6,8 +6,6 @@ import dao.utilisateur.pro.UtilisateurProEntity;
 import exceptions.ServiceException;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,8 +34,7 @@ public class UtilisateurController {
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
     protected ResponseEntity<?> connexion(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -75,8 +72,7 @@ public class UtilisateurController {
      */
     @RequestMapping(value = "register", method = RequestMethod.POST)
     protected ResponseEntity<?> inscription(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -109,8 +105,7 @@ public class UtilisateurController {
      */
     @RequestMapping(value = "register_pro", method = RequestMethod.POST)
     protected ResponseEntity<?> inscriptionPro(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -146,9 +141,10 @@ public class UtilisateurController {
      * affichage de la page "erreur" autrement
      */
     @RequestMapping(value = "profil", method = RequestMethod.GET)
-    protected ResponseEntity<?> initProfil(HttpServletRequest request, HttpServletResponse response) throws Exception, IOException {
+    protected ResponseEntity<?> initProfil(HttpServletRequest request) throws Exception, IOException {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
+        
         try {
             JSONObject jObj = ControllerUtils.requestToJSONObj(request);
             String login = jObj.getString("login");
@@ -180,8 +176,7 @@ public class UtilisateurController {
      */
     @RequestMapping(value = "profil", method = RequestMethod.POST)
     protected ResponseEntity<?> profilUtilisateur(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {

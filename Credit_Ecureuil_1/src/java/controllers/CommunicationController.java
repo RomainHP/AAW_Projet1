@@ -6,7 +6,6 @@ import exceptions.ServiceException;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class CommunicationController {
      * @return ResponseEntity correspondant a la page "consulter_messagerie"
      */
     @RequestMapping(value = "consulter_messagerie", method = RequestMethod.GET)
-    protected ResponseEntity initConsulterMessagerie(HttpServletRequest request, HttpServletResponse response) throws JSONException {
+    protected ResponseEntity initConsulterMessagerie(HttpServletRequest request) throws JSONException {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -66,7 +65,7 @@ public class CommunicationController {
      * Affichage de la page "envoyer_message" en methode GET
      */
     @RequestMapping(value = "envoyer_message", method = RequestMethod.GET)
-    protected ResponseEntity initEnvoyerMessage(HttpServletRequest request, HttpServletResponse response) throws JSONException {
+    protected ResponseEntity initEnvoyerMessage(HttpServletRequest request) throws JSONException {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -92,8 +91,7 @@ public class CommunicationController {
      */
     @RequestMapping(value = "envoyer_message", method = RequestMethod.POST)
     public ResponseEntity<?> serviceEnvoyerMessage(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception, IOException {
+            HttpServletRequest request) throws Exception, IOException {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -130,8 +128,7 @@ public class CommunicationController {
      */
     @RequestMapping(value = "supprimer_message", method = RequestMethod.POST)
     protected ResponseEntity<?> supprimerMessage(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -159,8 +156,7 @@ public class CommunicationController {
     //-----------------------------
     @RequestMapping(value = "notifications", method = RequestMethod.POST)
     public ResponseEntity notifications(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 }
