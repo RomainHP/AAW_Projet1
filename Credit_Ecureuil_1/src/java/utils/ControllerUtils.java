@@ -2,6 +2,7 @@ package utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Map;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,17 +17,14 @@ public class ControllerUtils {
     
     public static JSONObject requestToJSONObj(HttpServletRequest request) throws JSONException, IOException
         {
-            StringBuilder sb = new StringBuilder();
-            BufferedReader br = request.getReader();
-            try {
-                String str = null;
-                while ((str = br.readLine()) != null) {
-                    sb.append(str);
-                }
-            } catch (IOException ex) {
+            JSONObject jsonObj = new JSONObject();
+            Map<String,String[]> params = request.getParameterMap();
+            for (Map.Entry<String,String[]> entry : params.entrySet()) {
+                String v[] = entry.getValue();
+                Object o = (v.length == 1) ? v[0] : v;
+                jsonObj.put(entry.getKey(), o);
             }
-            JSONObject jObj = new JSONObject(sb.toString());
-            return jObj;
+            return jsonObj;
         }
     
     /**

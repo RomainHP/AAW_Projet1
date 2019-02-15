@@ -103,25 +103,20 @@
     </div>
 </nav>
 
-<div class="container">
-    <div id="login-row" class="row justify-content-center align-items-center">
-        <div id="login-column" class="col-md-6">
-            <div class="login-box col-md-12">
-                <form name="form" id="login-form" ng-submit="vm.login()" role="form">
-                    <h3 class="text-center text-info">Formulaire de connexion</h3>
-                    <div class="form-group" ng-class="{ 'has-error': form.email.$dirty && form.email.$error.required }">
-                        <label for="email">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" ng-model="vm.userTmp.email" required />
-                    </div>
-                    <div class="form-group" ng-class="{ 'has-error': form.password.$dirty">
-                        <label for="password">Password</label>
-                        <input type="password" name="password" id="password" class="form-control" ng-model="vm.userTmp.password" />
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Se connecter</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+<form ng-submit="vm.envoyerMessage()" role="form">
+    <div class="d-flex col-lg-8 m-3">
+        <label for="destinataire">Sujet:</label>
+        <input type="text" class="form-control mx-sm-3" name="sujet" id="sujet" ng-model="vm.message.sujet" required>
+        <label for="destinataire">Destinataire:</label>
+        <select name="destinataire" class="custom-select mx-sm-3" id="destinataire">
+            {{vm.displayUsers()}}
+        </select>
     </div>
-</div>
+    <div class="m-3">
+        <label for="message">Message:</label>
+        <textarea class="form-control" rows="5" name="message" id="message" ng-model="vm.message.message"></textarea>
+    </div>
+    <div class="d-flex m-3 justify-content-center">
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    </div>
+</form>

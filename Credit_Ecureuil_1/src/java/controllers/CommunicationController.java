@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 import services.communication.CommunicationService;
 import utils.ControllerUtils;
 
@@ -35,99 +34,88 @@ public class CommunicationController {
     /**
      * Affichage de la page "consulter_messagerie" en methode GET
      *
-     * @return ModelAndView correspondant a la page "consulter_messagerie"
+     * @return ResponseEntity correspondant a la page "consulter_messagerie"
      */
     @RequestMapping(value = "consulter_messagerie", method = RequestMethod.GET)
-    protected ModelAndView initConsulterMessagerie(HttpServletRequest request, HttpServletResponse response) {
-        if (!ControllerUtils.isUtilisateurConnecte(request)) {
-            return new ModelAndView("erreur");
+    protected ResponseEntity initConsulterMessagerie(HttpServletRequest request, HttpServletResponse response) throws JSONException {
+        String userResponse = "[]";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        try {
+            JSONObject json = ControllerUtils.requestToJSONObj(request);
+            String user = json.getString("user");
+            
+            List<MessageEntity> allMessages = service.lireMessages(user);
+            JSONObject jObj = new JSONObject();
+            for (MessageEntity msg : allMessages) {
+                jObj.append("id", msg.getId());
+                jObj.append("emetteur", msg.getUserFrom().toString());
+                jObj.append("sujet", msg.getSujet());
+                jObj.append("message", msg.getHtmlMessage());
+            }
+            status = HttpStatus.OK;
+            userResponse = jObj.toString();
+        } catch (Exception e) {
+            userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
-
-        ModelAndView mv = new ModelAndView("consulter_messagerie");
-
-        StringBuffer table_messages = new StringBuffer();
-
-        List<MessageEntity> list = service.lireMessages(ControllerUtils.getUserLogin(request));
-
-        // Affiche chaque message de la liste
-        int cpt = 1;
-        for (MessageEntity message : list) {
-            table_messages.append("<tr data-toggle=\"collapse\" data-target=\"#msg" + cpt + "\" class=\"accordion-toggle\">");
-            table_messages.append("<td scope=\"row\">" + cpt + "</td>");
-            // Affichage ou non du prénom et nom (si renseigné)
-            table_messages.append("<td scope=\"row\">" + message.getUserFrom() + "</td>");
-            table_messages.append("<td scope=\"row\">" + message.getSujet() + "</td>");
-            // Boutton Supprimer
-            table_messages.append("<td scope=\"row\"><form class=\"form\" action=\"supprimer_message.htm\" method=\"post\"><div class=\"form-group mb-3\">");
-            table_messages.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\"" + message.getId() + "\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Supprimer</button></div></form></td>");
-            table_messages.append("</tr>");
-            // Ligne d'affichage du message (caché par défaut)
-            table_messages.append("<tr>");
-            table_messages.append("<td colspan=\"4\" class=\"hiddenRow\"><div class=\"accordian-body collapse\" id=\"msg" + cpt + "\">" + message.getHtmlMessage() + "</div> </td>");
-            table_messages.append("</tr>");
-            cpt++;
-        }
-
-        mv.addObject("messages", table_messages);
-
-        return mv;
+        
+        return new ResponseEntity(userResponse, status);
     }
 
     //----------------------------
     /**
      * Affichage de la page "envoyer_message" en methode GET
-     *
-     * @return ModelAndView correspondant a la page "envoyer_message"
      */
     @RequestMapping(value = "envoyer_message", method = RequestMethod.GET)
-    protected ModelAndView initEnvoyerMessage(HttpServletRequest request, HttpServletResponse response) {
-        if (!ControllerUtils.isUtilisateurConnecte(request)) {
-            return new ModelAndView("erreur");
+    protected ResponseEntity initEnvoyerMessage(HttpServletRequest request, HttpServletResponse response) throws JSONException {
+        String userResponse = "[]";
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        try {
+            List<UtilisateurEntity> allUsers = utilisateurController.service.getAllUsers();
+            JSONObject jObj = new JSONObject();
+            for (UtilisateurEntity user : allUsers) {
+                jObj.append("mail", user.getEmail());
+            }
+            status = HttpStatus.OK;
+            userResponse = jObj.toString();
+        } catch (Exception e) {
+            userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
-        ModelAndView mv = new ModelAndView("envoyer_message");
-        // Compte destinataire
-        StringBuilder options_dest = new StringBuilder();
-        List<UtilisateurEntity> all_users = utilisateurController.service.getAllUsers();
-        for (UtilisateurEntity utilisateur : all_users) {
-            System.err.println(utilisateur);
-            options_dest.append("<option value=\"");
-            options_dest.append(utilisateur.getEmail());
-            options_dest.append("\">");
-            options_dest.append(utilisateur);
-            options_dest.append("</option>");
-        }
-
-        mv.addObject("options_dest", options_dest.toString());
-        return mv;
+        
+        return new ResponseEntity(userResponse, status);
     }
 
     /**
      * Affichage de la page "envoyer_message" en methode POST
      *
-     * @return ModelAndView correspondant a la page "envoyer_message" avec
+     * @return ResponseEntity correspondant a la page "envoyer_message" avec
      * indication de réussite ou non
      */
     @RequestMapping(value = "envoyer_message", method = RequestMethod.POST)
     public ResponseEntity<?> serviceEnvoyerMessage(
             HttpServletRequest request,
-            HttpServletResponse response) throws JSONException, IOException {
+            HttpServletResponse response) throws Exception, IOException {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
             JSONObject jObj = ControllerUtils.requestToJSONObj(request);
-
             String sujet = jObj.getString("sujet");
-            String destinataire = jObj.getString("destinataire");
-            String message = jObj.getString("message");
+            String from = jObj.getString("from");
+            String to = jObj.getString("to");
+            String message = "";
+            try {
+                message = jObj.getString("message");
+            } catch (JSONException ex) {
+                
+            }
 
             // Envoi du message
             try {
-                service.envoyerMessage(ControllerUtils.getUserLogin(request), destinataire, sujet, message);
+                service.envoyerMessage(from, to, sujet, message);
                 status = HttpStatus.OK;
             } catch (ServiceException e) {
                 userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);
@@ -137,7 +125,7 @@ public class CommunicationController {
     /**
      * Affichage de la page "supprimer_message" en methode POST
      *
-     * @return ModelAndView correspondant a la page "supprimer_message" avec
+     * @return ResponseEntity correspondant a la page "supprimer_message" avec
      * indication de réussite ou non
      */
     @RequestMapping(value = "supprimer_message", method = RequestMethod.POST)
@@ -162,7 +150,7 @@ public class CommunicationController {
                 userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
             }
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
         return new ResponseEntity(userResponse, status);
@@ -170,7 +158,7 @@ public class CommunicationController {
 
     //-----------------------------
     @RequestMapping(value = "notifications", method = RequestMethod.POST)
-    public ModelAndView notifications(
+    public ResponseEntity notifications(
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         throw new UnsupportedOperationException("Not yet implemented");

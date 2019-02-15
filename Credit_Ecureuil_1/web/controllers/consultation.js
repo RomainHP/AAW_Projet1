@@ -56,7 +56,7 @@
             if (vm.accounts !== null){
                 var index = vm.accounts.Compte.length;
                 for(var i = 0; i<index; i++){
-                    document.getElementById('table').innerHTML += '<td>' + i+1+ '</td>'
+                    document.getElementById('table').innerHTML += '<td>' + (i+1) + '</td>'
                     + '<td scope="row">' + vm.accounts.Compte[i].id[0] + '</td>'
                     + '<td scope="row">' + vm.accounts.Compte[i].prop[0] + '</td>'
                     + '<td scope="row">' + vm.accounts.Compte[i].name[0] + '</td>'

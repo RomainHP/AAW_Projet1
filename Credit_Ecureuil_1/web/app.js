@@ -57,6 +57,18 @@
                 controllerAs: 'vm'
             })
             
+            .when('/envoyer_message', {
+                controller: 'MessagerieController',
+                templateUrl: 'envoyer_message.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/consulter_messagerie', {
+                controller: 'MessagerieController',
+                templateUrl: 'consulter_messagerie.html',
+                controllerAs: 'vm'
+            })
+            
             .otherwise({ redirectTo: '/login' });
     }
 
