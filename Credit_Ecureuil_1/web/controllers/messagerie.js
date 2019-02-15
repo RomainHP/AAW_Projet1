@@ -99,7 +99,7 @@
                 MessageService.removeMessage(vm.messageRemoved)
                     .then(function () {
                         vm.messageRemoved = null;
-                        FlashService.Success('Message supprime avec succeès', true);
+                        FlashService.Success('Message supprime avec succes', true);
                         $location.path('/consulter_messagerie');
                     },
                     function (errResponse) {

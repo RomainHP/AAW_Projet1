@@ -9,7 +9,7 @@
     
     function DisconnectController($location, AuthentificationService, FlashService) {
         AuthentificationService.clearCredentials();
-        FlashService.Success('Utilisateur déconnecté', true);
+        FlashService.Success('Utilisateur deconnecte', true);
         $location.path('/');
     }
  
