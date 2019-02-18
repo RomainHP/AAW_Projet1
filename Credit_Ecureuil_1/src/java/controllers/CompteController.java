@@ -8,7 +8,6 @@ import exceptions.ServiceException;
 import java.util.LinkedHashSet;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class CompteController {
      * @return ResponseEntity correspondant a la page "consultation"
      */
     @RequestMapping(value = "consultation", method = RequestMethod.GET)
-    protected ResponseEntity<?> initConsult(HttpServletRequest request, HttpServletResponse response) throws Exception {        
+    protected ResponseEntity<?> initConsult(HttpServletRequest request) throws Exception {        
 	String login = request.getParameter("mail");	
 	
         List<CompteEntity> accounts = this.service.consultation(login);
@@ -79,7 +78,7 @@ public class CompteController {
      * @return ResponseEntity correspondant a la page "virement"
      */
     @RequestMapping(value = "virement", method = RequestMethod.GET)
-    protected ResponseEntity<?> initVirement(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected ResponseEntity<?> initVirement(HttpServletRequest request) throws Exception {
         // Compte destinataire
         List<CompteEntity> all_accounts = service.getAllOpenAccounts();
 	JSONObject jObj = new JSONObject();
@@ -105,8 +104,7 @@ public class CompteController {
      */
     @RequestMapping(value = "virement", method = RequestMethod.POST)
     protected ResponseEntity<?> virementCompte(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -143,8 +141,7 @@ public class CompteController {
      */
     @RequestMapping(value = "ajout_livret", method = RequestMethod.POST)
     protected ResponseEntity<?> ajoutLivret(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -174,8 +171,7 @@ public class CompteController {
      */
     @RequestMapping(value = "supprimer_livret", method = RequestMethod.POST)
     protected ResponseEntity<?> supprimerLivret(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -206,8 +202,7 @@ public class CompteController {
      */
     @RequestMapping(value = "create_linked_account", method = RequestMethod.POST)
     protected ResponseEntity<?> ajoutCompteJoint(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -246,8 +241,7 @@ public class CompteController {
      */
     @RequestMapping(value = "supprimer_compte_joint", method = RequestMethod.POST)
     protected ResponseEntity<?> supprimerCompteJoint(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -278,8 +272,7 @@ public class CompteController {
      */
     @RequestMapping(value = "details", method = RequestMethod.GET)
     protected ResponseEntity<?> detailsCompte(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {	
+            HttpServletRequest request) throws Exception {
 	JSONObject jObj = ControllerUtils.requestToJSONObj(request);
 
 	String idCompteStr = jObj.getString("idCompte");

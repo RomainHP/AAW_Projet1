@@ -32,7 +32,7 @@ public class BourseController {
      * @return ResponseEntity correspondant à la page "ordre_bourse"
      */
     @RequestMapping(value="ordre_bourse", method = RequestMethod.GET)
-    protected ResponseEntity initBourse(HttpServletRequest request,HttpServletResponse response) {
+    protected ResponseEntity initBourse(HttpServletRequest request) {
 //        if (!ControllerUtils.isUtilisateurConnecte(request)) return new ResponseEntity("erreur");
 //        if (!ControllerUtils.isUtilisateurPro(request)) return new ResponseEntity("erreur");
 //        
@@ -59,8 +59,7 @@ public class BourseController {
      */
     @RequestMapping(value="ordre_bourse", method = RequestMethod.POST)
     public ResponseEntity bourse(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         throw new UnsupportedOperationException("Not yet implemented");
     }
     

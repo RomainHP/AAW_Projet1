@@ -42,9 +42,9 @@ public class CompteServiceImpl implements CompteService{
 	CompteEntity cedst = dao.find(dest);
 	if (cesrc==null) throw new ServiceException("Compte source introuvable.");
 	if (cedst==null) throw new ServiceException("Compte destinataire introuvable.");
-        if (cesrc.isCloture()) throw new ServiceException("Compte source cloturé.");
-        if (cedst.isCloture()) throw new ServiceException("Compte destinataire cloturé.");
-        if (montant<=0d) throw new ServiceException("Montant invalide (inférieur ou égal à 0).");
+        if (cesrc.isCloture()) throw new ServiceException("Compte source cloture.");
+        if (cedst.isCloture()) throw new ServiceException("Compte destinataire cloture.");
+        if (montant<=0d) throw new ServiceException("Montant invalide (inferieur ou egal a 0).");
         if (testSolde && cesrc.getSolde()<montant) throw new ServiceException("Solde du compte source insuffisant.");
         TransactionEntity te = new TransactionEntity(cesrc, cedst, montant);
         cedst.setSolde(cedst.getSolde() + montant);
@@ -75,7 +75,7 @@ public class CompteServiceImpl implements CompteService{
                 dao.update(ce);
                 return;
             } else {
-                throw new ServiceException("Nom de livret déjà pris.");
+                throw new ServiceException("Nom de livret deja pris.");
             }
         }
         LivretEntity ce = new LivretEntity(nomCompte, ue);
@@ -87,15 +87,15 @@ public class CompteServiceImpl implements CompteService{
     public void supprimerLivret(Long id, boolean testSolde) throws ServiceException {
 	LivretEntity ce = livretDao.find(id);
 	if(ce == null) throw new ServiceException("Livret introuvable.");
-        if(testSolde && ce.getSolde()!=0d) throw new ServiceException("Le solde du livret à supprimer n'est pas nul (0).");
+        if(testSolde && ce.getSolde()!=0d) throw new ServiceException("Le solde du livret a supprimer n'est pas nul (0).");
         ce.setCloture(true);
         livretDao.update(ce);
     }
     
     @Override
     public void ajoutCompteJoint(String nomCompte, String nomUtilisateur, LinkedHashSet<String> co_proprietaires) throws ServiceException {
-	if (co_proprietaires.isEmpty()) throw new ServiceException("Pas de co-propriétaires.");
-        if (co_proprietaires.contains(nomUtilisateur)) throw new ServiceException("Le propriétaire ne peut pas être également co-propriétaire.");
+	if (co_proprietaires.isEmpty()) throw new ServiceException("Pas de co-proprietaires.");
+        if (co_proprietaires.contains(nomUtilisateur)) throw new ServiceException("Le proprietaire ne peut pas être egalement co-proprietaire.");
         UtilisateurEntity ue = userDao.find(nomUtilisateur);
         if (ue==null) throw new ServiceException("Utilisateur introuvable.");
         // On recherche les co proprietaires dans la base
@@ -105,7 +105,7 @@ public class CompteServiceImpl implements CompteService{
             if (user==null) throw new ServiceException("Utilisateur introuvable.");
             users.add(user);
         }
-        if (ue.hasAccountName(nomCompte)) throw new ServiceException("Nom de compte déjà pris.");
+        if (ue.hasAccountName(nomCompte)) throw new ServiceException("Nom de compte deja pris.");
         CompteJointEntity ce = new CompteJointEntity(nomCompte, ue, users);
         for (UtilisateurEntity user : users){
             user.addCompteJoint(ce);
@@ -119,7 +119,7 @@ public class CompteServiceImpl implements CompteService{
     public void supprimerCompteJoint(Long id, boolean testSolde) throws ServiceException {
 	CompteJointEntity ce = compteJointDao.find(id);
 	if(ce == null) throw new ServiceException("Compte joint introuvable.");
-        if(testSolde && ce.getSolde()!=0d) throw new ServiceException("Le solde du compte à supprimer n'est pas nul (0).");
+        if(testSolde && ce.getSolde()!=0d) throw new ServiceException("Le solde du compte a supprimer n'est pas nul (0).");
         ce.setCloture(true);
         compteJointDao.update(ce);
     }

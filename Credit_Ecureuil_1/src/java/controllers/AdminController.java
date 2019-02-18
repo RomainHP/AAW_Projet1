@@ -6,7 +6,6 @@ import dao.compte.livret.LivretEntity;
 import exceptions.ServiceException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,8 +36,7 @@ public class AdminController {
      */
     @RequestMapping(value = "consultation_comptes_admin", method = RequestMethod.GET)
     protected ResponseEntity initConsultationComptesAdmin(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
 //        if (!ControllerUtils.isUtilisateurAdmin(request)) {
 //            return new ResponseEntity("erreur");
 //        }
@@ -91,8 +89,7 @@ public class AdminController {
      */
     @RequestMapping(value = "ajout_livret_admin", method = RequestMethod.POST)
     protected ResponseEntity<?> ajoutLivret(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -125,8 +122,7 @@ public class AdminController {
      */
     @RequestMapping(value = "supprimer_livret_admin", method = RequestMethod.POST)
     protected ResponseEntity<?> supprimerLivret(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -160,8 +156,7 @@ public class AdminController {
      */
     @RequestMapping(value = "supprimer_compte_joint_admin", method = RequestMethod.POST)
     protected ResponseEntity<?> supprimerCompteJoint(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
@@ -191,7 +186,7 @@ public class AdminController {
      * @throws Exception
      */
     @RequestMapping(value = "virement_admin", method = RequestMethod.GET)
-    protected ResponseEntity initVirementAdmin(HttpServletRequest request, HttpServletResponse response) {
+    protected ResponseEntity initVirementAdmin(HttpServletRequest request) {
 //        if (!ControllerUtils.isUtilisateurConnecte(request)) {
 //            return new ResponseEntity("erreur");
 //        }
@@ -226,8 +221,7 @@ public class AdminController {
      */
     @RequestMapping(value = "virement_admin", method = RequestMethod.POST)
     protected ResponseEntity<?> virementAdmin(
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            HttpServletRequest request) throws Exception {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
         try {

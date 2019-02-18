@@ -35,7 +35,7 @@
             
             .when('/disconnect', {
                 controller: 'DisconnectController',
-                templateUrl: 'registerpro.html',
+                templateUrl: 'login.html',
                 controllerAs: 'vm'
             })
             
@@ -84,6 +84,12 @@
             .when('/profil', {
                 controller: 'HomeController',
                 templateUrl: 'profil.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/remove_message', {
+                controller: 'RemoveMessageController',
+                templateUrl: 'consulter_messagerie.html',
                 controllerAs: 'vm'
             })
             
