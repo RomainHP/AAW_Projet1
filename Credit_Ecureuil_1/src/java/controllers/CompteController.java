@@ -9,6 +9,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -85,8 +86,10 @@ public class CompteController {
         for (CompteEntity compte : all_accounts) {
 	    jObj.append("id", compte.getId());
 	    jObj.append("prop", compte.getProprietaire());
-	    if(compte instanceof CompteJointEntity || compte instanceof LivretEntity){
+	    if(compte instanceof LivretEntity){
 		jObj.append("name", ((LivretEntity)compte).getNom());
+	    }else if(compte instanceof CompteJointEntity ){
+		    jObj.append("name", ((CompteJointEntity)compte).getNom());
 	    }else{
 		jObj.append("name", "Compte courant");
 	    }
@@ -273,55 +276,42 @@ public class CompteController {
      * @return ResponseEntity correspondant a la page "details_compte" si
      * réussite, page "erreur" autrement
      */
-    @RequestMapping(value = "details", method = RequestMethod.POST)
+    @RequestMapping(value = "details", method = RequestMethod.GET)
     protected ResponseEntity<?> detailsCompte(
             HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        String userResponse = "[]";
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        try {
-            JSONObject jObj = ControllerUtils.requestToJSONObj(request);
+            HttpServletResponse response) throws Exception {	
+	JSONObject jObj = ControllerUtils.requestToJSONObj(request);
 
-            String idCompteStr = jObj.getString("idCpt");
-            Long idCompte = Long.parseLong(idCompteStr);
-            CompteEntity ce = service.getAccount(idCompte);
+	String idCompteStr = jObj.getString("idCompte");
+	Long idCompte = Long.parseLong(idCompteStr);
+	
+	CompteEntity ce = service.getAccount(idCompte);
+	JSONObject answer = new JSONObject();
+	
+	for (TransactionEntity trans : ce.getAllTransactions()) {
+	    answer.accumulate("montant", trans.getMontant());
+	    answer.accumulate("date", trans.getDate());
+	    
+	    
+	    if(trans.getCptSource() instanceof LivretEntity)
+		answer.accumulate("nomCompteSrc", ((LivretEntity)trans.getCptSource()).getNom());
+	    else if(trans.getCptSource() instanceof CompteJointEntity)
+		answer.accumulate("nomCompteSrc", ((CompteJointEntity)trans.getCptSource()).getNom());
+	    else if(trans.getCptSource() instanceof CompteEntity)
+		answer.accumulate("nomCompteSrc", "Compte courant");
+	    
+	    answer.accumulate("nomPropCptSrc", trans.getCptSource().getProprietaire().getEmail());
+	    
+	    if(trans.getCptDest() instanceof LivretEntity)
+		answer.accumulate("nomCompteDest", ((LivretEntity)trans.getCptDest()).getNom());
+	    else if(trans.getCptDest() instanceof CompteJointEntity)
+		answer.accumulate("nomCompteDest", ((CompteJointEntity)trans.getCptDest()).getNom());
+	    else if(trans.getCptDest() instanceof CompteEntity)
+		answer.accumulate("nomCompteDest", "Compte courant");
+	    
+	    answer.accumulate("nomPropCptDest", trans.getCptDest().getProprietaire().getEmail());
+	}
 
-            StringBuffer table_transactions = new StringBuffer();
-
-            for (TransactionEntity te : ce.getAllTransactions()) {
-                // Couleur de la ligne en fonction du type de la transaction
-                if (te.getCptSource().getId().equals(idCompte)) {
-                    table_transactions.append("<tr style=\" background-color:#ff5b5b \">");
-                } else {
-                    table_transactions.append("<tr style=\" background-color:#5bff63 \">");
-                }
-
-                // COMPTE SOURCE
-                table_transactions.append("<td scope=\"row\">" + te.getCptSource() + "</td>");
-                // Affichage ou non du prénom et nom (si renseigné)
-                if (te.getCptSource().getProprietaire().getNom().isEmpty() && te.getCptSource().getProprietaire().getPrenom().isEmpty()) {
-                    table_transactions.append("<td scope=\"row\">" + te.getCptSource().getProprietaire().getEmail() + "</td>");
-                } else {
-                    table_transactions.append("<td scope=\"row\">" + te.getCptSource().getProprietaire().getEmail() + "<p style=\"font-size:12px\"> ( " + te.getCptSource().getProprietaire().getPrenom() + " " + te.getCptSource().getProprietaire().getNom() + ")</p> </td>");
-                }
-
-                // COMPTE DESTINATAIRE
-                table_transactions.append("<td scope=\"row\">" + te.getCptDest() + "</td>");
-                // Affichage ou non du prénom et nom (si renseigné)
-                if (te.getCptDest().getProprietaire().getNom().isEmpty() && te.getCptDest().getProprietaire().getPrenom().isEmpty()) {
-                    table_transactions.append("<td scope=\"row\">" + te.getCptDest().getProprietaire().getEmail() + "</td>");
-                } else {
-                    table_transactions.append("<td scope=\"row\">" + te.getCptDest().getProprietaire().getEmail() + "<p style=\"font-size:12px\"> ( " + te.getCptDest().getProprietaire().getPrenom() + " " + te.getCptDest().getProprietaire().getNom() + ")</p> </td>");
-                }
-
-                table_transactions.append("<td scope=\"row\">" + te.getMontant() + "</td>");
-                table_transactions.append("<td scope=\"row\">" + te.getDate() + "</td>");
-                table_transactions.append("</tr>");
-            }
-
-        } catch (Exception e) {
-            userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
-        }
-        return new ResponseEntity(userResponse, status);
+        return new ResponseEntity(answer.toString(), HttpStatus.OK);
     }
 }

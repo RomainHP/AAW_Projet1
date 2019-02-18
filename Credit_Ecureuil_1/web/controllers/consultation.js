@@ -12,7 +12,8 @@
         vm.user = null;
         vm.accounts = null;
         vm.allAccounts = null;
-        
+        vm.idCompte = null;
+        vm.transaction = null;
         
         vm.createAccount = createAccount;
         vm.displayAccount = displayAccount;
@@ -22,13 +23,13 @@
         vm.selectOtherAcc = selectOtherAcc;
         vm.virement = virement;
         vm.createLinkedAccount = createLinkedAccount;
-        vm.detailsCompte = detailsCompte;
+        vm.displayAccountInfo = displayAccountInfo;
         
         var mail = $rootScope.globals.currentUser.username;
         var srcSelected = null;
         var destSelected = null;
         var alreadyPrinted = false;
-//        var idCpt = vm.account.id;
+        var detailsAccountLoaded = false;
         
         initConsultation($rootScope);
         function initConsultation($rootScope){
@@ -69,12 +70,7 @@
                     + '<td scope="row">' + vm.accounts.Compte[i].name[0] + '</td>'
                     + '<td scope="row">' + vm.accounts.Compte[i].solde[0] + '</td>'
                     + '<td scope="row">'
-                    + '<form class="form" ng-submit="vm.detailsCompte(login)">'
-                    +   '<div class="form-group mb-3">'
-                    +       '<input type="hidden" ng-value="'+vm.accounts.Compte[i].id[0]+'" ng-model="vm.account.id" role="form">'
-                    +       '<button type="submit" class="btn btn-primary btn-md">Détails</button>'
-                    +   '</div>'
-                    + '</form>'
+                    + '<button class="btn btn-primary btn-md" onClick="window.location.href=\'#!/details?id='+vm.accounts.Compte[i].id[0]+'\'">Details</button>'
                     + '</td>'
                     ;
                 }
@@ -84,7 +80,6 @@
         
         function virement(){            
             var montant = document.getElementById("value").value;
-            console.log("src : " + srcSelected + " dest : " + destSelected + " montant : " + montant);
             CompteService.virement(srcSelected, destSelected, montant).then(function () {
                     FlashService.Success('Virement réalisé avec succès', true);
                 },
@@ -100,7 +95,6 @@
             listeCoProprietaire.push(document.getElementById("field1").value);
             var tmp = document.getElementById("field"+i).value;
             while(tmp !== undefined && tmp !== null){
-                console.log(tmp);
                 listeCoProprietaire.push(tmp);
                 i++;
                 if(document.getElementById("field"+i) !== null && document.getElementById("field"+i) !== undefined)
@@ -117,17 +111,31 @@
             );
         }
         
-        function detailsCompte(login){
-            console.log(vm.acocunt.id);
-            CompteService.details(login, vm.acocunt.id).then(function () {
-                    $location.path("#!/details");
-                },
-                function (errResponse) {
-                    FlashService.Error("Erreur : " + errResponse.data["errorMessage"], true);
-                }
-            );
+        function displayAccountInfo(){
+            if(!detailsAccountLoaded){
+                var id = $location.search().id;
+                CompteService.details(mail, id).then(function (response) {
+                        vm.transaction = response;
+                        var size = vm.transaction.date.length;
+                        for(var i=0;i<size;i+=2){
+                            document.getElementById("tbody").innerHTML +=
+                            '<tr>'
+                            + '<th scope="col">'+vm.transaction.nomCompteSrc[i]+'</th>'
+                            + '<th scope="col">'+vm.transaction.nomPropCptSrc[i]+'</th>'
+                            + '<th scope="col">'+vm.transaction.nomCompteDest[i]+'</th>'
+                            + '<th scope="col">'+vm.transaction.nomPropCptDest[i]+'</th>'
+                            + '<th scope="col">'+vm.transaction.montant[i]+'</th>'
+                            + '<th scope="col">'+vm.transaction.date[i]+'</th>'
+                            +'</tr>';
+                        }
+                    },
+                    function (errResponse) {
+                        FlashService.Error("Erreur : " + errResponse.data["errorMessage"], true);
+                    }
+                );
+                detailsAccountLoaded = true;
+            }
         }
-        
                 
         function selectOwnAcc(){
             var tmp = document.getElementById("id");

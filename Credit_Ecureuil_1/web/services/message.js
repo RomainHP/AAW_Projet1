@@ -18,7 +18,7 @@
         function getMessages(user){
             var deferred = $q.defer();
             $http({
-                url: 'http://localhost:8084/Credit_Ecureuil_1/consulter_messagerie.htm',
+                url: 'http://localhost:8080/Credit_Ecureuil_1/consulter_messagerie.htm',
                 method: "GET",
                 params: 
                     {
@@ -39,7 +39,7 @@
         function sendMessage(from, to, sujet, message) {
             var deferred = $q.defer();
             $http({
-                url: 'http://localhost:8084/Credit_Ecureuil_1/envoyer_message.htm',
+                url: 'http://localhost:8080/Credit_Ecureuil_1/envoyer_message.htm',
                 method: "POST",
                 params: 
                     {
@@ -63,7 +63,7 @@
         function removeMessage(id) {
             var deferred = $q.defer();
             $http({
-                url: 'http://localhost:8084/Credit_Ecureuil_1/supprimer_message.htm',
+                url: 'http://localhost:8080/Credit_Ecureuil_1/supprimer_message.htm',
                 method: "POST",
                 params: 
                     {

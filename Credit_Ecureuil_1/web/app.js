@@ -77,7 +77,13 @@
             
             .when('/details', {
                 controller: 'ConsultationController',
-                templateUrl: 'create_linked_account.html',
+                templateUrl: 'details.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/profil', {
+                controller: 'HomeController',
+                templateUrl: 'profil.html',
                 controllerAs: 'vm'
             })
             
