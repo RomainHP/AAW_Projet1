@@ -16,6 +16,7 @@
         service.virement = virement;
         service.createLinkedAccount = createLinkedAccount;
         service.details = details;
+        service.deleteAccount = deleteAccount;
         
         return service;
     
@@ -130,10 +131,30 @@
             }
             ).then(
                 function(response){
-                    console.log(response.data);
                     deferred.resolve(response.data);
                 },
                 function(errResponse){
+                    deferred.reject(errResponse);
+                }
+            );
+            return deferred.promise;
+        }
+        
+        function deleteAccount(id){
+            var deferred = $q.defer();
+            $http({
+                url: 'http://localhost:8080/Credit_Ecureuil_1/supprimer_livret.htm',
+                method: "POST",
+                params : {
+                    'id' : id
+                }
+            }
+            ).then(
+                function(response){
+                    deferred.resolve(response.data);
+                },
+                function(errResponse){
+                    console.log(errResponse);
                     deferred.reject(errResponse);
                 }
             );

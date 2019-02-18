@@ -144,14 +144,14 @@ public class UtilisateurController {
     protected ResponseEntity<?> initProfil(HttpServletRequest request) throws Exception, IOException {
         String userResponse = "[]";
         HttpStatus status = HttpStatus.BAD_REQUEST;
-        
+        JSONObject json = new JSONObject();
         try {
             JSONObject jObj = ControllerUtils.requestToJSONObj(request);
             String login = jObj.getString("login");
             UtilisateurEntity user = this.service.getUtilisateur(login);
-
+	    
             // On envoie les champs de l'utilisateur à la vue
-            JSONObject json = new JSONObject()
+            json
                     .put("email", user.getEmail())
                     .put("password", user.getMotDePasse())
                     .put("prenom", user.getPrenom())
@@ -165,7 +165,7 @@ public class UtilisateurController {
         } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
         }
-        return new ResponseEntity(userResponse, status);
+        return new ResponseEntity(json.toString(), status);
     }
 
     /**
@@ -177,8 +177,9 @@ public class UtilisateurController {
     @RequestMapping(value = "profil", method = RequestMethod.POST)
     protected ResponseEntity<?> profilUtilisateur(
             HttpServletRequest request) throws Exception {
-        String userResponse = "[]";
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+	
+	JSONObject response = new JSONObject();
+	HttpStatus status = HttpStatus.BAD_REQUEST;
         try {
             JSONObject jObj = ControllerUtils.requestToJSONObj(request);
 
@@ -187,8 +188,8 @@ public class UtilisateurController {
             String password = jObj.getString("password");
             String password_confirmation = jObj.getString("password_confirmation");
             if (!password.equals(password_confirmation)) {
-                request.setAttribute("returnMessage", ControllerUtils.generateErrorMessage("Mots de passe differents."));
-            } else {
+		response = new JSONObject().put("errorMessage", "Les mots de passe ne coincident pas");	    
+	    } else {
                 String nom = "";
                 String prenom = "";
                 try {
@@ -199,17 +200,28 @@ public class UtilisateurController {
                 }
 
                 // Actualise les données de l'utilisateur
-                if (ControllerUtils.isUtilisateurPro(request)) {
-                    String company = request.getParameter("company");
+                String company = null;
+		if (ControllerUtils.isUtilisateurPro(request)) {
+                     company = request.getParameter("company");
                     service.updateProUser(login, password, nom, prenom, company);
                 } else {
                     service.updateUser(login, password, nom, prenom);
                 }
-                request.setAttribute("returnMessage", ControllerUtils.generateSuccessMessage("Modification effectuee."));
+		
+		response.put("login", login);
+		response.put("password", password);
+		response.put("nom", nom);
+		response.put("prenom", prenom);
+		response.put("login", login);
+		if (ControllerUtils.isUtilisateurPro(request))
+		    response.put("company", company);
+		status = HttpStatus.OK;
+		System.out.println("toto");
             }
         } catch (Exception e) {
-            userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
+	    response = new JSONObject().put("errorMessage", e.getMessage());
         }
-        return new ResponseEntity(userResponse, status);
+	System.out.println("Avant return");
+        return new ResponseEntity(response.toString(), status);
     }
 }

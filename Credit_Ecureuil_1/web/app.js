@@ -81,8 +81,14 @@
                 controllerAs: 'vm'
             })
             
+            .when('/delete_account', {
+                controller: 'RemoveAccountController',
+                templateUrl: 'consultation.html',
+                controllerAs: 'vm'
+            })
+            
             .when('/profil', {
-                controller: 'HomeController',
+                controller: 'ProfileController',
                 templateUrl: 'profil.html',
                 controllerAs: 'vm'
             })
@@ -92,6 +98,25 @@
                 templateUrl: 'consulter_messagerie.html',
                 controllerAs: 'vm'
             })
+            
+            .when('/consultation_admin', {
+                controller: 'AdminController',
+                templateUrl: 'consultation_admin.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/virement_admin', {
+                controller: 'AdminController',
+                templateUrl: 'virement_admin.html',
+                controllerAs: 'vm'
+            })
+            
+            .when('/create_account_admin', {
+                controller: 'AdminController',
+                templateUrl: 'create_account_admin.html',
+                controllerAs: 'vm'
+            })
+            
             
             .otherwise({ redirectTo: '/login' });
     }

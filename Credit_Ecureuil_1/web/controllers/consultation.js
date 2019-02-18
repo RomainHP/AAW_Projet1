@@ -32,22 +32,18 @@
         var detailsAccountLoaded = false;
         
         initConsultation($rootScope);
+        
         function initConsultation($rootScope){
             vm.user = $rootScope.globals.currentUser;
-            consultation(mail);
+            
+            CompteService.consultation(mail).then(function(response){
+                vm.accounts = response;
+            });
+            
             CompteService.getAllAccounts().then(function(response){
                 vm.allAccounts = response;
             });
         }
-          
-        function consultation(mail) {
-            CompteService.consultation(mail)
-                    .then(function(response){
-                        vm.accounts = response;
-                    
-                    }
-            );
-        };
         
         function createAccount(){
             CompteService.createAccount(vm.account.name, mail).then(function () {
@@ -60,18 +56,19 @@
         }
         
         function displayAccount(){
-            if (vm.accounts !== null && alreadyPrinted === false){
+            if (vm.accounts !== null && vm.accounts !== undefined && alreadyPrinted === false){
                 var index = vm.accounts.Compte.length;
                 for(var i = 0; i<index; i++){
                     var tmp = i +1;
-                    document.getElementById('table').innerHTML += '<td>' + tmp+ '</td>'
+                    document.getElementById('table').innerHTML += '<tr><td>' + tmp+ '</td>'
                     + '<td scope="row">' + vm.accounts.Compte[i].id[0] + '</td>'
                     + '<td scope="row">' + vm.accounts.Compte[i].prop[0] + '</td>'
                     + '<td scope="row">' + vm.accounts.Compte[i].name[0] + '</td>'
                     + '<td scope="row">' + vm.accounts.Compte[i].solde[0] + '</td>'
                     + '<td scope="row">'
                     + '<button class="btn btn-primary btn-md" onClick="window.location.href=\'#!/details?id='+vm.accounts.Compte[i].id[0]+'\'">Details</button>'
-                    + '</td>'
+                    + '<button class="btn btn-primary btn-md" onClick="window.location.href=\'#!/delete_account?id='+vm.accounts.Compte[i].id[0]+'\'">Supprimer</button>'
+                    + '</td></tr>'
                     ;
                 }
                 alreadyPrinted = true;

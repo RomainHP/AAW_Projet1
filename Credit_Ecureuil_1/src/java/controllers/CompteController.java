@@ -307,4 +307,8 @@ public class CompteController {
 
         return new ResponseEntity(answer.toString(), HttpStatus.OK);
     }
+    
+    protected List<CompteEntity> getAllAccounts(){
+	return service.getAllOpenAccounts();
+    }
 }

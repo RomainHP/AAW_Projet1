@@ -103,20 +103,25 @@
     </div>
 </nav>
 
-<pre>{{vm.accounts}}</pre>
-
-<table class="table table-fit table-striped">
-    <thead style="background-color:#ffb860;">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Id du compte</th>
-            <th scope="col">Proprietaire</th>
-            <th scope="col">Intitule</th>
-            <th scope="col">Solde</th>
-            <th colspan="2" scope="col">Options</th>
-        </tr>
-    </thead>
-    <tbody id="table">
-        {{vm.displayAccount()}}
-    </tbody>
-</table>
+<div class="container">
+    <div id="login-row" class="row justify-content-center align-items-center">
+        <div id="login-column" class="col-md-6">
+            <div class="login-box col-md-12">
+                <form id="login-form" class="form" ng-submit="vm.ajout_livret_admin()" role="form">
+                    <h3 class="text-center text-info">Ouverture d'un nouveau livret</h3>
+                    <div class="form-group mb-3">
+                        <label for="id_compte" class="text-info">Mail de l'utilisateur:</label>
+                        <input type="text" class="form-control" name="id_compte" id="id_compte" ng-model="vm.account.mail" placeholder="mail" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="nom_compte" class="text-info">Livret :</label>
+                        <input type="text" class="form-control" name="nom_compte" id="nom_compte" ng-model="vm.account.name" placeholder="Nom du livret" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" ng-disabled="form.$invalid" name="Valider" class="btn btn-primary" value="Valider">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

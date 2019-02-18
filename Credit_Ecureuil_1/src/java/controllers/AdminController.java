@@ -30,62 +30,34 @@ public class AdminController {
     /**
      * Fonction de type GET utilisée pour la consultation de compte d'admin
      *
-     * @return Un ResponseEntity correspondant soit a la page
-     * consultation_comptes_admins si autorisation correcte, soit la page erreur
-     * @throws Exception
      */
-    @RequestMapping(value = "consultation_comptes_admin", method = RequestMethod.GET)
-    protected ResponseEntity initConsultationComptesAdmin(
+    @RequestMapping(value = "consultation_admin", method = RequestMethod.GET)
+    protected ResponseEntity<?> initConsultationComptesAdmin(
             HttpServletRequest request) throws Exception {
-//        if (!ControllerUtils.isUtilisateurAdmin(request)) {
-//            return new ResponseEntity("erreur");
-//        }
-//
-//        String login = ControllerUtils.getUserLogin(request);
-//        List<CompteEntity> accounts = compteController.service.getAllOpenAccounts();
-//
-//        ResponseEntity mv = new ResponseEntity("consultation_comptes_admin");
-//        StringBuffer table_comptes = new StringBuffer();
-//
-//        int cpt = 1;
-//        for (CompteEntity account : accounts) {
-//            table_comptes.append("<tr>");
-//            table_comptes.append("<td scope=\"row\">" + cpt + "</td>");
-//            table_comptes.append("<td scope=\"row\">" + account.getId() + "</td>");
-//            table_comptes.append("<td scope=\"row\">" + account.getProprietaire().getEmail() + "</td>");
-//            table_comptes.append("<td scope=\"row\">" + account + "</td>");
-//            table_comptes.append("<td scope=\"row\">" + account.getSolde() + "</td>");
-//            // Bouton détail
-//            table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"details_compte.htm\" method=\"post\"><div class=\"form-group mb-3\">");
-//            table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"idCpt\" value=\"" + account.getId() + "\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Détails</button></div></form></td>");
-//
-//            if (account instanceof LivretEntity) {
-//                // Bouton supprimer
-//                table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"supprimer_livret_admin.htm\" method=\"post\"><div class=\"form-group mb-3\">");
-//                table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\"" + account.getId() + "\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Supprimer</button></div></form></td>");
-//            } else if (account instanceof CompteJointEntity && !account.getProprietaire().getEmail().equals("admin")) {
-//                // Bouton supprimer (on ne supprime pas le compte de l'admin)
-//                table_comptes.append("<td scope=\"row\"><form class=\"form\" action=\"supprimer_compte_joint_admin.htm\" method=\"post\"><div class=\"form-group mb-3\">");
-//                table_comptes.append("<input type=\"hidden\" class=\"form-control\" name=\"id\" value=\"" + account.getId() + "\"><button type=\"submit\" class=\"btn btn-primary btn-md\">Supprimer</button></div></form></td>");
-//            } else {
-//                table_comptes.append("<td />");
-//            }
-//
-//            cpt++;
-//        }
-//
-//        mv.addObject("table_comptes", table_comptes);
-//        return mv;
-        return null;
+	HttpStatus status = HttpStatus.BAD_REQUEST;
+	JSONObject answer = new JSONObject();
+	List<CompteEntity> allAcc = compteController.getAllAccounts();
+	
+	for (CompteEntity ce : allAcc) {
+	    answer.accumulate("id", ce.getId());
+	    answer.accumulate("proprio", ce.getProprietaire());
+	    answer.accumulate("solde", ce.getSolde());
+
+	    if(ce instanceof LivretEntity)
+		answer.accumulate("nomCompteSrc", ((LivretEntity)ce).getNom());
+	    else if(ce instanceof CompteJointEntity)
+		answer.accumulate("nomCompteSrc", ((CompteJointEntity)ce).getNom());
+	    else if(ce instanceof CompteEntity)
+		answer.accumulate("nomCompteSrc", "Compte courant");
+	}
+	status = HttpStatus.OK;
+	System.out.println(answer);
+        return new ResponseEntity(answer.toString(), status);
     }
 
     //--------------------
     /**
      * Affichage de la page ajout de livret en mode admin avec une methode POST
-     *
-     * @return Un ResponseEntity correspondant à la page "ajout_livre_admin" avec
-     * indication de si l'ajout de livret s'est faite correctement ou non
-     * @throws Exception
      */
     @RequestMapping(value = "ajout_livret_admin", method = RequestMethod.POST)
     protected ResponseEntity<?> ajoutLivret(
@@ -115,10 +87,6 @@ public class AdminController {
      * Affichage de la page suppression de livret en mode admin avec une methode
      * POST
      *
-     * @return Un ResponseEntity correspondant à la page "supprimer_livret_admin"
-     * avec indication de si la suppression de livret s'est faite correctement
-     * ou non
-     * @throws Exception
      */
     @RequestMapping(value = "supprimer_livret_admin", method = RequestMethod.POST)
     protected ResponseEntity<?> supprimerLivret(
@@ -148,11 +116,6 @@ public class AdminController {
     /**
      * Affichage de la page suppression de compte joint en mode admin avec une
      * methode POST
-     *
-     * @return Un ResponseEntity correspondant à la page "consultation" avec
-     * indication de si la suppression de compte joint s'est faite correctement
-     * ou non
-     * @throws Exception
      */
     @RequestMapping(value = "supprimer_compte_joint_admin", method = RequestMethod.POST)
     protected ResponseEntity<?> supprimerCompteJoint(
@@ -181,43 +144,14 @@ public class AdminController {
     //--------------------
     /**
      * Affichage de la page virement en mode admin avec une methode GET
-     *
-     * @return Un ResponseEntity correspondant à la page "virement"
-     * @throws Exception
      */
     @RequestMapping(value = "virement_admin", method = RequestMethod.GET)
-    protected ResponseEntity initVirementAdmin(HttpServletRequest request) {
-//        if (!ControllerUtils.isUtilisateurConnecte(request)) {
-//            return new ResponseEntity("erreur");
-//        }
-//        ResponseEntity mv = new ResponseEntity("virement");
-//
-//        StringBuilder options = new StringBuilder();
-//
-//        List<CompteEntity> accounts = compteController.service.getAllOpenAccounts();
-//
-//        for (CompteEntity compte : accounts) {
-//            options.append("<option value=\"");
-//            options.append(compte.getId());
-//            options.append("\">");
-//            options.append(compte).append(" - ").append(compte.getProprietaire()).append(" (").append(compte.getSolde()).append("€)");
-//            options.append("</option>");
-//        }
-//
-//        mv.addObject("options_dest", options.toString());
-//        mv.addObject("options", options.toString());
-//        mv.addObject("form", "virement_admin.htm");
-//
-//        return mv;
+    protected ResponseEntity<?> initVirementAdmin(HttpServletRequest request) {
         return null;
     }
 
     /**
      * Affichage de la page virement en mode admin avec une methode POST
-     *
-     * @return Un ResponseEntity correspondant à la page "virement" avec
-     * indication de si le virement s'est fait correctement ou non
-     * @throws Exception
      */
     @RequestMapping(value = "virement_admin", method = RequestMethod.POST)
     protected ResponseEntity<?> virementAdmin(
@@ -227,13 +161,13 @@ public class AdminController {
         try {
             JSONObject jObj = ControllerUtils.requestToJSONObj(request);
             try {
-                String nomCompteSrc = jObj.getString("id");
+                String nomCompteSrc = jObj.getString("source");
                 Long idCompteSrc = Long.parseLong(nomCompteSrc);
 
-                String montant = jObj.getString("value");
+                String montant = jObj.getString("montant");
                 Double mnt = Double.parseDouble(montant);
 
-                String nomDest = jObj.getString("id_dest");
+                String nomDest = jObj.getString("dest");
                 Long idCompteDest = Long.parseLong(nomDest);
 
                 compteController.service.virement(idCompteSrc, idCompteDest, mnt, false);

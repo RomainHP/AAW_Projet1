@@ -103,20 +103,29 @@
     </div>
 </nav>
 
-<pre>{{vm.accounts}}</pre>
-
-<table class="table table-fit table-striped">
-    <thead style="background-color:#ffb860;">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Id du compte</th>
-            <th scope="col">Proprietaire</th>
-            <th scope="col">Intitule</th>
-            <th scope="col">Solde</th>
-            <th colspan="2" scope="col">Options</th>
-        </tr>
-    </thead>
-    <tbody id="table">
-        {{vm.displayAccount()}}
-    </tbody>
-</table>
+<form ng-submit="vm.virement()" role="form">
+    <h3 class="text-center text-info m-4">Effectuer un virement</h3>
+    <div class="d-flex">
+        <div class="col">
+            <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="id">
+              {{vm.displayAcc1()}}
+            </select>
+        </div>
+        <div class="col">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">?</div>
+                </div>
+                <input name="value" type="number" value="0.00" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="value" />
+            </div>
+        </div>
+        <div class="col">
+            <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="id_dest">
+                {{vm.displayAcc2()}}
+            </select>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center mt-3">
+        <button type="submit" class="btn btn-primary">Effectuer le virement</button>
+    </div>
+</form>
