@@ -85,7 +85,6 @@ public class CompteServiceImpl implements CompteService{
 
     @Override
     public void supprimerLivret(Long id, boolean testSolde) throws ServiceException {
-	System.out.println("id : " + id);
 	LivretEntity ce = livretDao.find(id);
 	if(ce == null) throw new ServiceException("Livret introuvable.");
         if(testSolde && ce.getSolde()!=0d) throw new ServiceException("Le solde du livret a supprimer n'est pas nul (0).");

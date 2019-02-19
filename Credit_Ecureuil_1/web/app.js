@@ -87,6 +87,12 @@
                 controllerAs: 'vm'
             })
             
+            .when('/delete_account_admin', {
+                controller: 'RemoveAccountAdminController',
+                templateUrl: 'consultation.html',
+                controllerAs: 'vm'
+            })
+            
             .when('/profil', {
                 controller: 'ProfileController',
                 templateUrl: 'profil.html',

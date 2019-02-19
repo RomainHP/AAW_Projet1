@@ -43,15 +43,18 @@ public class AdminController {
 	    answer.accumulate("proprio", ce.getProprietaire());
 	    answer.accumulate("solde", ce.getSolde());
 
-	    if(ce instanceof LivretEntity)
+	    if(ce instanceof LivretEntity){
 		answer.accumulate("nomCompteSrc", ((LivretEntity)ce).getNom());
-	    else if(ce instanceof CompteJointEntity)
-		answer.accumulate("nomCompteSrc", ((CompteJointEntity)ce).getNom());
-	    else if(ce instanceof CompteEntity)
+		answer.accumulate("supprimable", "true");
+	    }else if(ce instanceof CompteJointEntity){
+		answer.accumulate("nomCompteSrc", ((CompteJointEntity)ce).getNom() + " (CJ)");
+		answer.accumulate("supprimable", "false");
+	    }else if(ce instanceof CompteEntity){
 		answer.accumulate("nomCompteSrc", "Compte courant");
+		answer.accumulate("supprimable", "false");
+	    }
 	}
 	status = HttpStatus.OK;
-	System.out.println(answer);
         return new ResponseEntity(answer.toString(), status);
     }
 
@@ -74,7 +77,7 @@ public class AdminController {
                 compteController.service.ajoutLivret(nomCompte, utilisateur);
                 status = HttpStatus.OK;
             } catch (ServiceException e) {
-                userResponse = new JSONObject().put("errorMessage", "Email non valide").toString();
+                userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
             }
         } catch (Exception e) {
             userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
@@ -98,12 +101,13 @@ public class AdminController {
 
             String idCompteStr = jObj.getString("id");
             Long idCompte = Long.parseLong(idCompteStr);
-
+	    
             try {
                 compteController.service.supprimerLivret(idCompte, false);
+		System.out.println("Compte supprime mode admin");
                 status = HttpStatus.OK;
             } catch (ServiceException e) {
-                userResponse = new JSONObject().put("errorMessage", "Email non valide").toString();
+                userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
             }
 
         } catch (Exception e) {
@@ -132,7 +136,7 @@ public class AdminController {
                 compteController.service.supprimerCompteJoint(idCompte, false);
                 status = HttpStatus.OK;
             } catch (ServiceException e) {
-                userResponse = new JSONObject().put("errorMessage", "Email non valide").toString();
+                userResponse = new JSONObject().put("errorMessage", e.getMessage()).toString();
             }
 
         } catch (Exception e) {

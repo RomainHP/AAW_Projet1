@@ -37,36 +37,32 @@ public class CompteController {
     @RequestMapping(value = "consultation", method = RequestMethod.GET)
     protected ResponseEntity<?> initConsult(HttpServletRequest request) throws Exception {        
 	String login = request.getParameter("mail");	
-	
         List<CompteEntity> accounts = this.service.consultation(login);
-	boolean alreadyAdded = false;
+	
 	JSONObject jObj = new JSONObject();
-	for (CompteEntity account : accounts) {	    
-	    String compte = "Compte";
-	    JSONObject jObj2 = new JSONObject();
-	    if(account instanceof CompteEntity || account instanceof LivretEntity){
-		jObj2.append("id", account.getId());
-		jObj2.append("prop", account.getProprietaire());
-	    }
-	    
-	    if(account instanceof LivretEntity)
-		jObj2.append("name", ((LivretEntity)account).getNom());
-	    else if(account instanceof CompteJointEntity){
-		if(!alreadyAdded){
-		    jObj2.append("id", account.getId());
-		    jObj2.append("prop", account.getProprietaire());
-		    jObj2.append("name", ((CompteJointEntity)account).getNom());
-		    jObj2.append("solde", account.getSolde());
-		    alreadyAdded = true;
+	for (CompteEntity account : accounts) {
+	    if(account instanceof LivretEntity){
+		jObj.accumulate("name", ((LivretEntity)account).getNom());
+		jObj.accumulate("id", ((LivretEntity)account).getId());
+		jObj.accumulate("montant", ((LivretEntity)account).getSolde());
+		jObj.accumulate("prop", ((LivretEntity)account).getProprietaire().getEmail());
+		jObj.accumulate("supprimable", "true");
+	    }else if(account instanceof CompteJointEntity){
+		if(!jObj.get("name").toString().contains(((CompteJointEntity)account).getNom())){
+		    jObj.accumulate("name", ((CompteJointEntity)account).getNom() + " (CJ)");
+		    jObj.accumulate("id", ((CompteJointEntity)account).getId());
+		    jObj.accumulate("montant", ((CompteJointEntity)account).getSolde());
+		    jObj.accumulate("prop", ((CompteJointEntity)account).getProprietaire().getEmail());
+		    jObj.accumulate("supprimable", "false");
 		}
+	    }else{
+		jObj.accumulate("name", "Compte courant");
+		jObj.accumulate("id", account.getId());
+		jObj.accumulate("montant", account.getSolde());
+		jObj.accumulate("prop", account.getProprietaire().getEmail());
+		jObj.accumulate("supprimable", "false");
 	    }
-	    else
-		jObj2.append("name", "Compte courant");
 	    
-	    if(account instanceof CompteEntity || account instanceof LivretEntity)
-		jObj2.append("solde", account.getSolde());
-	    
-	    jObj.append(compte, jObj2);
 	}
 	return new ResponseEntity(jObj.toString(), HttpStatus.OK);
     }

@@ -42,6 +42,11 @@
             if(vm.allAccounts !== null){
                 var index = vm.allAccounts.proprio.length;
                 for(var i = 0; i<index; i++){
+                    if(vm.allAccounts.supprimable[i] === "true"){
+                        var butDel = '<button class="btn btn-primary btn-md" onClick="window.location.href=\'#!/delete_account_admin?id='+vm.allAccounts.id[i]+'\'">Supprimer</button>';
+                    }else{
+                        var butDel = '';
+                    }
                     var tmp = i +1;
                     document.getElementById('table').innerHTML += '<td>' + tmp+ '</td>'
                     + '<td scope="row">' + vm.allAccounts.id[i] + '</td>'
@@ -50,6 +55,7 @@
                     + '<td scope="row">' + vm.allAccounts.solde[i] + '</td>'
                     + '<td scope="row">'
                     + '<button class="btn btn-primary btn-md" onClick="window.location.href=\'#!/details?id='+vm.allAccounts.id[i]+'\'">Details</button>'
+                    + butDel
                     + '</td>'
                     ;
                 }
@@ -76,6 +82,7 @@
             });
         }
         
+        //====================FONCTIONS D'AFFICHAGE==============================//
         function selectOwnAcc(){
             var tmp = document.getElementById("id");
             if(tmp.options[tmp.selectedIndex] !== undefined)

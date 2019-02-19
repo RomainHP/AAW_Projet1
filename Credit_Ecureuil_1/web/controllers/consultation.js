@@ -57,21 +57,46 @@
         
         function displayAccount(){
             if (vm.accounts !== null && vm.accounts !== undefined && alreadyPrinted === false){
-                var index = vm.accounts.Compte.length;
-                for(var i = 0; i<index; i++){
-                    var tmp = i +1;
-                    document.getElementById('table').innerHTML += '<tr><td>' + tmp+ '</td>'
-                    + '<td scope="row">' + vm.accounts.Compte[i].id[0] + '</td>'
-                    + '<td scope="row">' + vm.accounts.Compte[i].prop[0] + '</td>'
-                    + '<td scope="row">' + vm.accounts.Compte[i].name[0] + '</td>'
-                    + '<td scope="row">' + vm.accounts.Compte[i].solde[0] + '</td>'
+                var index = vm.accounts.id.length;
+                if(index===undefined){
+                    if(vm.accounts.supprimable === "true"){
+                        var butDel = '<button class="btn btn-primary btn-md" onClick="window.location.href=\'#!/delete_account?id='+vm.accounts.id[i]+'\'">Supprimer</button>';
+                    }else{
+                        var butDel = '';
+                    }
+                    
+                    document.getElementById('table').innerHTML = '<tr><td>1</td>'
+                    + '<td scope="row">' + vm.accounts.id + '</td>'
+                    + '<td scope="row">' + vm.accounts.prop + '</td>'
+                    + '<td scope="row">' + vm.accounts.name + '</td>'
+                    + '<td scope="row">' + vm.accounts.montant + '</td>'
                     + '<td scope="row">'
-                    + '<button class="btn btn-primary btn-md" onClick="window.location.href=\'#!/details?id='+vm.accounts.Compte[i].id[0]+'\'">Details</button>'
-                    + '<button class="btn btn-primary btn-md" onClick="window.location.href=\'#!/delete_account?id='+vm.accounts.Compte[i].id[0]+'\'">Supprimer</button>'
+                    + '<button class="btn btn-primary btn-md" onClick="window.location.href=\'#!/details?id='+vm.accounts.id+'\'">Details</button>'
+                    + butDel
                     + '</td></tr>'
                     ;
+                }else{
+                    for(var i = 0; i<index; i++){
+                        console.log(vm.accounts.id[i]);
+                        if(vm.accounts.supprimable[i] === "true"){
+                            var butDel = '<button class="btn btn-primary btn-md" onClick="window.location.href=\'#!/delete_account?id='+vm.accounts.id[i]+'\'">Supprimer</button>';
+                        }else{
+                            var butDel = '';
+                        }
+                        var tmp = i +1;
+                        document.getElementById('table').innerHTML += '<tr><td>' + tmp+ '</td>'
+                        + '<td scope="row">' + vm.accounts.id[i] + '</td>'
+                        + '<td scope="row">' + vm.accounts.prop[i] + '</td>'
+                        + '<td scope="row">' + vm.accounts.name[i] + '</td>'
+                        + '<td scope="row">' + vm.accounts.montant[i] + '</td>'
+                        + '<td scope="row">'
+                        + '<button class="btn btn-primary btn-md" onClick="window.location.href=\'#!/details?id='+vm.accounts.id[i]+'\'">Details</button>'
+                        + butDel
+                        + '</td></tr>'
+                        ;
+                    }
+                    alreadyPrinted = true;
                 }
-                alreadyPrinted = true;
             }
         }
         
@@ -134,6 +159,7 @@
             }
         }
                 
+        //====================FONCTIONS D'AFFICHAGE==============================//
         function selectOwnAcc(){
             var tmp = document.getElementById("id");
             if(tmp.options[tmp.selectedIndex] !== undefined)
@@ -148,14 +174,14 @@
         
         function displayOwnAcc(){
             if(vm.accounts !== null){
-                var index = vm.accounts.Compte.length;
+                var index = vm.accounts.id.length;
                 document.getElementById("id").innerHTML =
                     '<select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="id" ng-change="' + selectOwnAcc()+'">' +    
                     '<option value="default" selected>Selectionner un compte</option>'+
                     '</select>';
                 for(var i = 0; i<index; i++){
                     document.getElementById('id').innerHTML += 
-                    '<option value="'+ vm.accounts.Compte[i].id[0]+'">' + vm.accounts.Compte[i].name[0] + '</option>';
+                    '<option value="'+ vm.accounts.id[i]+'">' + vm.accounts.name[i] + '</option>';
                 }
             }
         }

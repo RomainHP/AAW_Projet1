@@ -13,6 +13,7 @@
         service.consultation = consultation;
         service.virement = virement;
         service.ajout_livret = ajout_livret;
+        service.deleteAccountAdmin = deleteAccountAdmin;
         return service;
         
         function consultation(){
@@ -62,6 +63,26 @@
                 params: {
                     'nom_compte' : nomCpt,
                     'utilisateur' : utilisateur
+                }
+            }
+            ).then(
+                function(response){
+                    deferred.resolve(response.data);
+                },
+                function(errResponse){
+                    deferred.reject(errResponse);
+                }
+            );
+            return deferred.promise;
+        }
+        
+        function deleteAccountAdmin(id){
+            var deferred = $q.defer();
+            $http({
+                url: 'http://localhost:8080/Credit_Ecureuil_1/supprimer_livret_admin.htm',
+                method: "POST",
+                params: {
+                    'id' : id
                 }
             }
             ).then(

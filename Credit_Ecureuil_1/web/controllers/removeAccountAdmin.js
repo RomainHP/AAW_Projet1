@@ -3,37 +3,38 @@
  
     angular
         .module('app')
-        .controller('RemoveAccountController', RemoveAccountController);
+        .controller('RemoveAccountAdminController', RemoveAccountAdminController);
  
-    RemoveAccountController.$inject = ['$location', 'FlashService', 'CompteService'];
+    RemoveAccountAdminController.$inject = ['$location', 'FlashService', 'AdminService'];
     
-    function RemoveAccountController($location, FlashService, CompteService) {
+    function RemoveAccountAdminController($location, FlashService, AdminService) {
         var vm = this;
   
-        vm.removeAccount = removeAccount;
+        vm.removeAccountAdmin = removeAccountAdmin;
         
         initController($location);
 
         function initController($location) {
             var accRemoved = $location.search().id;
-            removeAccount(accRemoved);
+            removeAccountAdmin(accRemoved);
         }
         
-        function removeAccount(accRemoved) {
+        function removeAccountAdmin(accRemoved) {
             if (accRemoved !== null) {
-                CompteService.deleteAccount(accRemoved)
+                AdminService.deleteAccountAdmin(accRemoved)
                     .then(function () {
                         FlashService.Success('Livret supprime avec succes', true);
-                        $location.path('/consultation');
+                        $location.path('/consultation_admin');
                     },
                     function (errResponse) {
                         FlashService.Error("Erreur : " + errResponse.data["errorMessage"], true);
-                        $location.path('/consultation');
+                        console.log(errResponse);
+                        $location.path('/consultation_admin');
                     }
                 );
             } else {
                 FlashService.Error("Erreur", true);
-                $location.path('/consultation');
+                $location.path('/consultation_admin');
             }
         }
     }
